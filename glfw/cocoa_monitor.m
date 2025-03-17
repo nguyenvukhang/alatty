@@ -32,6 +32,7 @@
 
 #include "internal.h"
 
+#include <AppKit/AppKit.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <math.h>
