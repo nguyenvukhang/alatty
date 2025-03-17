@@ -86,7 +86,7 @@ jobs:
         run: python build.py
 
       - name: Compress
-        run: zip -r alatty.zip kitty.app
+        run: zip -r alatty.zip alatty.app
 
       # mark this run as ok
       - run: touch macos-${{ matrix.commit }}.ok
