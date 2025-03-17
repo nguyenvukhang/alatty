@@ -100,7 +100,6 @@ from .tabs import SpecialWindow, SpecialWindowInstance, Tab, TabDict, TabManager
 from .types import AsyncResponse, WindowSystemMouseEvent
 from .typing import TypedDict
 from .utils import (
-    func_name,
     get_new_os_window_size,
     less_version,
     log_error,
