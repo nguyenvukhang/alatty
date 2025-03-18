@@ -194,10 +194,6 @@ func get_effective_ksi_env_var(x string) string {
 	if current.Has("disabled") {
 		return ""
 	}
-	allowed := utils.NewSetWithItems(alatty.AllowedShellIntegrationValues...)
-	if !current.IsSubsetOf(allowed) {
-		return RelevantAlattyOpts().Shell_integration
-	}
 	return x
 }
 
