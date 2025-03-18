@@ -1018,7 +1018,7 @@ def build_static_kittens(
         if cp.returncode != 0:
             raise SystemExit(cp.returncode)
 
-    if args.build_universal_binary and not for_platform:
+    if is_macos and is_arm:
         outs = []
         for arch in ('amd64', 'arm64'):
             d = dest + f'-{arch}'
