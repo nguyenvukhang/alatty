@@ -4061,14 +4061,6 @@ map('Toggle macOS secure keyboard entry',
     only='macos',
     )
 
-map('Unicode input',
-    'input_unicode_character alatty_mod+u kitten unicode_input',
-    )
-map('Unicode input',
-    'input_unicode_character ctrl+cmd+space kitten unicode_input',
-    only='macos',
-    )
-
 map('Edit config file',
     'edit_config_file alatty_mod+f2 edit_config_file',
     )

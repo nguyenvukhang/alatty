@@ -878,8 +878,6 @@ defaults.map = [
     KeyDefinition(trigger=SingleKey(mods=256, key=57374), definition='toggle_fullscreen'), 
     # toggle_maximized
     KeyDefinition(trigger=SingleKey(mods=256, key=57373), definition='toggle_maximized'), 
-    # input_unicode_character
-    KeyDefinition(trigger=SingleKey(mods=256, key=117), definition='kitten unicode_input'), 
     # edit_config_file
     KeyDefinition(trigger=SingleKey(mods=256, key=57365), definition='edit_config_file'), 
     # alatty_shell
@@ -937,7 +935,6 @@ if is_macos:
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=8, key=48), definition='change_font_size all 0'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=12, key=102), definition='toggle_fullscreen'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=10, key=115), definition='toggle_macos_secure_keyboard_entry'))
-    defaults.map.append(KeyDefinition(trigger=SingleKey(mods=12, key=32), definition='kitten unicode_input'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=8, key=44), definition='edit_config_file'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=10, key=114), definition='clear_terminal reset active'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=8, key=107), definition='clear_terminal to_cursor active'))

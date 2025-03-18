@@ -1891,10 +1891,6 @@ class Boss:
         if data is not None:
             end_kitten(data, target_window_id, self)
 
-    @ac('misc', 'Input an arbitrary unicode character. See :doc:`/kittens/unicode_input` for details.')
-    def input_unicode_character(self) -> None:
-        self.run_kitten_with_metadata('unicode_input')
-
     @ac(
         'tab', '''
         Change the title of the active tab interactively, by typing in the new title.
