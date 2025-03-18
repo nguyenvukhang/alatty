@@ -39,6 +39,8 @@ jobs:
         with:
           ref: ${{ matrix.commit }}
       - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
       - uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
@@ -73,6 +75,8 @@ jobs:
         with:
           ref: ${{ matrix.commit }}
       - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
       - uses: actions/setup-go@v4
         with:
           go-version-file: go.mod

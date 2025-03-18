@@ -32,6 +32,7 @@ def build():
 
 
 def install():
+    return
     subprocess.run(["rm", "-rf", '/Applications/Alatty.app'])
     subprocess.run(["cp", '-a', "alatty.app", '/Applications/Alatty.app'])
 
