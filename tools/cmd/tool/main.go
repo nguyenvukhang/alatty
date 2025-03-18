@@ -8,7 +8,6 @@ import (
 	"alatty/kittens/ask"
 	"alatty/kittens/diff"
 	"alatty/kittens/hyperlinked_grep"
-	"alatty/kittens/icat"
 	"alatty/kittens/ssh"
 	"alatty/kittens/themes"
 	"alatty/kittens/transfer"
@@ -36,8 +35,6 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	update_self.EntryPoint(root)
 	// edit-in-alatty
 	edit_in_alatty.EntryPoint(root)
-	// icat
-	icat.EntryPoint(root)
 	// ssh
 	ssh.EntryPoint(root)
 	// transfer
