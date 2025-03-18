@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"alatty/kittens/ask"
-	"alatty/kittens/clipboard"
 	"alatty/kittens/diff"
 	"alatty/kittens/hyperlinked_grep"
 	"alatty/kittens/icat"
@@ -38,8 +37,6 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	update_self.EntryPoint(root)
 	// edit-in-alatty
 	edit_in_alatty.EntryPoint(root)
-	// clipboard
-	clipboard.EntryPoint(root)
 	// icat
 	icat.EntryPoint(root)
 	// ssh

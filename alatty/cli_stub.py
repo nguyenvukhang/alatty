@@ -36,9 +36,6 @@ def generate_stub() -> None:
     from kittens.ask.main import option_text
     do(option_text(), 'AskCLIOptions')
 
-    from kittens.clipboard.main import OPTIONS
-    do(OPTIONS(), 'ClipboardCLIOptions')
-
     from kittens.show_key.main import OPTIONS
     do(OPTIONS(), 'ShowKeyCLIOptions')
 
