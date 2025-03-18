@@ -1033,7 +1033,7 @@ class Window:
         if hyperlink_id:
             if not opts.allow_hyperlinks:
                 return
-            from urllib.parse import unquote, urlparse, urlunparse
+            from urllib.parse import urlparse, urlunparse
             try:
                 purl = urlparse(url)
             except Exception:
@@ -1044,8 +1044,7 @@ class Window:
                     hostname = get_hostname()
                     remote_hostname = purl.netloc.partition(':')[0]
                     if remote_hostname and remote_hostname != hostname and remote_hostname != 'localhost':
-                        self.handle_remote_file(purl.netloc, unquote(purl.path))
-                        return
+                        return # this used to call `self.handle_remote_file(...)`
                     url = urlunparse(purl._replace(netloc=''))
             if opts.allow_hyperlinks & 0b10:
                 from kittens.tui.operations import styled
@@ -1063,29 +1062,6 @@ class Window:
             get_boss().open_url(url, cwd=cwd)
         elif q == 'c':
             set_clipboard_string(url)
-
-    def handle_remote_file(self, netloc: str, remote_path: str) -> None:
-        from kittens.remote_file.main import is_ssh_kitten_sentinel
-        from kittens.ssh.utils import get_connection_data
-
-        from .utils import SSHConnectionData
-        args = self.ssh_kitten_cmdline()
-        conn_data: Union[None, List[str], SSHConnectionData] = None
-        if args:
-            ssh_cmdline = sorted(self.child.foreground_processes, key=lambda p: p['pid'])[-1]['cmdline'] or ['']
-            if 'ControlPath=' in ' '.join(ssh_cmdline):
-                idx = ssh_cmdline.index('--')
-                conn_data = [is_ssh_kitten_sentinel] + list(ssh_cmdline[:idx + 2])
-        if conn_data is None:
-            args = self.child.foreground_cmdline
-            conn_data = get_connection_data(args, self.child.foreground_cwd or self.child.current_cwd or '')
-            if conn_data is None:
-                get_boss().show_error('Could not handle remote file', f'No SSH connection data found in: {args}')
-                return
-        get_boss().run_kitten(
-            'remote_file', '--hostname', netloc.partition(':')[0], '--path', remote_path,
-            '--ssh-connection-data', json.dumps(conn_data)
-        )
 
     def send_signal_for_key(self, key_num: bytes) -> bool:
         try:
