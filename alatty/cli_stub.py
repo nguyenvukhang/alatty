@@ -39,9 +39,6 @@ def generate_stub() -> None:
     from kittens.diff.main import OPTIONS
     do(OPTIONS(), 'DiffCLIOptions')
 
-    from kittens.broadcast.main import OPTIONS
-    do(OPTIONS(), 'BroadcastCLIOptions')
-
     from kittens.panel.main import OPTIONS
     do(OPTIONS(), 'PanelCLIOptions')
 
