@@ -910,12 +910,7 @@ def build_uniforms_header(skip_generation: bool = False) -> str:
 
 @lru_cache
 def wrapped_kittens() -> str:
-    with open('shell-integration/ssh/alatty') as f:
-        for line in f:
-            if line.startswith('    wrapped_kittens="'):
-                val = line.strip().partition('"')[2][:-1]
-                return ' '.join(sorted(filter(None, val.split())))
-    raise Exception('Failed to read wrapped kittens from alatty wrapper script')
+    return "clipboard icat hyperlinked_grep ask hints unicode_input ssh themes diff show_key transfer"
 
 
 def build(args: Options, native_optimizations: bool = True, call_init: bool = True) -> None:
@@ -1470,7 +1465,6 @@ def package(args: Options, bundle_type: str) -> None:
     shutil.copy2('logo/alatty.png', os.path.join(libdir, 'logo'))
     shutil.copy2('logo/beam-cursor.png', os.path.join(libdir, 'logo'))
     shutil.copy2('logo/beam-cursor@2x.png', os.path.join(libdir, 'logo'))
-    shutil.copytree('shell-integration', os.path.join(libdir, 'shell-integration'), dirs_exist_ok=True)
     allowed_extensions = frozenset('py glsl so'.split())
 
     def src_ignore(parent: str, entries: Iterable[str]) -> List[str]:
