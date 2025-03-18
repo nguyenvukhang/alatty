@@ -48,9 +48,6 @@ def generate_stub() -> None:
     from kittens.resize_window.main import OPTIONS
     do(OPTIONS(), 'ResizeCLIOptions')
 
-    from kittens.unicode_input.main import OPTIONS
-    do(OPTIONS(), 'UnicodeCLIOptions')
-
     from kittens.themes.main import OPTIONS
     do(OPTIONS(), 'ThemesCLIOptions')
 
