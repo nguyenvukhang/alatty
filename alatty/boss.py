@@ -209,8 +209,8 @@ class Boss:
 
             cocoa_set_notification_activated_callback(notification_activated)
 
-    def startup_first_child(self, os_window_id: Optional[int], startup_sessions: Iterable[Session] = ()) -> None:
-        si = startup_sessions or create_sessions(get_options(), self.args)
+    def startup_first_child(self, os_window_id: Optional[int]) -> None:
+        si = create_sessions(get_options(), self.args)
         focused_os_window = wid = 0
         token = os.environ.pop('XDG_ACTIVATION_TOKEN', '')
         with Window.set_ignore_focus_changes_for_new_windows():
@@ -602,7 +602,7 @@ class Boss:
             self.io_thread_started = True
             for signum in self.child_monitor.handled_signals():
                 handled_signals.add(signum)
-            self.startup_first_child(first_os_window_id, startup_sessions=startup_sessions)
+            self.startup_first_child(first_os_window_id)
 
     def on_window_resize(self, os_window_id: int, w: int, h: int, dpi_changed: bool) -> None:
         if dpi_changed:
