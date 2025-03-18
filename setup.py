@@ -807,32 +807,6 @@ def kittens_env(args: Options) -> Env:
     return kenv
 
 
-def compile_kittens(args: Options) -> None:
-    kenv = kittens_env(args)
-
-    def list_files(q: str) -> List[str]:
-        return sorted(glob.glob(q))
-
-    def files(
-            kitten: str,
-            output: str,
-            extra_headers: Sequence[str] = (),
-            extra_sources: Sequence[str] = (),
-            filter_sources: Optional[Callable[[str], bool]] = None,
-            includes: Sequence[str] = (), libraries: Sequence[str] = (),
-    ) -> Tuple[str, List[str], List[str], str, Sequence[str], Sequence[str]]:
-        sources = list(filter(filter_sources, list(extra_sources) + list_files(os.path.join('kittens', kitten, '*.c'))))
-        headers = list_files(os.path.join('kittens', kitten, '*.h')) + list(extra_headers)
-        return kitten, sources, headers, f'kittens/{kitten}/{output}', includes, libraries
-
-    for kitten, sources, all_headers, dest, includes, libraries in []:
-        final_env = kenv.copy()
-        final_env.cflags.extend(f'-I{x}' for x in includes)
-        final_env.ldpaths[:0] = list(libraries)
-        compile_c_extension(
-            final_env, dest, args.compilation_database, sources, all_headers + ['alatty/data-types.h'])
-
-
 def init_env_from_args(args: Options, native_optimizations: bool = False) -> None:
     global env
     env = init_env(
@@ -921,7 +895,6 @@ def build(args: Options, native_optimizations: bool = True, call_init: bool = Tr
         alatty_env(args), 'alatty/fast_data_types', args.compilation_database, sources, headers
     )
     compile_glfw(args.compilation_database)
-    compile_kittens(args)
 
 
 def safe_makedirs(path: str) -> None:
