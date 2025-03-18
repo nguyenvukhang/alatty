@@ -8,7 +8,6 @@ import (
 	"alatty/kittens/ask"
 	"alatty/kittens/clipboard"
 	"alatty/kittens/diff"
-	"alatty/kittens/hints"
 	"alatty/kittens/hyperlinked_grep"
 	"alatty/kittens/icat"
 	"alatty/kittens/show_key"
@@ -64,9 +63,7 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	hyperlinked_grep.EntryPoint(root)
 	// ask
 	ask.EntryPoint(root)
-	// hints
-	hints.EntryPoint(root)
-	// hints
+	// diffs
 	diff.EntryPoint(root)
 	// themes
 	themes.EntryPoint(root)
