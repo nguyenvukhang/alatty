@@ -179,7 +179,6 @@ class Boss:
         set_layout_options(opts)
         self.clipboard = Clipboard()
         self.primary_selection = Clipboard(ClipboardType.primary_selection)
-        self.peer_data_map: Dict[int, Optional[Dict[str, Sequence[str]]]] = {}
         self.clipboard_buffers: Dict[str, str] = {}
         self.window_id_map: WeakValueDictionary[int, Window] = WeakValueDictionary()
         self.startup_colors = {k: opts[k] for k in opts if isinstance(opts[k], Color)}
