@@ -94,32 +94,6 @@ def go_options_for_seq(seq: 'OptionSpecSeq') -> Iterator[GoOption]:
             yield GoOption(x)
 
 
-CONFIG_HELP = '''\
-Specify a path to the configuration file(s) to use. All configuration files are
-merged onto the builtin :file:`{conf_name}.conf`, overriding the builtin values.
-This option can be specified multiple times to read multiple configuration files
-in sequence, which are merged. Use the special value :code:`NONE` to not load
-any config file.
-
-If this option is not specified, config files are searched for in the order:
-:file:`$XDG_CONFIG_HOME/{appname}/{conf_name}.conf`,
-:file:`~/.config/{appname}/{conf_name}.conf`,{macos_confpath}
-:file:`$XDG_CONFIG_DIRS/{appname}/{conf_name}.conf`. The first one that exists
-is used as the config file.
-
-If the environment variable :envvar:`ALATTY_CONFIG_DIRECTORY` is specified, that
-directory is always used and the above searching does not happen.
-
-If :file:`/etc/xdg/{appname}/{conf_name}.conf` exists, it is merged before (i.e.
-with lower priority) than any user config files. It can be used to specify
-system-wide defaults for all users. You can use either :code:`-` or
-:file:`/dev/stdin` to read the config from STDIN.
-'''.replace(
-    '{macos_confpath}',
-    (' :file:`~/Library/Preferences/{appname}/{conf_name}.conf`,' if is_macos else ''), 1
-)
-
-
 def surround(x: str, start: int, end: int) -> str:
     if sys.stdout.isatty():
         x = f'\033[{start}m{x}\033[{end}m'
@@ -799,7 +773,7 @@ type=bool-set
 '''
         setattr(options_spec, 'ans', OPTIONS.format(
             appname=appname, conf_name=appname,
-            config_help=CONFIG_HELP.format(appname=appname, conf_name=appname),
+            config_help=""
         ))
     ans: str = getattr(options_spec, 'ans')
     return ans
