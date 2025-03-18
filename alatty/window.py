@@ -13,7 +13,6 @@ from gettext import gettext as _
 from itertools import chain
 from time import monotonic
 from typing import (
-    TYPE_CHECKING,
     Any,
     Callable,
     Deque,
@@ -115,10 +114,6 @@ from .utils import (
 )
 
 MatchPatternType = Union[Pattern[str], Tuple[Pattern[str], Optional[Pattern[str]]]]
-
-
-if TYPE_CHECKING:
-    from .file_transmission import FileTransmission
 
 
 class CwdRequestType(Enum):
@@ -604,14 +599,6 @@ class Window:
             return False
         from .remote_control import remote_control_allowed
         return remote_control_allowed(pcmd, self.remote_control_passwords, self, extra_data)
-
-    @property
-    def file_transmission_control(self) -> 'FileTransmission':
-        ans: Optional['FileTransmission'] = getattr(self, '_file_transmission', None)
-        if ans is None:
-            from .file_transmission import FileTransmission
-            ans = self._file_transmission = FileTransmission(self.id)
-        return ans
 
     def on_dpi_change(self, font_sz: float) -> None:
         self.update_effective_padding()
