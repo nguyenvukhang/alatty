@@ -968,9 +968,6 @@ class Parser:
         for k, v in store_multiple(val, ans["exe_search_path"]):
             ans["exe_search_path"][k] = v
 
-    def file_transfer_confirmation_bypass(self, val: str, ans: typing.Dict[str, typing.Any]) -> None:
-        ans['file_transfer_confirmation_bypass'] = str(val)
-
     def focus_follows_mouse(self, val: str, ans: typing.Dict[str, typing.Any]) -> None:
         ans['focus_follows_mouse'] = to_bool(val)
 

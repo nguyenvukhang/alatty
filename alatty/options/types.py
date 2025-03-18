@@ -343,7 +343,6 @@ option_names = (  # {{{
  'enabled_layouts',
  'env',
  'exe_search_path',
- 'file_transfer_confirmation_bypass',
  'focus_follows_mouse',
  'font_family',
  'font_features',
@@ -510,7 +509,6 @@ class Options:
     editor: str = '.'
     enable_audio_bell: bool = True
     enabled_layouts: typing.List[str] = ['fat', 'grid', 'horizontal', 'splits', 'stack', 'tall', 'vertical']
-    file_transfer_confirmation_bypass: str = ''
     focus_follows_mouse: bool = False
     font_family: str = 'monospace'
     font_size: float = 11.0
