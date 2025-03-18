@@ -345,10 +345,6 @@ class Loop:
                 data = memoryview(osc.encode('ascii'))
                 payload = standard_b64decode(data[widx+1:]).decode('utf-8')
             self.handler.on_clipboard_response(payload, from_primary)
-        elif q == ftc_code:
-            from alatty.file_transmission import FileTransmissionCommand
-            data = memoryview(osc.encode('ascii'))
-            self.handler.on_file_transfer_response(FileTransmissionCommand.deserialize(data[idx+1:]))
 
     def _on_apc(self, apc: str) -> None:
         if apc.startswith('G'):
