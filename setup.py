@@ -825,9 +825,7 @@ def compile_kittens(args: Options) -> None:
         headers = list_files(os.path.join('kittens', kitten, '*.h')) + list(extra_headers)
         return kitten, sources, headers, f'kittens/{kitten}/{output}', includes, libraries
 
-    for kitten, sources, all_headers, dest, includes, libraries in (
-        files('transfer', 'rsync', libraries=pkg_config('libxxhash', '--libs'), includes=pkg_config('libxxhash', '--cflags-only-I')),
-    ):
+    for kitten, sources, all_headers, dest, includes, libraries in []:
         final_env = kenv.copy()
         final_env.cflags.extend(f'-I{x}' for x in includes)
         final_env.ldpaths[:0] = list(libraries)
@@ -910,7 +908,7 @@ def build_uniforms_header(skip_generation: bool = False) -> str:
 
 @lru_cache
 def wrapped_kittens() -> str:
-    return "ask unicode_input ssh themes diff transfer"
+    return "ask unicode_input ssh themes diff"
 
 
 def build(args: Options, native_optimizations: bool = True, call_init: bool = True) -> None:
