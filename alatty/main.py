@@ -194,7 +194,7 @@ def _run_app(opts: Options, args: CLIOptions, bad_lines: Sequence[BadLine] = ())
                     "Alatty", args.name or args.cls or appname,
                     wincls, wstate, load_all_shaders)
         boss = Boss(opts, args, cached_values, global_shortcuts)
-        boss.start(window_id, startup_sessions)
+        boss.start(window_id)
         if bad_lines or boss.misc_config_errors:
             boss.show_bad_config_lines(bad_lines, boss.misc_config_errors)
             boss.misc_config_errors = []

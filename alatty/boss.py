@@ -596,7 +596,7 @@ class Boss:
         if osw_id is not None:
             cocoa_minimize_os_window(osw_id)
 
-    def start(self, first_os_window_id: int, startup_sessions: Iterable[Session]) -> None:
+    def start(self, first_os_window_id: int) -> None:
         if not getattr(self, 'io_thread_started', False):
             self.child_monitor.start()
             self.io_thread_started = True
