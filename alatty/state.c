@@ -957,15 +957,6 @@ PYWRAP0(wakeup_main_loop) {
     Py_RETURN_NONE;
 }
 
-static bool
-move_cursor_to_mouse_if_in_prompt(id_type os_window_id, id_type tab_id, id_type window_id) {
-    bool moved = false;
-    WITH_WINDOW(os_window_id, tab_id, window_id);
-    moved = move_cursor_to_mouse_if_at_shell_prompt(window);
-    END_WITH_WINDOW;
-    return moved;
-}
-
 static PyObject*
 pyupdate_pointer_shape(PyObject *self UNUSED, PyObject *args) {
     id_type os_window_id;
@@ -988,12 +979,6 @@ pymouse_selection(PyObject *self UNUSED, PyObject *args) {
     mouse_selection(window, code, button);
     END_WITH_WINDOW;
     Py_RETURN_NONE;
-}
-
-PYWRAP1(move_cursor_to_mouse_if_in_prompt) {
-    id_type a, b, c; PA("KKK", &a, &b, &c);
-    if (move_cursor_to_mouse_if_in_prompt(a, b, c)) Py_RETURN_TRUE;
-    Py_RETURN_FALSE;
 }
 
 PYWRAP1(redirect_mouse_handling) {
@@ -1025,7 +1010,6 @@ static PyMethodDef module_methods[] = {
     MW(current_focused_os_window_id, METH_NOARGS),
     MW(set_options, METH_VARARGS),
     MW(get_options, METH_NOARGS),
-    MW(move_cursor_to_mouse_if_in_prompt, METH_VARARGS),
     MW(redirect_mouse_handling, METH_O),
     MW(mouse_selection, METH_VARARGS),
     MW(set_ignore_os_keyboard_processing, METH_O),

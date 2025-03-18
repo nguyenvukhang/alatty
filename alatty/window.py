@@ -65,7 +65,6 @@ from .fast_data_types import (
     is_css_pointer_name_valid,
     mark_os_window_dirty,
     mouse_selection,
-    move_cursor_to_mouse_if_in_prompt,
     pointer_name_to_css_name,
     pt_to_px,
     set_window_padding,
@@ -931,8 +930,6 @@ class Window:
                 # can interfere with that. See https://github.com/kovidgoyal/alatty/issues/4128
                 if monotonic() - self.last_focused_at < 1.5 * get_click_interval():
                     return
-                if move_cursor_to_mouse_if_in_prompt(self.os_window_id, self.tab_id, self.id):
-                    break
 
     def mouse_click_url(self) -> None:
         self.mouse_handle_click('link')

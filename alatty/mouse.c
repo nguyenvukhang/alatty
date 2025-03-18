@@ -415,27 +415,6 @@ add_press(Window *w, int button, int modifiers) {
 }
 #undef N
 
-bool
-mouse_set_last_visited_cmd_output(Window *w) {
-    Screen *screen = w->render_data.screen;
-    return screen_set_last_visited_prompt(screen, w->mouse_pos.cell_y);
-}
-
-bool
-mouse_select_cmd_output(Window *w) {
-    Screen *screen = w->render_data.screen;
-    return screen_select_cmd_output(screen, w->mouse_pos.cell_y);
-}
-
-bool
-move_cursor_to_mouse_if_at_shell_prompt(Window *w) {
-    Screen *screen = w->render_data.screen;
-    int y = screen_cursor_at_a_shell_prompt(screen);
-    if (y < 0 || (unsigned)y > w->mouse_pos.cell_y) return false;
-    return screen_fake_move_cursor_to_position(screen, w->mouse_pos.cell_x, w->mouse_pos.cell_y);
-}
-
-
 typedef struct PendingClick {
     id_type window_id;
     int button, count, modifiers;
