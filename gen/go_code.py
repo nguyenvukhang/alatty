@@ -564,7 +564,6 @@ def load_ref_map() -> Dict[str, Dict[str, str]]:
 
 def generate_constants() -> str:
     from alatty.config import option_names_for_completion
-    from alatty.fast_data_types import FILE_TRANSFER_CODE
     ref_map = load_ref_map()
     with open('alatty/data-types.h') as dt:
         m = re.search(r'^#define IMAGE_PLACEHOLDER_CHAR (\S+)', dt.read(), flags=re.M)
@@ -581,7 +580,6 @@ type VersionType struct {{
 }}
 const VersionString string = "{kc.str_version}"
 const WebsiteBaseURL string = "{kc.website_base_url}"
-const FileTransferCode int = {FILE_TRANSFER_CODE}
 const ImagePlaceholderChar rune = {placeholder_char}
 const SSHControlMasterTemplate = "{kc.ssh_control_master_template}"
 const RC_ENCRYPTION_PROTOCOL_VERSION string = "{kc.RC_ENCRYPTION_PROTOCOL_VERSION}"
