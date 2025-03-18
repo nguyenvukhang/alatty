@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"alatty/kittens/ask"
-	"alatty/kittens/diff"
 	"alatty/kittens/ssh"
 	"alatty/tools/cli"
 	"alatty/tools/cmd/at"
@@ -44,8 +43,6 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	})
 	// ask
 	ask.EntryPoint(root)
-	// diffs
-	diff.EntryPoint(root)
 	// run-shell
 	run_shell.EntryPoint(root)
 	// show_error

@@ -426,7 +426,7 @@ def go_code_for_remote_command(name: str, cmd: RemoteCommand, template: str) -> 
 
 @lru_cache
 def wrapped_kittens() -> Tuple[str, ...]:
-    return ("ask", "ssh", "diff")
+    return ("ask", "ssh")
 
 
 def generate_conf_parser(kitten: str, defn: Definition) -> None:
