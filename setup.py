@@ -910,7 +910,7 @@ def build_uniforms_header(skip_generation: bool = False) -> str:
 
 @lru_cache
 def wrapped_kittens() -> str:
-    return "icat hyperlinked_grep ask unicode_input ssh themes diff transfer"
+    return "hyperlinked_grep ask unicode_input ssh themes diff transfer"
 
 
 def build(args: Options, native_optimizations: bool = True, call_init: bool = True) -> None:

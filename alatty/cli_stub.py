@@ -42,9 +42,6 @@ def generate_stub() -> None:
     from kittens.broadcast.main import OPTIONS
     do(OPTIONS(), 'BroadcastCLIOptions')
 
-    from kittens.icat.main import OPTIONS
-    do(OPTIONS, 'IcatCLIOptions')
-
     from kittens.query_terminal.main import options_spec
     do(options_spec(), 'QueryTerminalCLIOptions')
 
