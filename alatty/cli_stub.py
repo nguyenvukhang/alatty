@@ -54,9 +54,6 @@ def generate_stub() -> None:
     from kittens.themes.main import OPTIONS
     do(OPTIONS(), 'ThemesCLIOptions')
 
-    from kittens.transfer.main import option_text as OPTIONS
-    do(OPTIONS(), 'TransferCLIOptions')
-
     from alatty.rc.base import all_command_names, command_for_name
     for cmd_name in all_command_names():
         cmd = command_for_name(cmd_name)

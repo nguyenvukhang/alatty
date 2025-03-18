@@ -178,7 +178,6 @@ def stringify() -> None:
     for path in (
         'tools/tui/graphics/command.go',
         'tools/rsync/algorithm.go',
-        'kittens/transfer/ftc.go',
     ):
         stringify_file(path)
 # }}}
@@ -427,7 +426,7 @@ def go_code_for_remote_command(name: str, cmd: RemoteCommand, template: str) -> 
 
 @lru_cache
 def wrapped_kittens() -> Tuple[str, ...]:
-    return ("ask", "unicode_input", "ssh", "themes", "diff", "transfer")
+    return ("ask", "unicode_input", "ssh", "themes", "diff")
 
 
 def generate_conf_parser(kitten: str, defn: Definition) -> None:
