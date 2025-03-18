@@ -427,7 +427,7 @@ def go_code_for_remote_command(name: str, cmd: RemoteCommand, template: str) -> 
 
 @lru_cache
 def wrapped_kittens() -> Tuple[str, ...]:
-    return ("clipboard", "icat", "hyperlinked_grep", "ask", "hints", "unicode_input", "ssh", "themes", "diff", "show_key", "transfer")
+    return ("clipboard", "icat", "hyperlinked_grep", "ask", "unicode_input", "ssh", "themes", "diff", "show_key", "transfer")
 
 
 def generate_conf_parser(kitten: str, defn: Definition) -> None:
@@ -564,10 +564,8 @@ def load_ref_map() -> Dict[str, Dict[str, str]]:
 
 
 def generate_constants() -> str:
-    from kittens.hints.main import DEFAULT_REGEX
     from alatty.config import option_names_for_completion
     from alatty.fast_data_types import FILE_TRANSFER_CODE
-    del sys.modules['kittens.hints.main']
     ref_map = load_ref_map()
     with open('alatty/data-types.h') as dt:
         m = re.search(r'^#define IMAGE_PLACEHOLDER_CHAR (\S+)', dt.read(), flags=re.M)
@@ -592,7 +590,6 @@ var VCSRevision string = ""
 var IsFrozenBuild string = ""
 var IsStandaloneBuild string = ""
 const HandleTermiosSignals = {Mode.HANDLE_TERMIOS_SIGNALS.value[0]}
-const HintsDefaultRegex = `{DEFAULT_REGEX}`
 const DefaultTermName = `{Options.term}`
 var Version VersionType = VersionType{{Major: {kc.version.major}, Minor: {kc.version.minor}, Patch: {kc.version.patch},}}
 var DefaultPager []string = []string{{ {dp} }}

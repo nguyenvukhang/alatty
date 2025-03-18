@@ -48,9 +48,6 @@ def generate_stub() -> None:
     from kittens.diff.main import OPTIONS
     do(OPTIONS(), 'DiffCLIOptions')
 
-    from kittens.hints.main import OPTIONS
-    do(OPTIONS(), 'HintsCLIOptions')
-
     from kittens.broadcast.main import OPTIONS
     do(OPTIONS(), 'BroadcastCLIOptions')
 
