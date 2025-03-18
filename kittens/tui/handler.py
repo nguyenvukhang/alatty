@@ -6,7 +6,7 @@ from collections import deque
 from contextlib import suppress
 from time import monotonic
 from types import TracebackType
-from typing import TYPE_CHECKING, Any, Callable, ContextManager, Deque, Dict, NamedTuple, Optional, Sequence, Type, Union, cast
+from typing import Any, Callable, ContextManager, Deque, Dict, NamedTuple, Optional, Sequence, Type, Union, cast
 
 from alatty.types import DecoratedFunc, ParsedShortcut
 from alatty.typing import (
@@ -24,10 +24,6 @@ from alatty.typing import (
 )
 
 from .operations import MouseTracking, pending_update
-
-if TYPE_CHECKING:
-    from alatty.file_transmission import FileTransmissionCommand
-
 
 class ButtonEvent(NamedTuple):
     mouse_event: MouseEvent
@@ -184,9 +180,6 @@ class Handler:
         pass
 
     def on_clipboard_response(self, text: str, from_primary: bool = False) -> None:
-        pass
-
-    def on_file_transfer_response(self, ftc: 'FileTransmissionCommand') -> None:
         pass
 
     def on_capability_response(self, name: str, val: str) -> None:
