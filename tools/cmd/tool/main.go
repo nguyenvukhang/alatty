@@ -7,7 +7,6 @@ import (
 
 	"alatty/kittens/ask"
 	"alatty/kittens/diff"
-	"alatty/kittens/hyperlinked_grep"
 	"alatty/kittens/ssh"
 	"alatty/kittens/themes"
 	"alatty/kittens/transfer"
@@ -50,8 +49,6 @@ func AlattyToolEntryPoints(root *cli.Command) {
 			return mouse_demo.Run(args)
 		},
 	})
-	// hyperlinked_grep
-	hyperlinked_grep.EntryPoint(root)
 	// ask
 	ask.EntryPoint(root)
 	// diffs
