@@ -48,9 +48,6 @@ def generate_stub() -> None:
     from kittens.resize_window.main import OPTIONS
     do(OPTIONS(), 'ResizeCLIOptions')
 
-    from kittens.themes.main import OPTIONS
-    do(OPTIONS(), 'ThemesCLIOptions')
-
     from alatty.rc.base import all_command_names, command_for_name
     for cmd_name in all_command_names():
         cmd = command_for_name(cmd_name)
