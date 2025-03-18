@@ -1333,9 +1333,6 @@ class Window:
     def send_cmd_response(self, response: Any) -> None:
         self.screen.send_escape_code_to_child(DCS, '@kitty-cmd' + json.dumps(response))
 
-    def file_transmission(self, data: str) -> None:
-        self.file_transmission_control.handle_serialized_command(data)
-
     def clipboard_control(self, data: str, is_partial: Optional[bool] = False) -> None:
         if is_partial is None:
             self.clipboard_request_manager.parse_osc_5522(data)
