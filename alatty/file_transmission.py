@@ -20,14 +20,14 @@ from time import monotonic, time_ns
 from typing import IO, Any, Callable, DefaultDict, Deque, Dict, Iterable, Iterator, List, Optional, Tuple, Union
 
 from kittens.transfer.utils import IdentityCompressor, ZlibCompressor, abspath, expand_home, home_path
-from alatty.fast_data_types import FILE_TRANSFER_CODE, OSC, AES256GCMDecrypt, add_timer, base64_decode, base64_encode, get_boss, get_options
+from alatty.fast_data_types import OSC, AES256GCMDecrypt, add_timer, base64_decode, base64_encode, get_boss, get_options
 from alatty.types import run_once
 
 from .utils import log_error
 
 EXPIRE_TIME = 10  # minutes
 MAX_ACTIVE_RECEIVES = MAX_ACTIVE_SENDS = 10
-ftc_prefix = str(FILE_TRANSFER_CODE)
+ftc_prefix = "lol"
 
 
 @run_once
