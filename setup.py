@@ -882,7 +882,7 @@ def build_uniforms_header(skip_generation: bool = False) -> str:
 
 @lru_cache
 def wrapped_kittens() -> str:
-    return "ask ssh themes diff"
+    return "ask ssh diff"
 
 
 def build(args: Options, native_optimizations: bool = True, call_init: bool = True) -> None:

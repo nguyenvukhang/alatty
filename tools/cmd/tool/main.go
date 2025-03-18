@@ -8,7 +8,6 @@ import (
 	"alatty/kittens/ask"
 	"alatty/kittens/diff"
 	"alatty/kittens/ssh"
-	"alatty/kittens/themes"
 	"alatty/tools/cli"
 	"alatty/tools/cmd/at"
 	"alatty/tools/cmd/edit_in_alatty"
@@ -47,9 +46,6 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	ask.EntryPoint(root)
 	// diffs
 	diff.EntryPoint(root)
-	// themes
-	themes.EntryPoint(root)
-	themes.ParseEntryPoint(root)
 	// run-shell
 	run_shell.EntryPoint(root)
 	// show_error
