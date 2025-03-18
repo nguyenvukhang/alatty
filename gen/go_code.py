@@ -567,7 +567,6 @@ def generate_constants() -> str:
     from kittens.hints.main import DEFAULT_REGEX
     from alatty.config import option_names_for_completion
     from alatty.fast_data_types import FILE_TRANSFER_CODE
-    from alatty.options.utils import allowed_shell_integration_values
     del sys.modules['kittens.hints.main']
     ref_map = load_ref_map()
     with open('alatty/data-types.h') as dt:
@@ -602,7 +601,6 @@ var CharacterKeyNameAliases = map[string]string{serialize_go_dict(character_key_
 var ConfigModMap = map[string]uint16{serialize_go_dict(config_mod_map)}
 var RefMap = map[string]string{serialize_go_dict(ref_map['ref'])}
 var DocTitleMap = map[string]string{serialize_go_dict(ref_map['doc'])}
-var AllowedShellIntegrationValues = []string{{ {str(sorted(allowed_shell_integration_values))[1:-1].replace("'", '"')} }}
 var AlattyConfigDefaults = struct {{
 Term, Shell_integration, Select_by_word_characters, Url_excluded_characters, Shell string
 Wheel_scroll_multiplier int
