@@ -166,11 +166,6 @@ class CwdRequest:
                 set_cwd_in_cmdline(reported_cwd, argv)
                 set_server_args_in_cmdline(server_args, argv, allocate_tty=not run_shell)
                 if env is not None:
-                    # Assume env is coming from a local process so drop env
-                    # vars that can cause issues when set on the remote host
-                    if env.get('ALATTY_KITTEN_RUN_MODULE') == 'ssh_askpass':
-                        for k in ('ALATTY_KITTEN_RUN_MODULE', 'SSH_ASKPASS', 'SSH_ASKPASS_REQUIRE'):
-                            env.pop(k, None)
                     for k in (
                         'HOME', 'USER', 'TEMP', 'TMP', 'TMPDIR', 'PATH', 'PWD', 'OLDPWD', 'ALATTY_INSTALLATION_DIR',
                         'HOSTNAME', 'SSH_AUTH_SOCK', 'SSH_AGENT_PID', 'ALATTY_STDIO_FORWARDED',

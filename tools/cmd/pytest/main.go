@@ -5,7 +5,6 @@ package pytest
 import (
 	"fmt"
 
-	"alatty/kittens/ssh"
 	"alatty/tools/cli"
 	"alatty/tools/utils/shm"
 )
@@ -18,5 +17,4 @@ func EntryPoint(root *cli.Command) {
 		Hidden: true,
 	})
 	shm.TestEntryPoint(root)
-	ssh.TestEntryPoint(root)
 }
