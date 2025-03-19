@@ -225,15 +225,6 @@ def clear_caches() -> None:
 
 
 @run_once
-def default_open_actions() -> Tuple[OpenAction, ...]:
-    return tuple(parse('''\
-# Open alatty HTML docs links
-protocol alatty+doc
-action show_alatty_doc $URL_PATH
-    '''.splitlines()))
-
-
-@run_once
 def default_launch_actions() -> Tuple[OpenAction, ...]:
     return tuple(parse('''\
 # Open script files
@@ -277,12 +268,8 @@ def actions_for_url(url: str, actions_spec: Optional[str] = None) -> Iterator[Ke
         actions = load_open_actions()
     else:
         actions = tuple(parse(actions_spec.splitlines()))
-    found = False
     for action in actions_for_url_from_list(url, actions):
-        found = True
         yield action
-    if not found:
-        yield from actions_for_url_from_list(url, default_open_actions())
 
 
 def actions_for_launch(url: str) -> Iterator[KeyAction]:
