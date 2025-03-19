@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"alatty/kittens/ask"
-	"alatty/kittens/ssh"
 	"alatty/tools/cli"
 	"alatty/tools/cmd/at"
 	"alatty/tools/cmd/edit_in_alatty"
@@ -30,8 +29,6 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	update_self.EntryPoint(root)
 	// edit-in-alatty
 	edit_in_alatty.EntryPoint(root)
-	// ssh
-	ssh.EntryPoint(root)
 	// mouse_demo
 	root.AddSubCommand(&cli.Command{
 		Name:             "mouse-demo",

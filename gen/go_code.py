@@ -426,7 +426,7 @@ def go_code_for_remote_command(name: str, cmd: RemoteCommand, template: str) -> 
 
 @lru_cache
 def wrapped_kittens() -> Tuple[str, ...]:
-    return ("ask", "ssh")
+    return ("ask",)
 
 
 def generate_conf_parser(kitten: str, defn: Definition) -> None:
@@ -581,7 +581,6 @@ type VersionType struct {{
 const VersionString string = "{kc.str_version}"
 const WebsiteBaseURL string = "{kc.website_base_url}"
 const ImagePlaceholderChar rune = {placeholder_char}
-const SSHControlMasterTemplate = "{kc.ssh_control_master_template}"
 const RC_ENCRYPTION_PROTOCOL_VERSION string = "{kc.RC_ENCRYPTION_PROTOCOL_VERSION}"
 var VCSRevision string = ""
 var IsFrozenBuild string = ""

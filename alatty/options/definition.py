@@ -4041,9 +4041,6 @@ shortcuts. For a full description see :doc:`hints kitten </kittens/hints>`.
 # shortcuts.misc {{{
 agr('shortcuts.misc', 'Miscellaneous')
 
-map('Show documentation',
-    'show_alatty_doc alatty_mod+f1 show_alatty_doc overview')
-
 map('Toggle fullscreen',
     'toggle_fullscreen alatty_mod+f11 toggle_fullscreen',
     )

@@ -39,9 +39,7 @@ from .constants import (
     is_macos,
     is_wayland,
     kitten_exe,
-    runtime_dir,
     shell_path,
-    ssh_control_master_template,
 )
 from .fast_data_types import WINDOW_FULLSCREEN, WINDOW_MAXIMIZED, WINDOW_MINIMIZED, WINDOW_NORMAL, Color, Shlex, get_options, open_tty
 from .rgb import to_color
@@ -1030,24 +1028,6 @@ def hold_till_enter() -> None:
 
     from .constants import kitten_exe
     subprocess.Popen([kitten_exe(), '__hold_till_enter__']).wait()
-
-
-def cleanup_ssh_control_masters() -> None:
-    import glob
-    import subprocess
-    try:
-        files = frozenset(glob.glob(os.path.join(runtime_dir(), ssh_control_master_template.format(
-            alatty_pid=os.getpid(), ssh_placeholder='*'))))
-    except OSError:
-        return
-    workers = tuple(subprocess.Popen([
-        'ssh', '-o', f'ControlPath={x}', '-O', 'exit', 'alatty-unused-host-name'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        preexec_fn=clear_handled_signals) for x in files)
-    for w in workers:
-        w.wait()
-    for x in files:
-        with suppress(OSError):
-            os.remove(x)
 
 
 def path_from_osc7_url(url: str) -> str:
