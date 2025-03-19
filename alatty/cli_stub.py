@@ -36,9 +36,6 @@ def generate_stub() -> None:
     from kittens.ask.main import option_text
     do(option_text(), 'AskCLIOptions')
 
-    from kittens.panel.main import OPTIONS
-    do(OPTIONS(), 'PanelCLIOptions')
-
     from kittens.resize_window.main import OPTIONS
     do(OPTIONS(), 'ResizeCLIOptions')
 
