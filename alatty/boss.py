@@ -2847,14 +2847,6 @@ class Boss:
             output = '\n'.join(f'{k}={v}' for k, v in env.items())
             self.display_scrollback(w, output, title=_('Current alatty env vars'), report_cursor=False)
 
-    @ac('debug', '''
-        Close all shared SSH connections
-
-        See :opt:`share_connections <kitten-ssh.share_connections>` for details.
-        ''')
-    def close_shared_ssh_connections(self) -> None:
-        pass
-
     def launch_urls(self, *urls: str, no_replace_window: bool = False) -> None:
         from .launch import force_window_launch
         from .open_actions import actions_for_launch
