@@ -1466,14 +1466,6 @@ class Window:
                 return True
         return False
 
-    def ssh_kitten_cmdline(self) -> List[str]:
-        from kittens.ssh.utils import is_kitten_cmdline
-        for p in self.child.foreground_processes:
-            q = list(p['cmdline'] or ())
-            if is_kitten_cmdline(q):
-                return q
-        return []
-
     def pipe_data(self, text: str, has_wrap_markers: bool = False) -> PipeData:
         text = text or ''
         if has_wrap_markers:
