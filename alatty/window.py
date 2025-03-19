@@ -1856,20 +1856,6 @@ class Window:
         if pid is not None:
             for sig in signals:
                 os.kill(pid, sig)
-
-    @ac('misc', '''
-    Display the specified alatty documentation, preferring a local copy, if found.
-
-    For example::
-
-        # show the config docs
-        map f1 show_alatty_doc conf
-        # show the ssh kitten docs
-        map f1 show_alatty_doc kittens/ssh
-    ''')
-    def show_alatty_doc(self, which: str = '') -> None:
-        url = docs_url(which)
-        get_boss().open_url(url)
     # }}}
 
 

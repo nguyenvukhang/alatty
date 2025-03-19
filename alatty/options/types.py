@@ -872,8 +872,6 @@ defaults.map = [
     KeyDefinition(is_sequence=True, trigger=SingleKey(mods=256, key=112), rest=(SingleKey(key=110),), definition='kitten hints --type linenum'), 
     # open_selected_hyperlink
     KeyDefinition(is_sequence=True, trigger=SingleKey(mods=256, key=112), rest=(SingleKey(key=121),), definition='kitten hints --type hyperlink'), 
-    # show_alatty_doc
-    KeyDefinition(trigger=SingleKey(mods=256, key=57364), definition='show_alatty_doc overview'), 
     # toggle_fullscreen
     KeyDefinition(trigger=SingleKey(mods=256, key=57374), definition='toggle_fullscreen'), 
     # toggle_maximized
