@@ -128,7 +128,6 @@ from .tabs import SpecialWindow, SpecialWindowInstance, Tab, TabDict, TabManager
 from .types import _T, AsyncResponse, SingleInstanceData, WindowSystemMouseEvent, ac
 from .typing import PopenType, TypedDict
 from .utils import (
-    cleanup_ssh_control_masters,
     func_name,
     get_editor,
     get_new_os_window_size,
@@ -2854,7 +2853,7 @@ class Boss:
         See :opt:`share_connections <kitten-ssh.share_connections>` for details.
         ''')
     def close_shared_ssh_connections(self) -> None:
-        cleanup_ssh_control_masters()
+        pass
 
     def launch_urls(self, *urls: str, no_replace_window: bool = False) -> None:
         from .launch import force_window_launch

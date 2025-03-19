@@ -52,7 +52,6 @@ from .session import create_sessions, get_os_window_sizing_data
 from .shaders import CompileError, load_shader_programs
 from .types import SingleInstanceData
 from .utils import (
-    cleanup_ssh_control_masters,
     detach,
     expandvars,
     get_custom_window_icon,
@@ -553,7 +552,6 @@ def _main() -> None:
             run_app(opts, cli_opts, bad_lines)
     finally:
         glfw_terminate()
-        cleanup_ssh_control_masters()
 
 
 def main() -> None:
