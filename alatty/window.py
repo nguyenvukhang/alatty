@@ -1198,11 +1198,6 @@ class Window:
         data = re.sub(rb'[^ -~]', b'', data)
         self.write_to_child(data)
 
-    def handle_remote_ssh(self, msg: str) -> None:
-        from kittens.ssh.utils import get_ssh_data
-        for line in get_ssh_data(msg, f'{os.getpid()}-{self.id}'):
-            self.write_to_child(line)
-
     def handle_kitten_result(self, msg: str) -> None:
         import base64
         self.kitten_result = json.loads(base64.b85decode(msg))
