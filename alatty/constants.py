@@ -183,9 +183,6 @@ except KeyError:
     with suppress(Exception):
         print('Failed to read login shell via getpwuid() for current user, falling back to /bin/sh', file=sys.stderr)
     shell_path = '/bin/sh'
-# Keep this short as it is limited to 103 bytes on macOS
-# https://github.com/ansible/ansible/issues/11536#issuecomment-153030743
-ssh_control_master_template = 'kssh-{alatty_pid}-{ssh_placeholder}'
 
 
 def glfw_path(module: str) -> str:
