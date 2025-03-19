@@ -39,9 +39,7 @@ from .constants import (
     is_macos,
     is_wayland,
     kitten_exe,
-    runtime_dir,
     shell_path,
-    ssh_control_master_template,
 )
 from .fast_data_types import WINDOW_FULLSCREEN, WINDOW_MAXIMIZED, WINDOW_MINIMIZED, WINDOW_NORMAL, Color, Shlex, get_options, open_tty
 from .rgb import to_color
