@@ -207,7 +207,7 @@ class Child:
         self.argv = list(argv)
         if cwd_from:
             try:
-                cwd = cwd_from.modify_argv_for_launch_with_cwd(self.argv, env) or cwd
+                cwd = cwd_from.modify_argv_for_launch_with_cwd() or cwd
             except Exception as err:
                 log_error(f'Failed to read cwd of {cwd_from} with error: {err}')
         else:
