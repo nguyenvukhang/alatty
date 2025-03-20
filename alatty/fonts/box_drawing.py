@@ -1109,27 +1109,6 @@ def render_missing_glyph(buf: BufType, width: int, height: int) -> None:
     draw_vline(buf, width, vgap, height - vgap + 1, width - hgap, 0)
 
 
-def test_char(ch: str, sz: int = 48) -> None:
-    # alatty +runpy "from alatty.fonts.box_drawing import test_char; test_char('XXX')"
-    from alatty.fast_data_types import concat_cells, set_send_sprite_to_gpu
-
-    from .render import display_bitmap, setup_for_testing
-    with setup_for_testing('monospace', sz) as (_, width, height):
-        buf = bytearray(width * height)
-        try:
-            render_box_char(ch, buf, width, height)
-
-            def join_cells(*cells: bytes) -> bytes:
-                cells = tuple(bytes(x) for x in cells)
-                return concat_cells(width, height, False, cells)
-
-            rgb_data = join_cells(buf)
-            display_bitmap(rgb_data, width, height)
-            print()
-        finally:
-            set_send_sprite_to_gpu(None)
-
-
 def test_drawing(sz: int = 48, family: str = 'monospace', start: int = 0x2500, num_rows: int = 10, num_cols: int = 16) -> None:
     from alatty.fast_data_types import concat_cells, set_send_sprite_to_gpu
 
