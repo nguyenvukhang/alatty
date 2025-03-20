@@ -457,7 +457,7 @@ def generate_extra_cli_parser(name: str, spec: str) -> None:
 
 def kitten_clis() -> None:
     from kittens.runner import get_kitten_conf_docs, get_kitten_extra_cli_parsers
-    for kitten in wrapped_kittens() + ('pager',):
+    for kitten in wrapped_kittens():
         defn = get_kitten_conf_docs(kitten)
         if defn is not None:
             generate_conf_parser(kitten, defn)
