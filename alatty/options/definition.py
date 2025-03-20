@@ -4174,20 +4174,6 @@ map('Reload alatty.conf',
     only='macos'
     )
 
-map('Debug alatty configuration',
-    'debug_config alatty_mod+f6 debug_config',
-    long_text='''
-Show details about exactly what configuration alatty is running with and its host
-environment. Useful for debugging issues.
-'''
-    )
-
-map('Debug alatty configuration',
-    'debug_config opt+cmd+, debug_config',
-    only='macos'
-    )
-
-
 map('Send arbitrary text on key presses',
     'send_text ctrl+shift+alt+h send_text all Hello World',
     add_to_default=False,

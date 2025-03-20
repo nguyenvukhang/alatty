@@ -2890,16 +2890,6 @@ class Boss:
             if actions:
                 self.drain_actions(actions)
 
-    @ac('debug', 'Show the effective configuration alatty is running with')
-    def debug_config(self) -> None:
-        from .debug_config import debug_config
-        w = self.active_window
-        if w is not None:
-            output = debug_config(get_options())
-            set_clipboard_string(re.sub(r'\x1b.+?m', '', output))
-            output += '\n\x1b[35mThis debug output has been copied to the clipboard\x1b[m'
-            self.display_scrollback(w, output, title=_('Current alatty options'), report_cursor=False)
-
     @ac('misc', 'Discard this event completely ignoring it')
     def discard_event(self) -> None:
         pass
