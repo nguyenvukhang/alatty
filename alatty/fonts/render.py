@@ -506,28 +506,6 @@ def display_bitmap(rgb_data: bytes, width: int, height: int) -> None:
     show(f.name, width, height, 32)
 
 
-def test_render_string(
-        text: str = 'Hello, world!',
-        family: str = 'monospace',
-        size: float = 64.0,
-        dpi: float = 96.0
-) -> None:
-    from alatty.fast_data_types import concat_cells, current_fonts
-
-    cell_width, cell_height, cells = render_string(text, family, size, dpi)
-    rgb_data = concat_cells(cell_width, cell_height, True, tuple(cells))
-    cf = current_fonts()
-    fonts = [cf['medium'].display_name()]
-    fonts.extend(f.display_name() for f in cf['fallback'])
-    msg = 'Rendered string {} below, with fonts: {}\n'.format(text, ', '.join(fonts))
-    try:
-        print(msg)
-    except UnicodeEncodeError:
-        sys.stdout.buffer.write(msg.encode('utf-8') + b'\n')
-    display_bitmap(rgb_data, cell_width * len(cells), cell_height)
-    print('\n')
-
-
 def test_fallback_font(qtext: Optional[str] = None, bold: bool = False, italic: bool = False) -> None:
     with setup_for_testing():
         if qtext:
@@ -540,11 +518,3 @@ def test_fallback_font(qtext: Optional[str] = None, bold: bool = False, italic: 
                 print(text, f)
             except UnicodeEncodeError:
                 sys.stdout.buffer.write(f'{text} {f}\n'.encode('utf-8'))
-
-
-def showcase() -> None:
-    f = 'monospace' if is_macos else 'Liberation Mono'
-    test_render_string('He\u0347\u0305llo\u0337, w\u0302or\u0306l\u0354d!', family=f)
-    test_render_string('你好,世界', family=f)
-    test_render_string('│😁│🙏│😺│', family=f)
-    test_render_string('A=>>B!=C', family='Fira Code')
