@@ -585,7 +585,6 @@ const RC_ENCRYPTION_PROTOCOL_VERSION string = "{kc.RC_ENCRYPTION_PROTOCOL_VERSIO
 var VCSRevision string = ""
 var IsFrozenBuild string = ""
 var IsStandaloneBuild string = ""
-const HandleTermiosSignals = {Mode.HANDLE_TERMIOS_SIGNALS.value[0]}
 const DefaultTermName = `{Options.term}`
 var Version VersionType = VersionType{{Major: {kc.version.major}, Minor: {kc.version.minor}, Patch: {kc.version.patch},}}
 var DefaultPager []string = []string{{ {dp} }}
