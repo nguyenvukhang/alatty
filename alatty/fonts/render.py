@@ -481,22 +481,6 @@ def shape_string(
         return test_shape(line, path)
 
 
-def show(outfile: str, width: int, height: int, fmt: int) -> None:
-    import os
-    from base64 import standard_b64encode
-
-    from kittens.tui.images import GraphicsCommand
-    cmd = GraphicsCommand()
-    cmd.a = 'T'
-    cmd.f = fmt
-    cmd.s = width
-    cmd.v = height
-    cmd.t = 't'
-    sys.stdout.flush()
-    sys.stdout.buffer.write(cmd.serialize(standard_b64encode(os.path.abspath(outfile).encode())))
-    sys.stdout.buffer.flush()
-
-
 def test_fallback_font(qtext: Optional[str] = None, bold: bool = False, italic: bool = False) -> None:
     with setup_for_testing():
         if qtext:
