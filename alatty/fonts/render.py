@@ -497,15 +497,6 @@ def show(outfile: str, width: int, height: int, fmt: int) -> None:
     sys.stdout.buffer.flush()
 
 
-def display_bitmap(rgb_data: bytes, width: int, height: int) -> None:
-    from tempfile import NamedTemporaryFile
-    setattr(display_bitmap, 'detected', True)
-    with NamedTemporaryFile(suffix='.rgba', delete=False) as f:
-        f.write(rgb_data)
-    assert len(rgb_data) == 4 * width * height
-    show(f.name, width, height, 32)
-
-
 def test_fallback_font(qtext: Optional[str] = None, bold: bool = False, italic: bool = False) -> None:
     with setup_for_testing():
         if qtext:
