@@ -54,7 +54,6 @@ def main(args: List[str]=sys.argv) -> None:
                 all_colors.append(opt.name)
     patch_color_list('alatty/rc/set_colors.py', nullable_colors, 'NULLABLE')
     patch_color_list('tools/cmd/at/set_colors.go', nullable_colors, 'NULLABLE')
-    patch_color_list('tools/themes/collection.go', all_colors, 'ALL')
 
 
 if __name__ == '__main__':
