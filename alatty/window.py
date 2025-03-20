@@ -1009,9 +1009,8 @@ class Window:
                         return # this used to call `self.handle_remote_file(...)`
                     url = urlunparse(purl._replace(netloc=''))
             if opts.allow_hyperlinks & 0b10:
-                from kittens.tui.operations import styled
                 get_boss().choose(
-                    'What would you like to do with this URL:\n' + styled(sanitize_url_for_dispay_to_user(url), fg='yellow'),
+                    'What would you like to do with this URL:\n' + sanitize_url_for_dispay_to_user(url),
                     partial(self.hyperlink_open_confirmed, url, cwd),
                     'o:Open', 'c:Copy to clipboard', 'n;red:Nothing', default='o',
                     window=self, title=_('Hyperlink activated'),
