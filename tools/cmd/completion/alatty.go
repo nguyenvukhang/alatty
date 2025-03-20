@@ -8,7 +8,6 @@ import (
 
 	alatty_constants "alatty"
 	"alatty/tools/cli"
-	"alatty/tools/themes"
 	"alatty/tools/utils"
 )
 
@@ -64,10 +63,6 @@ func complete_plus_runpy(completions *cli.Completions, word string, arg_num int)
 
 func complete_plus_open(completions *cli.Completions, word string, arg_num int) {
 	cli.FnmatchCompleter("Files", cli.CWD, "*")(completions, word, arg_num)
-}
-
-func complete_themes(completions *cli.Completions, word string, arg_num int) {
-	themes.CompleteThemes(completions, word, arg_num)
 }
 
 func EntryPoint(tool_root *cli.Command) {
