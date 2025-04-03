@@ -103,6 +103,7 @@ jobs:
 
   save_output:
     needs: [linux, macos]
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
