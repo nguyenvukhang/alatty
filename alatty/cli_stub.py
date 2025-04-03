@@ -36,29 +36,11 @@ def generate_stub() -> None:
     from kittens.ask.main import option_text
     do(option_text(), 'AskCLIOptions')
 
-    from kittens.remote_file.main import option_text
-    do(option_text(), 'RemoteFileCLIOptions')
-
-    from kittens.clipboard.main import OPTIONS
-    do(OPTIONS(), 'ClipboardCLIOptions')
-
-    from kittens.show_key.main import OPTIONS
-    do(OPTIONS(), 'ShowKeyCLIOptions')
-
     from kittens.diff.main import OPTIONS
     do(OPTIONS(), 'DiffCLIOptions')
 
-    from kittens.hints.main import OPTIONS
-    do(OPTIONS(), 'HintsCLIOptions')
-
     from kittens.broadcast.main import OPTIONS
     do(OPTIONS(), 'BroadcastCLIOptions')
-
-    from kittens.icat.main import OPTIONS
-    do(OPTIONS, 'IcatCLIOptions')
-
-    from kittens.query_terminal.main import options_spec
-    do(options_spec(), 'QueryTerminalCLIOptions')
 
     from kittens.panel.main import OPTIONS
     do(OPTIONS(), 'PanelCLIOptions')

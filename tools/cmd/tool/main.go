@@ -6,12 +6,7 @@ import (
 	"fmt"
 
 	"alatty/kittens/ask"
-	"alatty/kittens/clipboard"
 	"alatty/kittens/diff"
-	"alatty/kittens/hints"
-	"alatty/kittens/hyperlinked_grep"
-	"alatty/kittens/icat"
-	"alatty/kittens/show_key"
 	"alatty/kittens/ssh"
 	"alatty/kittens/themes"
 	"alatty/kittens/transfer"
@@ -39,18 +34,12 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	update_self.EntryPoint(root)
 	// edit-in-alatty
 	edit_in_alatty.EntryPoint(root)
-	// clipboard
-	clipboard.EntryPoint(root)
-	// icat
-	icat.EntryPoint(root)
 	// ssh
 	ssh.EntryPoint(root)
 	// transfer
 	transfer.EntryPoint(root)
 	// unicode_input
 	unicode_input.EntryPoint(root)
-	// show_key
-	show_key.EntryPoint(root)
 	// mouse_demo
 	root.AddSubCommand(&cli.Command{
 		Name:             "mouse-demo",
@@ -60,13 +49,9 @@ func AlattyToolEntryPoints(root *cli.Command) {
 			return mouse_demo.Run(args)
 		},
 	})
-	// hyperlinked_grep
-	hyperlinked_grep.EntryPoint(root)
 	// ask
 	ask.EntryPoint(root)
-	// hints
-	hints.EntryPoint(root)
-	// hints
+	// diffs
 	diff.EntryPoint(root)
 	// themes
 	themes.EntryPoint(root)
