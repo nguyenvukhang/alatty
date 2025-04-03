@@ -643,7 +643,6 @@ class Boss:
     def ask_if_remote_cmd_is_allowed(
         self, pcmd: Dict[str, Any], window: Optional[Window] = None, peer_id: int = 0, self_window: Optional[Window] = None
     ) -> bool:
-        from kittens.tui.operations import styled
         in_flight = 0
         for w in self.window_id_map.values():
             if w.window_custom_type == 'remote_command_permission_dialog':
@@ -652,15 +651,15 @@ class Boss:
                     log_error('Denying remote command permission as there are too many existing permission requests')
                     return False
         wid = 0 if window is None else window.id
-        hidden_text = styled(pcmd['password'], fg='yellow')
+        hidden_text = pcmd['password']
         overlay_window = self.choose(
             _('A program wishes to control alatty.\n'
               'Action: {1}\n' 'Password: {0}\n\n' '{2}'
               ).format(
-                  hidden_text, styled(pcmd['cmd'], fg='magenta'),
-                  '\x1b[m' + styled(_(
+                  hidden_text, pcmd['cmd'],
+                  '\x1b[m' + _(
                       'Note that allowing the password will allow all future actions using the same password, in this alatty instance.'
-                  ), dim=True, italic=True)),
+                      )),
             partial(self.remote_cmd_permission_received, pcmd, wid, peer_id, self_window),
             'a;green:Allow request', 'p;yellow:Allow password', 'r;magenta:Deny request', 'd;red:Deny password',
             window=window, default='a', hidden_text=hidden_text, title=_('Allow remote control?'),
@@ -2874,8 +2873,7 @@ class Boss:
                 tab.remove_window(w)
 
         if failures:
-            from kittens.tui.operations import styled
-            spec = '\n  '.join(styled(u, fg='yellow') for u in failures)
+            spec = '\n  '.join(failures)
             special_window = self.create_special_window_for_show_error('Open URL error', f"Unknown URL type, cannot open:\n  {spec}")
             if needs_window_replaced and tab is not None:
                 tab.new_special_window(special_window)
@@ -2889,16 +2887,6 @@ class Boss:
             clear_initial_window()
             if actions:
                 self.drain_actions(actions)
-
-    @ac('debug', 'Show the effective configuration alatty is running with')
-    def debug_config(self) -> None:
-        from .debug_config import debug_config
-        w = self.active_window
-        if w is not None:
-            output = debug_config(get_options())
-            set_clipboard_string(re.sub(r'\x1b.+?m', '', output))
-            output += '\n\x1b[35mThis debug output has been copied to the clipboard\x1b[m'
-            self.display_scrollback(w, output, title=_('Current alatty options'), report_cursor=False)
 
     @ac('misc', 'Discard this event completely ignoring it')
     def discard_event(self) -> None:

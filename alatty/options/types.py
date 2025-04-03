@@ -892,8 +892,6 @@ defaults.map = [
     KeyDefinition(trigger=SingleKey(mods=256, key=57349), definition='clear_terminal reset active'), 
     # reload_config_file
     KeyDefinition(trigger=SingleKey(mods=256, key=57368), definition='load_config_file'), 
-    # debug_config
-    KeyDefinition(trigger=SingleKey(mods=256, key=57369), definition='debug_config'), 
 ]
 if is_macos:
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=8, key=99), definition='copy_to_clipboard'))
@@ -937,7 +935,6 @@ if is_macos:
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=10, key=114), definition='clear_terminal reset active'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=8, key=107), definition='clear_terminal to_cursor active'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=12, key=44), definition='load_config_file'))
-    defaults.map.append(KeyDefinition(trigger=SingleKey(mods=10, key=44), definition='debug_config'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=9, key=47), definition='open_url https://sw.kovidgoyal.net/alatty/'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=8, key=104), definition='hide_macos_app'))
     defaults.map.append(KeyDefinition(trigger=SingleKey(mods=10, key=104), definition='hide_macos_other_apps'))
