@@ -6,11 +6,7 @@ import (
 	"fmt"
 
 	"alatty/kittens/ask"
-	"alatty/kittens/diff"
 	"alatty/kittens/ssh"
-	"alatty/kittens/themes"
-	"alatty/kittens/transfer"
-	"alatty/kittens/unicode_input"
 	"alatty/tools/cli"
 	"alatty/tools/cmd/at"
 	"alatty/tools/cmd/edit_in_alatty"
@@ -36,10 +32,6 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	edit_in_alatty.EntryPoint(root)
 	// ssh
 	ssh.EntryPoint(root)
-	// transfer
-	transfer.EntryPoint(root)
-	// unicode_input
-	unicode_input.EntryPoint(root)
 	// mouse_demo
 	root.AddSubCommand(&cli.Command{
 		Name:             "mouse-demo",
@@ -51,11 +43,6 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	})
 	// ask
 	ask.EntryPoint(root)
-	// diffs
-	diff.EntryPoint(root)
-	// themes
-	themes.EntryPoint(root)
-	themes.ParseEntryPoint(root)
 	// run-shell
 	run_shell.EntryPoint(root)
 	// show_error

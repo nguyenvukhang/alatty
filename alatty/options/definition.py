@@ -3085,16 +3085,6 @@ is applied. See also :opt:`clipboard_control`.
 '''
     )
 
-opt('file_transfer_confirmation_bypass', '',
-    long_text='''
-The password that can be supplied to the :doc:`file transfer kitten
-</kittens/transfer>` to skip the transfer confirmation prompt. This should only
-be used when initiating transfers from trusted computers, over trusted networks
-or encrypted transports, as it allows any programs running on the remote machine
-to read/write to the local filesystem, without permission.
-'''
-    )
-
 opt('allow_hyperlinks', 'yes',
     option_type='allow_hyperlinks', ctype='bool',
     long_text='''
@@ -4068,14 +4058,6 @@ map('Toggle maximized',
 
 map('Toggle macOS secure keyboard entry',
     'toggle_macos_secure_keyboard_entry opt+cmd+s toggle_macos_secure_keyboard_entry',
-    only='macos',
-    )
-
-map('Unicode input',
-    'input_unicode_character alatty_mod+u kitten unicode_input',
-    )
-map('Unicode input',
-    'input_unicode_character ctrl+cmd+space kitten unicode_input',
     only='macos',
     )
 
