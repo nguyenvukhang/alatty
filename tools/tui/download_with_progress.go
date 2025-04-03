@@ -29,12 +29,11 @@ type dl_data struct {
 type render_data struct {
 	done, total  uint64
 	screen_width int
-	spinner      *Spinner
 	started_at   time.Time
 }
 
 func render_without_total(rd *render_data) string {
-	return fmt.Sprint(rd.spinner.Tick(), humanize.Bytes(rd.done), " downloaded so far. Started %s", humanize.Time(rd.started_at))
+	return fmt.Sprint(humanize.Bytes(rd.done), " downloaded so far. Started %s", humanize.Time(rd.started_at))
 }
 
 func format_time(d time.Duration) string {
@@ -62,7 +61,6 @@ func render_progress(rd *render_data) string {
 	bytes_left := rd.total - rd.done
 	time_left := time.Duration(float64(bytes_left) / rate)
 	speed := rate * float64(time.Second)
-	before := rd.spinner.Tick()
 	after := fmt.Sprintf(" %d%% %s/s %s", int(frac*100), strings.ReplaceAll(humanize.Bytes(uint64(speed)), " ", ""), format_time(time_left))
 	available_width := rd.screen_width - len("T  100% 1000 MB/s 11:11:11")
 	// fmt.Println("\r\n", frac, available_width)
@@ -70,7 +68,7 @@ func render_progress(rd *render_data) string {
 	if available_width > 10 {
 		progress_bar = " " + RenderProgressBar(frac, available_width)
 	}
-	return before + progress_bar + after
+	return progress_bar + after
 }
 
 func DownloadFileWithProgress(destpath, url string, kill_if_signaled bool) (err error) {
@@ -79,7 +77,7 @@ func DownloadFileWithProgress(destpath, url string, kill_if_signaled bool) (err 
 		return
 	}
 	dl_data := dl_data{}
-	rd := render_data{spinner: NewSpinner("dots"), started_at: time.Now()}
+	rd := render_data{started_at: time.Now()}
 
 	register_temp_file_path := func(path string) {
 		dl_data.mutex.Lock()
@@ -139,14 +137,7 @@ func DownloadFileWithProgress(destpath, url string, kill_if_signaled bool) (err 
 		}
 	}
 
-	on_timer_tick := func(timer_id loop.IdType) error {
-		return lp.OnWakeup()
-	}
-
 	lp.OnInitialize = func() (string, error) {
-		if _, err = lp.AddTimer(rd.spinner.interval, true, on_timer_tick); err != nil {
-			return "", err
-		}
 		go do_download()
 		lp.QueueWriteString("Downloading: " + url + "\r\n")
 		return "\r\n", nil
