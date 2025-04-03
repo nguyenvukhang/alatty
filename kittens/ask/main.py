@@ -9,9 +9,6 @@ from typing import (
 
 from alatty.typing import BossType, TypedDict
 
-from ..tui.handler import result_handler
-
-
 def option_text() -> str:
     return '''\
 --type -t
@@ -76,7 +73,6 @@ def main(args: List[str]) -> Response:
     raise SystemExit('This must be run as kitten ask')
 
 
-@result_handler()
 def handle_result(args: List[str], data: Response, target_window_id: int, boss: BossType) -> None:
     if data['response'] is not None:
         func, *args = data['items']

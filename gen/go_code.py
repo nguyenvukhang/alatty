@@ -30,7 +30,6 @@ from typing import (
 )
 
 import alatty.constants as kc
-from kittens.tui.operations import Mode
 from alatty.actions import get_all_actions
 from alatty.cli import (
     CompletionSpec,
