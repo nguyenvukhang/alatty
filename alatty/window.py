@@ -143,44 +143,19 @@ class CwdRequest:
         if not window:
             return ''
         reported_cwd = path_from_osc7_url(window.screen.last_reported_cwd) if window.screen.last_reported_cwd else ''
-        if reported_cwd and not window.child_is_remote and (self.request_type is CwdRequestType.last_reported or window.at_prompt):
+        if reported_cwd and (self.request_type is CwdRequestType.last_reported or window.at_prompt):
             return reported_cwd
         if self.request_type is CwdRequestType.root:
             return window.get_cwd_of_root_child() or ''
         return window.get_cwd_of_child(oldest=self.request_type is CwdRequestType.oldest) or ''
 
-    def modify_argv_for_launch_with_cwd(self, argv: List[str], env: Optional[Dict[str, str]]=None) -> str:
+    def modify_argv_for_launch_with_cwd(self) -> str:
         window = self.window
         if not window:
             return ''
         reported_cwd = path_from_osc7_url(window.screen.last_reported_cwd) if window.screen.last_reported_cwd else ''
         if reported_cwd and (self.request_type is not CwdRequestType.root or window.root_in_foreground_processes):
-            ssh_kitten_cmdline = window.ssh_kitten_cmdline()
-            if ssh_kitten_cmdline:
-                run_shell = argv[0] == resolved_shell(get_options())[0]
-                server_args = [] if run_shell else list(argv)
-                from kittens.ssh.utils import set_cwd_in_cmdline, set_env_in_cmdline, set_server_args_in_cmdline
-                argv[:] = ssh_kitten_cmdline
-                if argv and argv[0] == 'kitten':
-                    argv[0] = kitten_exe()
-                set_cwd_in_cmdline(reported_cwd, argv)
-                set_server_args_in_cmdline(server_args, argv, allocate_tty=not run_shell)
-                if env is not None:
-                    # Assume env is coming from a local process so drop env
-                    # vars that can cause issues when set on the remote host
-                    if env.get('ALATTY_KITTEN_RUN_MODULE') == 'ssh_askpass':
-                        for k in ('ALATTY_KITTEN_RUN_MODULE', 'SSH_ASKPASS', 'SSH_ASKPASS_REQUIRE'):
-                            env.pop(k, None)
-                    for k in (
-                        'HOME', 'USER', 'TEMP', 'TMP', 'TMPDIR', 'PATH', 'PWD', 'OLDPWD', 'ALATTY_INSTALLATION_DIR',
-                        'HOSTNAME', 'SSH_AUTH_SOCK', 'SSH_AGENT_PID', 'ALATTY_STDIO_FORWARDED',
-                        'ALATTY_PUBLIC_KEY', 'TERMINFO', 'XDG_RUNTIME_DIR', 'XDG_VTNR',
-                        'XDG_DATA_DIRS', 'XAUTHORITY', 'EDITOR', 'VISUAL',
-                    ):
-                        env.pop(k, None)
-                    set_env_in_cmdline(env, argv, clone=False)
-                return ''
-            if not window.child_is_remote and (self.request_type is CwdRequestType.last_reported or window.at_prompt):
+            if self.request_type is CwdRequestType.last_reported or window.at_prompt:
                 return reported_cwd
         return window.get_cwd_of_child(oldest=self.request_type is CwdRequestType.oldest) or ''
 
@@ -1223,11 +1198,6 @@ class Window:
         data = re.sub(rb'[^ -~]', b'', data)
         self.write_to_child(data)
 
-    def handle_remote_ssh(self, msg: str) -> None:
-        from kittens.ssh.utils import get_ssh_data
-        for line in get_ssh_data(msg, f'{os.getpid()}-{self.id}'):
-            self.write_to_child(line)
-
     def handle_kitten_result(self, msg: str) -> None:
         import base64
         self.kitten_result = json.loads(base64.b85decode(msg))
@@ -1283,35 +1253,6 @@ class Window:
         if confirmed:
             from .launch import clone_and_launch
             clone_and_launch(cdata, self)
-
-    def handle_remote_askpass(self, msg: str) -> None:
-        from .shm import SharedMemory
-        with SharedMemory(name=msg, readonly=True) as shm:
-            shm.seek(1)
-            data = json.loads(shm.read_data_with_size())
-
-        def callback(ans: Any) -> None:
-            data = json.dumps(ans)
-            with SharedMemory(name=msg) as shm:
-                shm.seek(1)
-                shm.write_data_with_size(data)
-                shm.flush()
-                shm.seek(0)
-                shm.write(b'\x01')
-
-        message: str = data['message']
-        if data['type'] == 'confirm':
-            get_boss().confirm(
-                message, callback, window=self, confirm_on_cancel=bool(data.get('confirm_on_cancel')),
-                confirm_on_accept=bool(data.get('confirm_on_accept', True)))
-        elif data['type'] == 'choose':
-            get_boss().choose(
-                message, callback, *data['choices'], window=self, default=data.get('default', ''))
-        elif data['type'] == 'get_line':
-            get_boss().get_line(
-                message, callback, window=self, is_password=bool(data.get('is_password')), prompt=data.get('prompt', '> '))
-        else:
-            log_error(f'Ignoring ask request with unknown type: {data["type"]}')
 
     def handle_remote_print(self, msg: str) -> None:
         text = process_remote_print(msg)
@@ -1516,22 +1457,6 @@ class Window:
             if p['pid'] == q:
                 return True
         return False
-
-    @property
-    def child_is_remote(self) -> bool:
-        for p in self.child.foreground_processes:
-            q = list(p['cmdline'] or ())
-            if q and q[0].lower() == 'ssh':
-                return True
-        return False
-
-    def ssh_kitten_cmdline(self) -> List[str]:
-        from kittens.ssh.utils import is_kitten_cmdline
-        for p in self.child.foreground_processes:
-            q = list(p['cmdline'] or ())
-            if is_kitten_cmdline(q):
-                return q
-        return []
 
     def pipe_data(self, text: str, has_wrap_markers: bool = False) -> PipeData:
         text = text or ''
@@ -1856,20 +1781,6 @@ class Window:
         if pid is not None:
             for sig in signals:
                 os.kill(pid, sig)
-
-    @ac('misc', '''
-    Display the specified alatty documentation, preferring a local copy, if found.
-
-    For example::
-
-        # show the config docs
-        map f1 show_alatty_doc conf
-        # show the ssh kitten docs
-        map f1 show_alatty_doc kittens/ssh
-    ''')
-    def show_alatty_doc(self, which: str = '') -> None:
-        url = docs_url(which)
-        get_boss().open_url(url)
     # }}}
 
 

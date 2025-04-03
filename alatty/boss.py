@@ -128,7 +128,6 @@ from .tabs import SpecialWindow, SpecialWindowInstance, Tab, TabDict, TabManager
 from .types import _T, AsyncResponse, SingleInstanceData, WindowSystemMouseEvent, ac
 from .typing import PopenType, TypedDict
 from .utils import (
-    cleanup_ssh_control_masters,
     func_name,
     get_editor,
     get_new_os_window_size,
@@ -2847,14 +2846,6 @@ class Boss:
         if w:
             output = '\n'.join(f'{k}={v}' for k, v in env.items())
             self.display_scrollback(w, output, title=_('Current alatty env vars'), report_cursor=False)
-
-    @ac('debug', '''
-        Close all shared SSH connections
-
-        See :opt:`share_connections <kitten-ssh.share_connections>` for details.
-        ''')
-    def close_shared_ssh_connections(self) -> None:
-        cleanup_ssh_control_masters()
 
     def launch_urls(self, *urls: str, no_replace_window: bool = False) -> None:
         from .launch import force_window_launch
