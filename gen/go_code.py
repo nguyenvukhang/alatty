@@ -30,7 +30,6 @@ from typing import (
 
 import alatty.constants as kc
 from alatty.cli import (
-    CompletionSpec,
     GoOption,
     go_options_for_seq,
     parse_option_spec,

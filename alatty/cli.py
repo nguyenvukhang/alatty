@@ -5,8 +5,6 @@ import os
 import re
 import sys
 from collections import deque
-from dataclasses import dataclass
-from enum import Enum, auto
 from typing import Any, Callable, Dict, FrozenSet, Iterator, List, Match, Optional, Sequence, Tuple, Type, TypeVar, Union, cast
 
 from .cli_stub import CLIOptions
@@ -16,55 +14,7 @@ from .fast_data_types import wcswidth
 from .options.types import Options as AlattyOpts
 from .types import run_once
 from .typing import BadLineType, TypedDict
-from .utils import shlex_split
 
-
-class CompletionType(Enum):
-    file = auto()
-    directory = auto()
-    keyword = auto()
-    special = auto()
-    none = auto()
-
-
-class CompletionRelativeTo(Enum):
-    cwd = auto()
-    config_dir = auto()
-
-
-@dataclass
-class CompletionSpec:
-
-    type: CompletionType = CompletionType.none
-    kwds: Tuple[str,...] = ()
-    extensions: Tuple[str,...] = ()
-    mime_patterns: Tuple[str,...] = ()
-    group: str = ''
-    relative_to: CompletionRelativeTo = CompletionRelativeTo.cwd
-
-    @staticmethod
-    def from_string(raw: str) -> 'CompletionSpec':
-        self = CompletionSpec()
-        for x in shlex_split(raw):
-            ck, vv = x.split(':', 1)
-            if ck == 'type':
-                self.type = getattr(CompletionType, vv)
-            elif ck == 'kwds':
-                self.kwds += tuple(vv.split(','))
-            elif ck == 'ext':
-                self.extensions += tuple(vv.split(','))
-            elif ck == 'group':
-                self.group = vv
-            elif ck == 'mime':
-                self.mime_patterns += tuple(vv.split(','))
-            elif ck == 'relative':
-                if vv == 'conf':
-                    self.relative_to = CompletionRelativeTo.config_dir
-                else:
-                    raise ValueError(f'Unknown completion relative to value: {vv}')
-            else:
-                raise KeyError(f'Unknown completion property: {ck}')
-        return self
 
 class OptionDict(TypedDict):
     dest: str
@@ -75,7 +25,6 @@ class OptionDict(TypedDict):
     type: str
     default: Optional[str]
     condition: bool
-    completion: CompletionSpec
 
 
 def serialize_as_go_string(x: str) -> str:
@@ -355,7 +304,7 @@ def parse_option_spec(spec: Optional[str] = None) -> Tuple[OptionSpecSeq, Option
     mpat = re.compile('([a-z]+)=(.+)')
     current_cmd: OptionDict = {
         'dest': '', 'aliases': frozenset(), 'help': '', 'choices': frozenset(),
-        'type': '', 'condition': False, 'default': None, 'completion': CompletionSpec(), 'name': ''
+        'type': '', 'condition': False, 'default': None, 'name': ''
     }
     empty_cmd = current_cmd
 
@@ -376,7 +325,7 @@ def parse_option_spec(spec: Optional[str] = None) -> Tuple[OptionSpecSeq, Option
                 current_cmd = {
                     'dest': defdest, 'aliases': frozenset(parts), 'help': '',
                     'choices': frozenset(), 'type': '', 'name': defdest,
-                    'default': None, 'condition': True, 'completion': CompletionSpec(),
+                    'default': None, 'condition': True,
                 }
                 state = METADATA
                 continue
@@ -404,8 +353,6 @@ def parse_option_spec(spec: Optional[str] = None) -> Tuple[OptionSpecSeq, Option
                         current_cmd['dest'] = v
                     elif k == 'condition':
                         current_cmd['condition'] = bool(eval(v))
-                    elif k == 'completion':
-                        current_cmd['completion'] = CompletionSpec.from_string(v)
         elif state is HELP:
             if line:
                 current_indent = indent_of_line(line)

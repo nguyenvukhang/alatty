@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from io import BytesIO
 from typing import TYPE_CHECKING, Any, Callable, Dict, FrozenSet, Iterable, Iterator, List, NoReturn, Optional, Set, Tuple, Type, Union, cast
 
-from alatty.cli import CompletionSpec, get_defaults_from_seq, parse_args, parse_option_spec
+from alatty.cli import get_defaults_from_seq, parse_args, parse_option_spec
 from alatty.cli_stub import RCOptions as R
 from alatty.constants import appname, list_alatty_resources, running_in_alatty
 from alatty.types import AsyncResponse
@@ -310,7 +310,6 @@ class StreamInFlight:
 
 class RemoteCommand:
     Args = ArgsHandling
-    CompletionSpec = CompletionSpec
 
     name: str = ''
     short_desc: str = ''
