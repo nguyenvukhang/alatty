@@ -195,24 +195,6 @@ def go_options_for_kitten(kitten: str) -> Sequence[GoOption]:
     return ()
 
 
-def generate_kittens_completion() -> None:
-    from kittens.runner import all_kitten_names, get_kitten_wrapper_of
-    for kitten in sorted(all_kitten_names()):
-        kn = 'kitten_' + kitten
-        print(f'{kn} := plus_kitten.AddSubCommand(&cli.Command{{Name:"{kitten}", Group: "Kittens"}})')
-        wof = get_kitten_wrapper_of(kitten)
-        if wof:
-            print(f'{kn}.ArgCompleter = cli.CompletionForWrapper("{serialize_as_go_string(wof)}")')
-            print(f'{kn}.OnlyArgsAllowed = true')
-            continue
-        gopts = go_options_for_kitten(kitten)
-        if gopts:
-            for opt in gopts:
-                print(opt.as_option(kn))
-        else:
-            print(f'{kn}.HelpText = ""')
-
-
 @lru_cache
 def clone_safe_launch_opts() -> Sequence[GoOption]:
     from alatty.launch import clone_safe_opts, options_spec
