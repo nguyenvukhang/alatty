@@ -171,33 +171,6 @@ func exec_command(at_root_command *cli.Command, rl *readline.Readline, cmdline s
 	return true
 }
 
-func completions(before_cursor, after_cursor string) (ans *cli.Completions) {
-	const prefix = "kitten @ "
-	text := prefix + before_cursor
-	argv, position_of_last_arg := shlex.SplitForCompletion(text)
-	if len(argv) == 0 || position_of_last_arg < len(prefix) {
-		return
-	}
-	root := cli.NewRootCommand()
-	c := root.AddSubCommand(&cli.Command{Name: "kitten"})
-	EntryPoint(c)
-	a := c.FindSubCommand("@")
-
-	add_sc := func(cmd, desc string) {
-		var x *cli.Command
-		if x = a.FindSubCommand(cmd); x == nil {
-			x = a.AddSubCommand(&cli.Command{Name: cmd})
-		}
-		x.ShortDescription = desc
-	}
-	add_sc("help", "Show help")
-	add_sc("exit", "Exit the alatty shell")
-	root.Validate()
-	ans = root.GetCompletions(argv, nil)
-	ans.CurrentWordIdx = position_of_last_arg - len(prefix)
-	return
-}
-
 func shell_main(cmd *cli.Command, args []string) (int, error) {
 	err := setup_global_options(cmd)
 	if err != nil {
@@ -216,16 +189,8 @@ func shell_main(cmd *cli.Command, args []string) (int, error) {
 		fmt.Println(amsg)
 	}
 	var rl *readline.Readline
-	combined_completer := func(before_cursor, after_cursor string) *cli.Completions {
-		ans := completions(before_cursor, after_cursor)
-		history := rl.HistoryCompleter(before_cursor, after_cursor)
-		for _, group := range history.Groups {
-			ans.MergeMatchGroup(group)
-		}
-		return ans
-	}
 
-	rl = readline.New(nil, readline.RlInit{Prompt: prompt, Completer: combined_completer, HistoryPath: filepath.Join(utils.CacheDir(), "shell.history.json")})
+	rl = readline.New(nil, readline.RlInit{Prompt: prompt, HistoryPath: filepath.Join(utils.CacheDir(), "shell.history.json")})
 	defer func() {
 		rl.Shutdown()
 	}()

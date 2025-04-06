@@ -14,7 +14,6 @@ from .base import (
     ArgsType,
     Boss,
     CmdGenerator,
-    ImageCompletion,
     PayloadGetType,
     PayloadType,
     RCOptions,
@@ -67,8 +66,7 @@ default=false
 Don't wait for a response from alatty. This means that even if setting the image
 failed, the command will exit with a success code.
 '''
-    args = RemoteCommand.Args(spec='PATH_TO_PNG_IMAGE', count=1, json_field='data', special_parse='!read_window_logo(io_data, args[0])',
-                              completion=ImageCompletion)
+    args = RemoteCommand.Args(spec='PATH_TO_PNG_IMAGE', count=1, json_field='data', special_parse='!read_window_logo(io_data, args[0])')
     reads_streaming_data = True
 
     def message_to_alatty(self, global_opts: RCOptions, opts: 'CLIOptions', args: ArgsType) -> PayloadType:

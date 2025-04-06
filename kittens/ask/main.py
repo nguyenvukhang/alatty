@@ -23,8 +23,7 @@ message is shown.
 
 
 --name -n
-The name for this question. Used to store history of previous answers which can
-be used for completions and via the browse history readline bindings.
+The name for this question.
 
 
 --title --window-title

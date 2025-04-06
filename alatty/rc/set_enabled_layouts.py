@@ -38,10 +38,7 @@ type=bool-set
 Change the default enabled layout value so that the new value takes effect for all newly created tabs
 as well.
 '''
-    args = RemoteCommand.Args(
-        spec='LAYOUT ...', minimum_count=1, json_field='layouts',
-        completion=RemoteCommand.CompletionSpec.from_string('type:keyword group:"Layout" kwds:' + ','.join(layout_names())),
-        args_choices=layout_names)
+    args = RemoteCommand.Args(spec='LAYOUT ...', minimum_count=1, json_field='layouts', args_choices=layout_names)
 
     def message_to_alatty(self, global_opts: RCOptions, opts: 'CLIOptions', args: ArgsType) -> PayloadType:
         if len(args) < 1:

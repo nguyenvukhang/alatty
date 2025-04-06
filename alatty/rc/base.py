@@ -2,11 +2,11 @@
 # License: GPLv3 Copyright: 2020, Kovid Goyal <kovid at kovidgoyal.net>
 
 from contextlib import suppress
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from io import BytesIO
 from typing import TYPE_CHECKING, Any, Callable, Dict, FrozenSet, Iterable, Iterator, List, NoReturn, Optional, Set, Tuple, Type, Union, cast
 
-from alatty.cli import CompletionSpec, get_defaults_from_seq, parse_args, parse_option_spec
+from alatty.cli import get_defaults_from_seq, parse_args, parse_option_spec
 from alatty.cli_stub import RCOptions as R
 from alatty.constants import appname, list_alatty_resources, running_in_alatty
 from alatty.types import AsyncResponse
@@ -80,8 +80,6 @@ CmdGenerator = Iterator[CmdReturnType]
 PayloadType = Optional[Union[CmdReturnType, CmdGenerator]]
 PayloadGetType = PayloadGetter
 ArgsType = List[str]
-ImageCompletion = CompletionSpec.from_string('type:file group:"Images"')
-ImageCompletion.extensions = 'png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp', 'tiff'
 
 
 MATCH_WINDOW_OPTION = '''\
@@ -191,7 +189,6 @@ class ArgsHandling:
     json_field: str = ''
     count: Optional[int] = None
     spec: str = ''
-    completion: CompletionSpec = field(default_factory=CompletionSpec)
     value_if_unspecified: Tuple[str, ...] = ()
     minimum_count: int = -1
     first_rest: Optional[Tuple[str, str]] = None
@@ -208,8 +205,6 @@ class ArgsHandling:
         c = self.args_count
         if c is not None:
             yield f'{go_name}.StopCompletingAtArg = {c}'
-        if self.completion:
-            yield from self.completion.as_go_code(go_name + '.ArgCompleter', ' = ')
 
     def as_go_code(self, cmd_name: str, field_types: Dict[str, str], handled_fields: Set[str]) -> Iterator[str]:
         c = self.args_count
@@ -315,7 +310,6 @@ class StreamInFlight:
 
 class RemoteCommand:
     Args = ArgsHandling
-    CompletionSpec = CompletionSpec
 
     name: str = ''
     short_desc: str = ''
