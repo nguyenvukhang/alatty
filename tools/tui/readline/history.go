@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"alatty/tools/cli"
 	"alatty/tools/utils"
 	"alatty/tools/utils/shlex"
 	"alatty/tools/wcswidth"
@@ -396,36 +395,4 @@ func (self *Readline) history_search_prompt() string {
 		ans = self.fmt_ctx.Green(ans)
 	}
 	return fmt.Sprintf("history %s: ", ans)
-}
-
-func (self *Readline) history_completer(before_cursor, after_cursor string) (ans *cli.Completions) {
-	ans = cli.NewCompletions()
-	if before_cursor != "" {
-		var words_before_cursor []string
-		words_before_cursor, ans.CurrentWordIdx = shlex.SplitForCompletion(before_cursor)
-		idx := len(words_before_cursor)
-		if idx > 0 {
-			idx--
-		}
-		seen := utils.NewSet[string](16)
-		mg := ans.AddMatchGroup("History")
-		for _, x := range self.history.items {
-			if strings.HasPrefix(x.Cmd, before_cursor) {
-				words, _ := shlex.SplitForCompletion(x.Cmd)
-				if idx < len(words) {
-					word := words[idx]
-					desc := ""
-					if !seen.Has(word) {
-						if word != x.Cmd {
-							desc = x.Cmd
-						}
-						mg.AddMatch(word, desc)
-						seen.Add(word)
-					}
-				}
-			}
-		}
-	}
-
-	return
 }
