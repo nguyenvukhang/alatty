@@ -66,36 +66,6 @@ class CompletionSpec:
                 raise KeyError(f'Unknown completion property: {ck}')
         return self
 
-    def as_go_code(self, go_name: str, sep: str = ': ') -> Iterator[str]:
-        completers = []
-        if self.kwds:
-            kwds = (f'"{serialize_as_go_string(x)}"' for x in self.kwds)
-            g = (self.group if self.type is CompletionType.keyword else '') or "Keywords"
-            completers.append(f'cli.NamesCompleter("{serialize_as_go_string(g)}", ' + ', '.join(kwds) + ')')
-        relative_to = 'CONFIG' if self.relative_to is CompletionRelativeTo.config_dir else 'CWD'
-        if self.type is CompletionType.file:
-            g = serialize_as_go_string(self.group or 'Files')
-            added = False
-            if self.extensions:
-                added = True
-                pats = (f'"*.{ext}"' for ext in self.extensions)
-                completers.append(f'cli.FnmatchCompleter("{g}", cli.{relative_to}, ' + ', '.join(pats) + ')')
-            if self.mime_patterns:
-                added = True
-                completers.append(f'cli.MimepatCompleter("{g}", cli.{relative_to}, ' + ', '.join(f'"{p}"' for p in self.mime_patterns) + ')')
-            if not added:
-                completers.append(f'cli.FnmatchCompleter("{g}", cli.{relative_to}, "*")')
-        if self.type is CompletionType.directory:
-            g = serialize_as_go_string(self.group or 'Directories')
-            completers.append(f'cli.DirectoryCompleter("{g}", cli.{relative_to})')
-        if self.type is CompletionType.special:
-            completers.append(self.group)
-        if len(completers) > 1:
-            yield f'{go_name}{sep}cli.ChainCompleters(' + ', '.join(completers) + ')'
-        elif completers:
-            yield f'{go_name}{sep}{completers[0]}'
-
-
 class OptionDict(TypedDict):
     dest: str
     name: str
@@ -158,8 +128,6 @@ class GoOption:
             cx = ', '.join(f'"{serialize_as_go_string(x)}"' for x in self.sorted_choices)
             ans += f'\nChoices: "{serialize_as_go_string(c)}",\n'
             ans += f'\nCompleter: cli.NamesCompleter("Choices for {self.long}", {cx}),'
-        elif self.obj_dict['completion'].type is not CompletionType.none:
-            ans += ''.join(self.obj_dict['completion'].as_go_code('Completer', ': ')) + ','
         if depth > 0:
             ans += f'\nDepth: {depth},\n'
         if self.default:
