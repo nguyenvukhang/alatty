@@ -652,14 +652,6 @@ def update_completion() -> None:
     with replace_if_needed('tools/cmd/completion/alatty_generated.go'):
         generate_completions_for_alatty()
 
-    with replace_if_needed('tools/cmd/at/alatty_actions_generated.go'):
-        print("package at")
-        print("const AlattyActionNames = `", end='')
-        for grp, actions in get_all_actions().items():
-            for ac in actions:
-                print(ac.name)
-        print('`')
-
     with replace_if_needed('tools/cmd/edit_in_alatty/launch_generated.go'):
         print('package edit_in_alatty')
         print('import "alatty/tools/cli"')
