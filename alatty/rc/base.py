@@ -80,8 +80,6 @@ CmdGenerator = Iterator[CmdReturnType]
 PayloadType = Optional[Union[CmdReturnType, CmdGenerator]]
 PayloadGetType = PayloadGetter
 ArgsType = List[str]
-ImageCompletion = CompletionSpec.from_string('type:file group:"Images"')
-ImageCompletion.extensions = 'png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp', 'tiff'
 
 
 MATCH_WINDOW_OPTION = '''\

@@ -14,7 +14,6 @@ from .base import (
     ArgsType,
     Boss,
     CmdGenerator,
-    ImageCompletion,
     PayloadGetType,
     PayloadType,
     RCOptions,
