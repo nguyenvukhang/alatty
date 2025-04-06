@@ -559,26 +559,3 @@ func (self *Command) Exec(args ...string) {
 	}
 	os.Exit(self.ExecArgs(args))
 }
-
-func (self *Command) GetCompletions(argv []string, init_completions func(*Completions)) *Completions {
-	ans := NewCompletions()
-	if init_completions != nil {
-		init_completions(ans)
-	}
-	if len(argv) > 0 {
-		exe := argv[0]
-		exe = filepath.Base(exe) // zsh completion script passes full path to exe when using aliases
-		cmd := self.FindSubCommand(exe)
-		if cmd != nil {
-      completion_parse_args(cmd, argv[1:], ans)
-		}
-	}
-	non_empty_groups := make([]*MatchGroup, 0, len(ans.Groups))
-	for _, gr := range ans.Groups {
-		if len(gr.Matches) > 0 {
-			non_empty_groups = append(non_empty_groups, gr)
-		}
-	}
-	ans.Groups = non_empty_groups
-	return ans
-}
