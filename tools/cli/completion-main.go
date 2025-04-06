@@ -36,13 +36,6 @@ func init() {
 
 var registered_exes []func(root *Command)
 
-func RegisterExeForCompletion(x func(root *Command)) {
-	if registered_exes == nil {
-		registered_exes = make([]func(root *Command), 0, 4)
-	}
-	registered_exes = append(registered_exes, x)
-}
-
 func GenerateCompletions(args []string) error {
 	output_type := "json"
 	if len(args) > 0 {
