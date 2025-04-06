@@ -21,7 +21,6 @@ from typing import (
     Dict,
     Iterator,
     List,
-    Optional,
     Sequence,
     Set,
     TextIO,
@@ -30,7 +29,6 @@ from typing import (
 )
 
 import alatty.constants as kc
-from alatty.actions import get_all_actions
 from alatty.cli import (
     CompletionSpec,
     GoOption,
