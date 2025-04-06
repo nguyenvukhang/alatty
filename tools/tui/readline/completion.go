@@ -58,10 +58,6 @@ func (self *completion) current_match_text() string {
 	return ""
 }
 
-type completions struct {
-	current   completion
-}
-
 func (self *Readline) complete(forwards bool, repeat_count uint) bool {
   return false
 }
