@@ -59,7 +59,6 @@ func (self *completion) current_match_text() string {
 }
 
 type completions struct {
-	completer CompleterFunction
 	current   completion
 }
 

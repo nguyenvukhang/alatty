@@ -19,7 +19,6 @@ const ST = "\x1b\\"
 const PROMPT_MARK = "\x1b]133;"
 
 type SyntaxHighlightFunction = func(text string, x, y int) string
-type CompleterFunction = func(before_cursor, after_cursor string) *cli.Completions
 
 type RlInit struct {
 	Prompt                  string
@@ -29,7 +28,6 @@ type RlInit struct {
 	EmptyContinuationPrompt bool
 	DontMarkPrompts         bool
 	SyntaxHighlighter       SyntaxHighlightFunction
-	Completer               CompleterFunction
 }
 
 type Position struct {
