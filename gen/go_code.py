@@ -179,7 +179,6 @@ def stringify() -> None:
 # }}}
 
 # Completions {{{
-
 @lru_cache
 def kitten_cli_docs(kitten: str) -> Any:
     from kittens.runner import get_kitten_cli_docs
@@ -193,23 +192,6 @@ def go_options_for_kitten(kitten: str) -> Sequence[GoOption]:
         ospec = kcd['options']
         return list(go_options_for_seq(parse_option_spec(ospec())[0]))
     return ()
-
-
-@lru_cache
-def clone_safe_launch_opts() -> Sequence[GoOption]:
-    from alatty.launch import clone_safe_opts, options_spec
-    ans = []
-    allowed = clone_safe_opts()
-    for o in go_options_for_seq(parse_option_spec(options_spec())[0]):
-        if o.obj_dict['name'] in allowed:
-            ans.append(o)
-    return tuple(ans)
-
-
-def completion_for_launch_wrappers(*names: str) -> None:
-    for o in clone_safe_launch_opts():
-        for name in names:
-            print(o.as_option(name))
 # }}}
 
 
