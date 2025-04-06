@@ -245,36 +245,3 @@ func (self *Readline) screen_lines_for_match_group_without_descriptions(g *cli.M
 	}
 	return lines
 }
-
-func (self *Readline) completion_screen_lines() ([]string, bool) {
-	if self.completions.current.results == nil || self.completions.current.num_of_matches < 2 {
-		return []string{}, false
-	}
-	if len(self.completions.current.rendered_lines) > 0 && self.completions.current.rendered_at_screen_width == self.screen_width {
-		return self.completions.current.rendered_lines, true
-	}
-	lines := make([]string, 0, self.completions.current.num_of_matches)
-	for _, g := range self.completions.current.results.Groups {
-		if len(g.Matches) == 0 {
-			continue
-		}
-		if g.Title != "" {
-			lines = append(lines, self.fmt_ctx.Title(g.Title))
-		}
-		has_descriptions := false
-		for _, m := range g.Matches {
-			if m.Description != "" {
-				has_descriptions = true
-				break
-			}
-		}
-		if has_descriptions {
-			lines = self.screen_lines_for_match_group_with_descriptions(g, lines)
-		} else {
-			lines = self.screen_lines_for_match_group_without_descriptions(g, lines)
-		}
-	}
-	self.completions.current.rendered_lines = lines
-	self.completions.current.rendered_at_screen_width = self.screen_width
-	return lines, false
-}
