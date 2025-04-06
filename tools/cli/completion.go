@@ -167,29 +167,3 @@ func (self *Completions) AddMatchGroup(title string) *MatchGroup {
 }
 
 type CompletionFunc = func(completions *Completions, word string, arg_num int)
-
-func NamesCompleter(title string, names ...string) CompletionFunc {
-	return func(completions *Completions, word string, arg_num int) {
-		mg := completions.AddMatchGroup(title)
-		for _, q := range names {
-			if strings.HasPrefix(q, word) {
-				mg.AddMatch(q)
-			}
-		}
-	}
-}
-
-func ChainCompleters(completers ...CompletionFunc) CompletionFunc {
-	return func(completions *Completions, word string, arg_num int) {
-		for _, f := range completers {
-			f(completions, word, arg_num)
-		}
-	}
-}
-
-func CompletionForWrapper(wrapped_cmd string) func(completions *Completions, word string, arg_num int) {
-	return func(completions *Completions, word string, arg_num int) {
-		completions.Delegate.NumToRemove = completions.CurrentWordIdx
-		completions.Delegate.Command = wrapped_cmd
-	}
-}

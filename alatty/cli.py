@@ -125,9 +125,7 @@ class GoOption:
         '''
         if self.type in ('choice', 'choices'):
             c = ', '.join(self.sorted_choices)
-            cx = ', '.join(f'"{serialize_as_go_string(x)}"' for x in self.sorted_choices)
             ans += f'\nChoices: "{serialize_as_go_string(c)}",\n'
-            ans += f'\nCompleter: cli.NamesCompleter("Choices for {self.long}", {cx}),'
         if depth > 0:
             ans += f'\nDepth: {depth},\n'
         if self.default:
