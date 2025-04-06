@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"strings"
 
-	"alatty/tools/cli"
 	"alatty/tools/cli/markup"
 	"alatty/tools/tui/loop"
 	"alatty/tools/wcswidth"
@@ -162,10 +161,6 @@ func New(loop *loop.Loop, r RlInit) *Readline {
 	}
 	ans.continuation_prompt = ans.make_prompt(t, true)
 	return ans
-}
-
-func (self *Readline) HistoryCompleter(before_cursor, after_cursor string) *cli.Completions {
-	return self.history_completer(before_cursor, after_cursor)
 }
 
 func (self *Readline) SetPrompt(prompt string) {
