@@ -228,64 +228,6 @@ def completion_for_launch_wrappers(*names: str) -> None:
     for o in clone_safe_launch_opts():
         for name in names:
             print(o.as_option(name))
-
-
-def generate_completions_for_alatty() -> None:
-    print('package completion\n')
-    print('import "alatty/tools/cli"')
-    print('import "alatty/tools/cmd/tool"')
-    print('import "alatty/tools/cmd/at"')
-
-    print('func alatty(root *cli.Command) {')
-
-    # The alatty exe
-    print('k := root.AddSubCommand(&cli.Command{'
-          'Name:"alatty", SubCommandIsOptional: true, ArgCompleter: cli.CompleteExecutableFirstArg, SubCommandMustBeFirst: true })')
-    print('kt := root.AddSubCommand(&cli.Command{Name:"kitten", SubCommandMustBeFirst: true })')
-    print('tool.AlattyToolEntryPoints(kt)')
-    for opt in go_options_for_seq(parse_option_spec()[0]):
-        print(opt.as_option('k'))
-
-    # alatty +
-    print('plus := k.AddSubCommand(&cli.Command{Name:"+", Group:"Entry points", ShortDescription: "Various special purpose tools and kittens"})')
-
-    # alatty +launch
-    print('plus_launch := plus.AddSubCommand(&cli.Command{'
-          'Name:"launch", Group:"Entry points", ShortDescription: "Launch Python scripts", ArgCompleter: complete_plus_launch})')
-    print('k.AddClone("", plus_launch).Name = "+launch"')
-
-    # alatty +list-fonts
-    print('plus_list_fonts := plus.AddSubCommand(&cli.Command{'
-          'Name:"list-fonts", Group:"Entry points", ShortDescription: "List all available monospaced fonts"})')
-    print('k.AddClone("", plus_list_fonts).Name = "+list-fonts"')
-
-    # alatty +runpy
-    print('plus_runpy := plus.AddSubCommand(&cli.Command{'
-          'Name: "runpy", Group:"Entry points", ArgCompleter: complete_plus_runpy, ShortDescription: "Run Python code"})')
-    print('k.AddClone("", plus_runpy).Name = "+runpy"')
-
-    # alatty +open
-    print('plus_open := plus.AddSubCommand(&cli.Command{'
-          'Name:"open", Group:"Entry points", ArgCompleter: complete_plus_open, ShortDescription: "Open files and URLs"})')
-    print('for _, og := range k.OptionGroups { plus_open.OptionGroups = append(plus_open.OptionGroups, og.Clone(plus_open)) }')
-    print('k.AddClone("", plus_open).Name = "+open"')
-
-    # alatty +kitten
-    print('plus_kitten := plus.AddSubCommand(&cli.Command{Name:"kitten", Group:"Kittens", SubCommandMustBeFirst: true})')
-    generate_kittens_completion()
-    print('k.AddClone("", plus_kitten).Name = "+kitten"')
-
-    # @
-    print('at.EntryPoint(k)')
-
-    # clone-in-alatty, edit-in-alatty
-    print('cik := root.AddSubCommand(&cli.Command{Name:"clone-in-alatty"})')
-    completion_for_launch_wrappers('cik')
-
-    print('}')
-    print('func init() {')
-    print('cli.RegisterExeForCompletion(alatty)')
-    print('}')
 # }}}
 
 
@@ -643,9 +585,6 @@ func add_rc_global_opts(cmd *cli.Command) {{
 
 
 def update_completion() -> None:
-    with replace_if_needed('tools/cmd/completion/alatty_generated.go'):
-        generate_completions_for_alatty()
-
     with replace_if_needed('tools/cmd/edit_in_alatty/launch_generated.go'):
         print('package edit_in_alatty')
         print('import "alatty/tools/cli"')
