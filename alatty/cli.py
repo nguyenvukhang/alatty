@@ -873,13 +873,6 @@ completion=type:file ext:conf group:"Config files" kwds:none,NONE
 {config_help}
 
 
---override -o
-type=list
-completion=type:special group:complete_alatty_override
-Override individual configuration options, can be specified multiple times.
-Syntax: :italic:`name=value`. For example: :option:`{appname} -o` font_size=20
-
-
 --directory --working-directory -d
 default=.
 completion=type:directory
@@ -1079,9 +1072,7 @@ def parse_override(x: str) -> str:
 def create_opts(args: CLIOptions, accumulate_bad_lines: Optional[List[BadLineType]] = None) -> AlattyOpts:
     from .config import load_config
     config = default_config_paths(args.config)
-    overrides = map(parse_override, args.override or ())
-    opts = load_config(*config, overrides=overrides, accumulate_bad_lines=accumulate_bad_lines)
-    return opts
+    return load_config(*config, accumulate_bad_lines=accumulate_bad_lines)
 
 
 def create_default_opts() -> AlattyOpts:

@@ -4,8 +4,6 @@
 
 from typing import TYPE_CHECKING, Optional
 
-from alatty.constants import appname
-
 from .base import (
     ArgsType,
     Boss,
@@ -25,7 +23,6 @@ class LoadConfig(RemoteCommand):
 
     protocol_spec = __doc__ = '''
     paths/list.str: List of config file paths to load
-    override/list.str: List of individual config overrides
     ignore_overrides/bool: Whether to apply previous overrides
     '''
 
@@ -42,13 +39,6 @@ By default, any config overrides previously specified at the alatty invocation c
 or a previous load-config-file command are respected. Use this option to have them ignored instead.
 
 
---override -o
-type=list
-completion=type:special group:complete_alatty_override
-Override individual configuration options, can be specified multiple times.
-Syntax: :italic:`name=value`. For example: :option:`{appname} -o` font_size=20
-
-
 --no-response
 type=bool-set
 default=false
@@ -59,16 +49,12 @@ using this option means that you will not be notified of failures.
     args = RemoteCommand.Args(spec='CONF_FILE ...', json_field='paths')
 
     def message_to_alatty(self, global_opts: RCOptions, opts: 'CLIOptions', args: ArgsType) -> PayloadType:
-        return {'paths': args, 'override': opts.override, 'ignore_overrides': opts.ignore_overrides}
+        return {'paths': args, 'ignore_overrides': opts.ignore_overrides}
 
     def response_from_alatty(self, boss: Boss, window: Optional[Window], payload_get: PayloadGetType) -> ResponseType:
-        from alatty.cli import parse_override
         from alatty.utils import resolve_abs_or_config_path
         paths = tuple(map(resolve_abs_or_config_path, payload_get('paths', missing=())))
-        boss.load_config_file(
-            *paths, apply_overrides=not payload_get('ignore_overrides', missing=False),
-            overrides=tuple(map(parse_override, payload_get('override', missing=())))
-        )
+        boss.load_config_file(*paths, apply_overrides=not payload_get('ignore_overrides', missing=False))
         return None
 
 

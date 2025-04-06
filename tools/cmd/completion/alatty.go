@@ -6,24 +6,10 @@ import (
 	"fmt"
 	"strings"
 
-	alatty_constants "alatty"
 	"alatty/tools/cli"
-	"alatty/tools/utils"
 )
 
 var _ = fmt.Print
-
-func complete_alatty_override(completions *cli.Completions, word string, arg_num int) {
-	mg := completions.AddMatchGroup("Config directives")
-	mg.NoTrailingSpace = true
-	scanner := utils.NewLineScanner(alatty_constants.OptionNames)
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if strings.HasPrefix(line, word) {
-			mg.AddMatch(line + "=")
-		}
-	}
-}
 
 func complete_alatty_listen_on(completions *cli.Completions, word string, arg_num int) {
 	if !strings.Contains(word, ":") {
