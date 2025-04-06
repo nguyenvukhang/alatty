@@ -29,8 +29,6 @@ type Command struct {
 	SubCommandMustBeFirst bool
 	// The entry point for this command
 	Run RunFunc
-	// The completer for args
-	ArgCompleter CompletionFunc
 	// Stop completion processing at this arg num
 	StopCompletingAtArg int
 	// Consider all args as non-options args when parsing for completion
