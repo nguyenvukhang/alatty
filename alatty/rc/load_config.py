@@ -56,8 +56,7 @@ Don't wait for a response indicating the success of the action. Note that
 using this option means that you will not be notified of failures.
 '''
 
-    args = RemoteCommand.Args(spec='CONF_FILE ...', json_field='paths',
-                              completion=RemoteCommand.CompletionSpec.from_string('type:file group:"CONF files", ext:conf'))
+    args = RemoteCommand.Args(spec='CONF_FILE ...', json_field='paths')
 
     def message_to_alatty(self, global_opts: RCOptions, opts: 'CLIOptions', args: ArgsType) -> PayloadType:
         return {'paths': args, 'override': opts.override, 'ignore_overrides': opts.ignore_overrides}

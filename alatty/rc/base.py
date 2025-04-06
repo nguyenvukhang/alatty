@@ -191,7 +191,6 @@ class ArgsHandling:
     json_field: str = ''
     count: Optional[int] = None
     spec: str = ''
-    completion: CompletionSpec = field(default_factory=CompletionSpec)
     value_if_unspecified: Tuple[str, ...] = ()
     minimum_count: int = -1
     first_rest: Optional[Tuple[str, str]] = None
@@ -208,8 +207,6 @@ class ArgsHandling:
         c = self.args_count
         if c is not None:
             yield f'{go_name}.StopCompletingAtArg = {c}'
-        if self.completion:
-            yield from self.completion.as_go_code(go_name + '.ArgCompleter', ' = ')
 
     def as_go_code(self, cmd_name: str, field_types: Dict[str, str], handled_fields: Set[str]) -> Iterator[str]:
         c = self.args_count

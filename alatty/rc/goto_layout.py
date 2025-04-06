@@ -29,10 +29,7 @@ class GotoLayout(RemoteCommand):
         ' specify the full layout definition or a unique prefix of the full definition.'
     )
     options_spec = MATCH_TAB_OPTION
-    args = RemoteCommand.Args(
-        spec='LAYOUT_NAME', count=1, json_field='layout',
-        completion=RemoteCommand.CompletionSpec.from_string('type:keyword group:"Layout" kwds:' + ','.join(layout_names())),
-        )
+    args = RemoteCommand.Args(spec='LAYOUT_NAME', count=1, json_field='layout')
 
     def message_to_alatty(self, global_opts: RCOptions, opts: 'CLIOptions', args: ArgsType) -> PayloadType:
         if len(args) != 1:
