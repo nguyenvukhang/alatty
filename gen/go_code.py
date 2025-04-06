@@ -584,16 +584,6 @@ func add_rc_global_opts(cmd *cli.Command) {{
         f.write(code)
 
 
-def update_completion() -> None:
-    with replace_if_needed('tools/cmd/edit_in_alatty/launch_generated.go'):
-        print('package edit_in_alatty')
-        print('import "alatty/tools/cli"')
-        print('func AddCloneSafeOpts(cmd *cli.Command) {')
-        completion_for_launch_wrappers('cmd')
-        print(''.join(CompletionSpec.from_string('type:file mime:text/* group:"Text files"').as_go_code('cmd.ArgCompleter', ' = ')))
-        print('}')
-
-
 def define_enum(package_name: str, type_name: str, items: str, underlying_type: str = 'uint') -> str:
     actions = []
     for x in items.splitlines():
@@ -755,7 +745,6 @@ def main(args: List[str]=sys.argv) -> None:
             generate_unicode_names(src, dest)
     generate_ssh_kitten_data()
 
-    update_completion()
     update_at_commands()
     kitten_clis()
     stringify()

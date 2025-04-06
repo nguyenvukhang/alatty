@@ -257,7 +257,6 @@ func EntryPoint(parent *cli.Command) *cli.Command {
 			return 0, err
 		},
 	})
-	AddCloneSafeOpts(sc)
 	sc.Add(cli.OptionSpec{
 		Name:    "--max-file-size",
 		Default: "8",
