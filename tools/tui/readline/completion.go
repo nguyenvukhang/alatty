@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"alatty/tools/cli"
-	"alatty/tools/utils"
 	"alatty/tools/wcswidth"
 )
 
@@ -73,9 +72,6 @@ func (self *Readline) screen_lines_for_match_group_with_descriptions(g *cli.Matc
 		if l > maxw {
 			maxw = l
 		}
-	}
-	for _, m := range g.Matches {
-		lines = append(lines, utils.Splitlines(m.FormatForCompletionList(maxw, self.fmt_ctx, self.screen_width))...)
 	}
 	return lines
 }
