@@ -35,8 +35,6 @@ type Command struct {
 	OnlyArgsAllowed bool
 	// Pass through all args, useful for wrapper commands
 	IgnoreAllArgs bool
-	// Specialised arg parsing
-	ParseArgsForCompletion func(cmd *Command, args []string, completions *Completions)
 	// Callback that is called on error
 	CallbackOnError func(cmd *Command, err error, during_parsing bool, exit_code int) (final_exit_code int)
 
@@ -572,11 +570,7 @@ func (self *Command) GetCompletions(argv []string, init_completions func(*Comple
 		exe = filepath.Base(exe) // zsh completion script passes full path to exe when using aliases
 		cmd := self.FindSubCommand(exe)
 		if cmd != nil {
-			if cmd.ParseArgsForCompletion != nil {
-				cmd.ParseArgsForCompletion(cmd, argv[1:], ans)
-			} else {
-				completion_parse_args(cmd, argv[1:], ans)
-			}
+      completion_parse_args(cmd, argv[1:], ans)
 		}
 	}
 	non_empty_groups := make([]*MatchGroup, 0, len(ans.Groups))

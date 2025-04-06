@@ -174,10 +174,6 @@ func completion_parse_args(cmd *Command, words []string, completions *Completion
 				arg_num = 0
 				completions.CurrentWordIdxInParent = 0
 				only_args_allowed = cmd.OnlyArgsAllowed
-				if cmd.ParseArgsForCompletion != nil {
-					cmd.ParseArgsForCompletion(cmd, words[i+1:], completions)
-					return
-				}
 			} else if cmd.StopCompletingAtArg > 0 && arg_num >= cmd.StopCompletingAtArg {
 				return
 			} else {
