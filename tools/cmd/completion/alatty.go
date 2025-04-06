@@ -4,52 +4,11 @@ package completion
 
 import (
 	"fmt"
-	"strings"
 
 	"alatty/tools/cli"
 )
 
 var _ = fmt.Print
-
-func complete_alatty_listen_on(completions *cli.Completions, word string, arg_num int) {
-	if !strings.Contains(word, ":") {
-		mg := completions.AddMatchGroup("Address family")
-		mg.NoTrailingSpace = true
-		for _, q := range []string{"unix:", "tcp:"} {
-			if strings.HasPrefix(q, word) {
-				mg.AddMatch(q)
-			}
-		}
-	} else if strings.HasPrefix(word, "unix:") && !strings.HasPrefix(word, "unix:@") {
-		cli.FnmatchCompleter("UNIX sockets", cli.CWD, "*")(completions, word[len("unix:"):], arg_num)
-		completions.AddPrefixToAllMatches("unix:")
-	}
-}
-
-func complete_plus_launch(completions *cli.Completions, word string, arg_num int) {
-	if arg_num == 1 {
-		cli.FnmatchCompleter("Python scripts", cli.CWD, "*.py")(completions, word, arg_num)
-		if strings.HasPrefix(word, ":") {
-			exes := cli.CompleteExecutablesInPath(word[1:])
-			mg := completions.AddMatchGroup("Python scripts in PATH")
-			for _, exe := range exes {
-				mg.AddMatch(":" + exe)
-			}
-		}
-	} else {
-		cli.FnmatchCompleter("Files", cli.CWD, "*")(completions, word, arg_num)
-	}
-}
-
-func complete_plus_runpy(completions *cli.Completions, word string, arg_num int) {
-	if arg_num > 1 {
-		cli.FnmatchCompleter("Files", cli.CWD, "*")(completions, word, arg_num)
-	}
-}
-
-func complete_plus_open(completions *cli.Completions, word string, arg_num int) {
-	cli.FnmatchCompleter("Files", cli.CWD, "*")(completions, word, arg_num)
-}
 
 func EntryPoint(tool_root *cli.Command) {
 	tool_root.AddSubCommand(&cli.Command{
@@ -61,5 +20,4 @@ func EntryPoint(tool_root *cli.Command) {
 			return ret, cli.GenerateCompletions(args)
 		},
 	})
-
 }
