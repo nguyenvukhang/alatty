@@ -64,67 +64,7 @@ type completions struct {
 }
 
 func (self *Readline) complete(forwards bool, repeat_count uint) bool {
-	c := &self.completions
-	if c.completer == nil {
-		return false
-	}
-	if self.last_action == ActionCompleteForward || self.last_action == ActionCompleteBackward {
-		if c.current.num_of_matches == 0 {
-			return false
-		}
-		delta := -1
-		if forwards {
-			delta = 1
-		}
-		repeat_count %= uint(c.current.num_of_matches)
-		delta *= int(repeat_count)
-		c.current.current_match = (c.current.current_match + delta + c.current.num_of_matches) % c.current.num_of_matches
-		repeat_count = 0
-	} else {
-		before, after := self.text_upto_cursor_pos(), self.text_after_cursor_pos()
-		c.current = completion{before_cursor: before, after_cursor: after, forwards: forwards, results: c.completer(before, after)}
-		c.current.initialize()
-		if repeat_count > 0 {
-			repeat_count--
-		}
-		if c.current.current_match != 0 {
-			if self.loop != nil {
-				self.loop.Beep()
-			}
-		}
-	}
-	c.current.forwards = forwards
-	if c.current.results == nil {
-		return false
-	}
-	ct := c.current.current_match_text()
-	if ct != "" {
-		all_text_before_completion := self.AllText()
-		before := c.current.before_cursor[:c.current.results.CurrentWordIdx] + ct
-		after := c.current.after_cursor
-		self.input_state.lines = utils.Splitlines(before)
-		if len(self.input_state.lines) == 0 {
-			self.input_state.lines = []string{""}
-		}
-		self.input_state.cursor.Y = len(self.input_state.lines) - 1
-		self.input_state.cursor.X = len(self.input_state.lines[self.input_state.cursor.Y])
-		al := utils.Splitlines(after)
-		if len(al) > 0 {
-			self.input_state.lines[self.input_state.cursor.Y] += al[0]
-			self.input_state.lines = append(self.input_state.lines, al[1:]...)
-		}
-		if c.current.num_of_matches == 1 && self.AllText() == all_text_before_completion {
-			// when there is only a single match and it has already been inserted there is no point iterating over current completions
-			orig := self.last_action
-			self.last_action = ActionNil
-			self.complete(true, 1)
-			self.last_action = orig
-		}
-	}
-	if repeat_count > 0 {
-		self.complete(forwards, repeat_count)
-	}
-	return true
+  return false
 }
 
 func (self *Readline) screen_lines_for_match_group_with_descriptions(g *cli.MatchGroup, lines []string) []string {

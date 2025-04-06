@@ -130,7 +130,6 @@ type Readline struct {
 	fmt_ctx                *markup.Context
 	text_to_be_added       string
 	syntax_highlighted     syntax_highlighted
-	completions            completions
 }
 
 func (self *Readline) make_prompt(text string, is_secondary bool) Prompt {
@@ -153,11 +152,7 @@ func New(loop *loop.Loop, r RlInit) *Readline {
 		mark_prompts: !r.DontMarkPrompts, fmt_ctx: markup.New(true),
 		loop: loop, input_state: InputState{lines: []string{""}}, history: NewHistory(r.HistoryPath, hc),
 		syntax_highlighted: syntax_highlighted{highlighter: r.SyntaxHighlighter},
-		completions:        completions{completer: r.Completer},
 		kill_ring:          kill_ring{items: list.New().Init()},
-	}
-	if ans.completions.completer == nil && r.HistoryPath != "" {
-		ans.completions.completer = ans.HistoryCompleter
 	}
 	ans.prompt = ans.make_prompt(r.Prompt, false)
 	t := ""
@@ -192,7 +187,6 @@ func (self *Readline) ResetText() {
 	self.last_action = ActionNil
 	self.keyboard_state = KeyboardState{}
 	self.history_search = nil
-	self.completions.current = completion{}
 	self.cursor_y = 0
 }
 
