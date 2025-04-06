@@ -189,12 +189,12 @@ def kitten_cli_docs(kitten: str) -> Any:
 
 
 @lru_cache
-def go_options_for_kitten(kitten: str) -> Tuple[Sequence[GoOption], Optional[CompletionSpec]]:
+def go_options_for_kitten(kitten: str) -> Sequence[GoOption]:
     kcd = kitten_cli_docs(kitten)
     if kcd:
         ospec = kcd['options']
-        return (tuple(go_options_for_seq(parse_option_spec(ospec())[0])), kcd.get('args_completion'))
-    return (), None
+        return list(go_options_for_seq(parse_option_spec(ospec())[0]))
+    return ()
 
 
 def generate_kittens_completion() -> None:
@@ -207,12 +207,10 @@ def generate_kittens_completion() -> None:
             print(f'{kn}.ArgCompleter = cli.CompletionForWrapper("{serialize_as_go_string(wof)}")')
             print(f'{kn}.OnlyArgsAllowed = true')
             continue
-        gopts, ac = go_options_for_kitten(kitten)
-        if gopts or ac:
+        gopts = go_options_for_kitten(kitten)
+        if gopts:
             for opt in gopts:
                 print(opt.as_option(kn))
-            if ac is not None:
-                print(''.join(ac.as_go_code(kn + '.ArgCompleter', ' = ')))
         else:
             print(f'{kn}.HelpText = ""')
 
@@ -488,12 +486,10 @@ def kitten_clis() -> None:
             if has_underscore:
                 print('Hidden: true,')
             print('})')
-            gopts, ac = go_options_for_kitten(kitten)
+            gopts = go_options_for_kitten(kitten)
             for opt in gopts:
                 print(opt.as_option('ans'))
                 od.append(opt.struct_declaration())
-            if ac is not None:
-                print(''.join(ac.as_go_code('ans.ArgCompleter', ' = ')))
             if not kcd:
                 print('specialize_command(ans)')
             if has_underscore:
