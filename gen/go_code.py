@@ -165,13 +165,6 @@ def stringify_file(path: str) -> None:
             print('if err = json.Unmarshal(data, &x); err != nil {return err}')
             print('return self.SetString(x)}')
 
-
-def stringify() -> None:
-    for path in (
-        'tools/tui/graphics/command.go',
-        'tools/rsync/algorithm.go',
-    ):
-        stringify_file(path)
 # }}}
 
 # Completions {{{
@@ -537,7 +530,7 @@ def main(args: List[str]=sys.argv) -> None:
             generate_unicode_names(src, dest)
 
     kitten_clis()
-    stringify()
+    stringify_file('tools/rsync/algorithm.go')
     print(json.dumps(changed, indent=2))
 
 
