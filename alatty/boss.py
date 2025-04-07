@@ -2484,25 +2484,7 @@ class Boss:
             window.refresh()
 
     def patch_colors(self, spec: Dict[str, Optional[int]], configured: bool = False) -> None:
-        from alatty.rc.set_colors import nullable_colors
-        opts = get_options()
-        if configured:
-            for k, v in spec.items():
-                if hasattr(opts, k):
-                    if v is None:
-                        if k in nullable_colors:
-                            setattr(opts, k, None)
-                    else:
-                        setattr(opts, k, color_from_int(v))
-        for tm in self.all_tab_managers:
-            tm.tab_bar.patch_colors(spec)
-            tm.tab_bar.layout()
-            tm.mark_tab_bar_dirty()
-            t = tm.active_tab
-            if t is not None:
-                t.relayout_borders()
-            set_os_window_chrome(tm.os_window_id)
-        patch_global_colors(spec, configured)
+        pass
 
     def apply_new_options(self, opts: Options) -> None:
         from .fonts.box_drawing import set_scale
@@ -2637,20 +2619,7 @@ class Boss:
             map f5 set_colors --configured /path/to/some/config/file/colors.conf
         ''')
     def set_colors(self, *args: str) -> None:
-        from alatty.rc.base import PayloadGetter, command_for_name, parse_subcommand_cli
-        from alatty.remote_control import parse_rc_args
-        c = command_for_name('set_colors')
-        try:
-            opts, items = parse_subcommand_cli(c, ['set-colors'] + list(args))
-        except (Exception, SystemExit) as err:
-            self.show_error('Invalid set_colors mapping', str(err))
-            return
-        try:
-            payload = c.message_to_alatty(parse_rc_args([])[0], opts, items)
-        except (Exception, SystemExit) as err:
-            self.show_error('Failed to set colors', str(err))
-            return
-        c.response_from_alatty(self, self.active_window, PayloadGetter(c, payload if isinstance(payload, dict) else {}))
+        pass
 
     def _move_window_to(
         self,
