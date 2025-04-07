@@ -1521,7 +1521,7 @@ def clean(for_cross_compile: bool = False) -> None:
 
     def excluded(root: str, d: str) -> bool:
         q = os.path.relpath(os.path.join(root, d), src_base).replace(os.sep, '/')
-        return q in ('.git', 'bypy/b', 'dependencies')
+        return q in ('.git', 'dependencies')
 
     for root, dirs, files in os.walk(src_base, topdown=True):
         dirs[:] = [d for d in dirs if not excluded(root, d)]
@@ -1728,51 +1728,8 @@ def option_parser() -> argparse.ArgumentParser:  # {{{
 # }}}
 
 
-def build_dep() -> None:
-    class Options:
-        platform: str = 'all'
-        deps: List[str] = []
-
-    p = argparse.ArgumentParser(prog=f'{sys.argv[0]} build-dep', description='Build dependencies for the alatty binary packages')
-    p.add_argument(
-        '--platform',
-        default=Options.platform,
-        choices='all macos linux linux-32 linux-arm64 linux-64'.split(),
-        help='Platforms to build the dep for'
-    )
-    p.add_argument(
-        'deps',
-        nargs='*',
-        default=Options.deps,
-        help='Names of the dependencies, if none provided, build all'
-    )
-    args = p.parse_args(sys.argv[2:], namespace=Options())
-    linux_platforms = [
-        ['linux', '--arch=64'],
-        ['linux', '--arch=32'],
-        ['linux', '--arch=arm64'],
-    ]
-    if args.platform == 'all':
-        platforms = linux_platforms + [['macos']]
-    elif args.platform == 'linux':
-        platforms = linux_platforms
-    elif args.platform == 'macos':
-        platforms = [['macos']]
-    elif '-' in args.platform:
-        parts = args.platform.split('-')
-        platforms = [[parts[0], f'--arch={parts[1]}']]
-    else:
-        raise SystemExit(f'Unknown platform: {args.platform}')
-    base = [sys.executable, '../bypy']
-    for pf in platforms:
-        cmd = base + pf + ['dependencies'] + args.deps
-        run_tool(cmd)
-
-
 def main() -> None:
     global verbose
-    if len(sys.argv) > 1 and sys.argv[1] == 'build-dep':
-        return build_dep()
     args = option_parser().parse_args(namespace=Options())
     if not is_macos:
         args.build_universal_binary = False

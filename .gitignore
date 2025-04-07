@@ -26,5 +26,3 @@ __pycache__/
 /.ruff_cache
 .DS_Store
 .cache
-bypy/b
-bypy/virtual-machines.conf
