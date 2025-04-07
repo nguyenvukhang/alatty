@@ -530,7 +530,6 @@ def main(args: List[str]=sys.argv) -> None:
             generate_unicode_names(src, dest)
 
     kitten_clis()
-    stringify_file('tools/rsync/algorithm.go')
     print(json.dumps(changed, indent=2))
 
 
