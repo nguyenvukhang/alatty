@@ -412,7 +412,6 @@ def load_watch_modules(watchers: Iterable[str]) -> Optional[Watchers]:
 
 class LaunchKwds(TypedDict):
 
-    allow_remote_control: bool
     remote_control_passwords: Optional[Dict[str, Sequence[str]]]
     cwd_from: Optional[CwdRequest]
     cwd: Optional[str]
@@ -481,14 +480,7 @@ def _launch(
         opts.os_window_title = get_os_window_title(tm.os_window_id) if tm else None
     env = get_env(opts, active_child, base_env)
     remote_control_restrictions: Optional[Dict[str, Sequence[str]]] = None
-    if opts.allow_remote_control and opts.remote_control_password:
-        from alatty.options.utils import remote_control_password
-        remote_control_restrictions = {}
-        for rcp in opts.remote_control_password:
-            for pw, rcp_items in remote_control_password(rcp, {}):
-                remote_control_restrictions[pw] = rcp_items
     kw: LaunchKwds = {
-        'allow_remote_control': opts.allow_remote_control,
         'remote_control_passwords': remote_control_restrictions,
         'cwd_from': None,
         'cwd': None,
@@ -592,7 +584,7 @@ def _launch(
             raise ValueError('The cmd to run must be specified when running a background process')
         boss.run_background_process(
             cmd, cwd=kw['cwd'], cwd_from=kw['cwd_from'], env=env or None, stdin=kw['stdin'],
-            allow_remote_control=kw['allow_remote_control'], remote_control_passwords=kw['remote_control_passwords']
+            remote_control_passwords=kw['remote_control_passwords']
         )
     elif opts.type in ('clipboard', 'primary'):
         stdin = kw.get('stdin')

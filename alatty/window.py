@@ -513,7 +513,6 @@ class Window:
         override_title: Optional[str] = None,
         copy_colors_from: Optional['Window'] = None,
         watchers: Optional[Watchers] = None,
-        allow_remote_control: bool = False,
         remote_control_passwords: Optional[Dict[str, Sequence[str]]] = None,
     ):
         if watchers:
@@ -567,13 +566,9 @@ class Window:
         else:
             setup_colors(self.screen, opts)
         self.remote_control_passwords = remote_control_passwords
-        self.allow_remote_control = allow_remote_control
 
     def remote_control_allowed(self, pcmd: Dict[str, Any], extra_data: Dict[str, Any]) -> bool:
-        if not self.allow_remote_control:
-            return False
-        from .remote_control import remote_control_allowed
-        return remote_control_allowed(pcmd, self.remote_control_passwords, self, extra_data)
+        return False
 
     def on_dpi_change(self, font_sz: float) -> None:
         self.update_effective_padding()
@@ -669,7 +664,6 @@ class Window:
             'override_title': self.override_title,
             'default_title': self.default_title,
             'title_stack': list(self.title_stack),
-            'allow_remote_control': self.allow_remote_control,
             'remote_control_passwords': self.remote_control_passwords,
             'cwd': self.child.current_cwd or self.child.cwd,
             'env': self.child.environ,

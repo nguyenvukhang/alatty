@@ -54,14 +54,6 @@ class Parser:
     def allow_hyperlinks(self, val: str, ans: typing.Dict[str, typing.Any]) -> None:
         ans['allow_hyperlinks'] = allow_hyperlinks(val)
 
-    def allow_remote_control(self, val: str, ans: typing.Dict[str, typing.Any]) -> None:
-        val = val.lower()
-        if val not in self.choices_for_allow_remote_control:
-            raise ValueError(f"The value {val} is not a valid choice for allow_remote_control")
-        ans["allow_remote_control"] = val
-
-    choices_for_allow_remote_control = frozenset(('password', 'socket-only', 'socket', 'no', 'n', 'false', 'yes', 'y', 'true'))
-
     def background(self, val: str, ans: typing.Dict[str, typing.Any]) -> None:
         ans['background'] = to_color(val)
 

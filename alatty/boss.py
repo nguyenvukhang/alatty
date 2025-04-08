@@ -349,20 +349,7 @@ class Boss:
         talk_fd = getattr(single_instance, 'socket', None)
         talk_fd = -1 if talk_fd is None else talk_fd.fileno()
         listen_fd = -1
-        # we dont allow reloading the config file to change
-        # allow_remote_control
-        self.allow_remote_control = opts.allow_remote_control
-        if self.allow_remote_control in ('y', 'yes', 'true'):
-            self.allow_remote_control = 'y'
-        elif self.allow_remote_control in ('n', 'no', 'false'):
-            self.allow_remote_control = 'n'
         self.listening_on = ''
-        if args.listen_on and self.allow_remote_control in ('y', 'socket', 'socket-only', 'password'):
-            try:
-                listen_fd, self.listening_on = listen_on(args.listen_on)
-            except Exception:
-                self.misc_config_errors.append(f'Invalid listen_on={args.listen_on}, ignoring')
-                log_error(self.misc_config_errors[-1])
         self.child_monitor = ChildMonitor(
             self.on_child_death,
             DumpCommands(args) if args.dump_commands or args.dump_bytes else None,
@@ -589,12 +576,6 @@ class Boss:
         window = window or None
         from_socket = peer_id > 0
         is_fd_peer = from_socket and peer_id in self.peer_data_map
-        window_has_remote_control = bool(window and window.allow_remote_control)
-        if not window_has_remote_control and not is_fd_peer:
-            if self.allow_remote_control == 'n':
-                return {'ok': False, 'error': 'Remote control is disabled'}
-            if self.allow_remote_control == 'socket-only' and not from_socket:
-                return {'ok': False, 'error': 'Remote control is allowed over a socket only'}
         try:
             pcmd = parse_cmd(cmd, self.encryption_key)
         except Exception as e:
@@ -617,8 +598,6 @@ class Boss:
         extra_data: Dict[str, Any] = {}
         try:
             allowed_unconditionally = (
-                self.allow_remote_control == 'y' or
-                (from_socket and not is_fd_peer and self.allow_remote_control in ('socket-only', 'socket')) or
                 (window and window.remote_control_allowed(pcmd, extra_data)) or
                 (is_fd_peer and remote_control_allowed(pcmd, self.peer_data_map.get(peer_id), None, extra_data))
             )
@@ -735,7 +714,7 @@ class Boss:
         if not os.access(path, os.X_OK):
             self.show_error('Remote control script not executable', f'The script {path} is not executable check its permissions')
             return
-        self.run_background_process([path] + list(args), allow_remote_control=True)
+        self.run_background_process([path] + list(args))
 
     def call_remote_control(self, self_window: Optional[Window], args: Tuple[str, ...]) -> 'ResponseType':
         from .rc.base import PayloadGetter, command_for_name, parse_subcommand_cli
@@ -1451,12 +1430,10 @@ class Boss:
         w = self.active_window
         if w is None:
             return
-        overlay_window = self.run_kitten_with_metadata('resize_window', args=[
+        self.run_kitten_with_metadata('resize_window', args=[
             f'--horizontal-increment={get_options().window_resize_step_cells}',
             f'--vertical-increment={get_options().window_resize_step_lines}'
         ])
-        if overlay_window is not None:
-            overlay_window.allow_remote_control = True
 
     def resize_layout_window(self, window: Window, increment: float, is_horizontal: bool, reset: bool = False) -> Union[bool, None, str]:
         tab = window.tabref()
@@ -2002,7 +1979,6 @@ class Boss:
 
         path, ext = os.path.splitext(logo_png_file)
         window.set_logo(f'{path}-128{ext}', position='bottom-right', alpha=0.25)
-        window.allow_remote_control = True
 
     def switch_focus_to(self, window_id: int) -> None:
         tab = self.active_tab
@@ -2249,7 +2225,6 @@ class Boss:
         env: Optional[Dict[str, str]] = None,
         stdin: Optional[bytes] = None,
         cwd_from: Optional[CwdRequest] = None,
-        allow_remote_control: bool = False,
         remote_control_passwords: Optional[Dict[str, Sequence[str]]] = None,
     ) -> None:
         import subprocess
@@ -2271,21 +2246,6 @@ class Boss:
         def doit(activation_token: str = '') -> None:
             nonlocal env
             pass_fds: Tuple[int, ...] = ()
-            if allow_remote_control:
-                import socket
-                local, remote = socket.socketpair()
-                os.set_inheritable(remote.fileno(), True)
-                lfd = os.dup(local.fileno())
-                local.close()
-                try:
-                    peer_id = self.child_monitor.inject_peer(lfd)
-                except Exception:
-                    os.close(lfd)
-                    remote.close()
-                    raise
-                pass_fds = (remote.fileno(),)
-                add_env('ALATTY_LISTEN_ON', f'fd:{remote.fileno()}')
-                self.peer_data_map[peer_id] = remote_control_passwords
             if activation_token:
                 add_env('XDG_ACTIVATION_TOKEN', activation_token)
             try:
@@ -2302,8 +2262,7 @@ class Boss:
                 else:
                     subprocess.Popen(cmd, env=env, cwd=cwd, preexec_fn=clear_handled_signals, pass_fds=pass_fds, close_fds=True)
             finally:
-                if allow_remote_control:
-                    remote.close()
+                pass
 
         try:
             if is_wayland():
@@ -2413,20 +2372,18 @@ class Boss:
         tab = self.active_tab
         if tab is None:
             return None
-        allow_remote_control = False
         location = None
         if args and args[0].startswith('!'):
             location = args[0][1:].lower()
             args = args[1:]
         if args and args[0] == '@':
             args = args[1:]
-            allow_remote_control = True
         if args:
             return tab.new_special_window(
                 self.args_to_special_window(args, cwd_from=cwd_from),
-                location=location, allow_remote_control=allow_remote_control)
+                location=location)
         else:
-            return tab.new_window(cwd_from=cwd_from, location=location, allow_remote_control=allow_remote_control)
+            return tab.new_window(cwd_from=cwd_from, location=location)
 
     @ac('win', 'Create a new window')
     def new_window(self, *args: str) -> None:
