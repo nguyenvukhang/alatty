@@ -426,10 +426,6 @@ class LaunchKwds(TypedDict):
     hold: bool
 
 
-def apply_colors(window: Window, spec: Sequence[str]) -> None:
-    pass
-
-
 def parse_var(defn: Iterable[str]) -> Iterator[Tuple[str, str]]:
     for item in defn:
         a, sep, b = item.partition('=')
@@ -619,8 +615,6 @@ def _launch(
             if spacing:
                 patch_window_edges(new_window, spacing)
                 tab.relayout()
-            if opts.color:
-                apply_colors(new_window, opts.color)
             if opts.keep_focus:
                 if active:
                     boss.set_active_window(active, switch_os_window_if_needed=True, for_keep_focus=True)
