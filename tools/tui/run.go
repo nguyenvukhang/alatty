@@ -135,10 +135,10 @@ func rc_modification_allowed(ksi string) bool {
 	return ksi != ""
 }
 
-func RunShell(shell_cmd []string, shell_integration_env_var_val, cwd string) (err error) {
+func RunShell(shell_cmd []string, cwd string) (err error) {
 	shell_name := get_shell_name(shell_cmd[0])
 	var shell_env map[string]string
-	if rc_modification_allowed(shell_integration_env_var_val) && shell_integration.IsSupportedShell(shell_name) {
+	if rc_modification_allowed("") && shell_integration.IsSupportedShell(shell_name) {
 		oenv := os.Environ()
 		env := make(map[string]string, len(oenv))
 		for _, x := range oenv {
@@ -146,7 +146,7 @@ func RunShell(shell_cmd []string, shell_integration_env_var_val, cwd string) (er
 				env[k] = v
 			}
 		}
-		argv, env, err := shell_integration.Setup(shell_name, shell_integration_env_var_val, shell_cmd, env)
+		argv, env, err := shell_integration.Setup(shell_name, "", shell_cmd, env)
 		if err != nil {
 			return err
 		}

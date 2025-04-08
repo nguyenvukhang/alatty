@@ -54,7 +54,7 @@ func main(args []string, opts *Options) (rc int, err error) {
 			os.Setenv("TERMINFO_DIRS", terminfo_dir+existing)
 		}
 	}
-	err = tui.RunShell(tui.ResolveShell(opts.Shell), tui.ResolveShellIntegration(opts.ShellIntegration), opts.Cwd)
+	err = tui.RunShell(tui.ResolveShell(opts.Shell), opts.Cwd)
 	if changed {
 		os.Clearenv()
 		for _, entry := range env_before {
