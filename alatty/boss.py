@@ -2483,9 +2483,6 @@ class Boss:
             window.screen.disable_ligatures = strategy
             window.refresh()
 
-    def patch_colors(self, spec: Dict[str, Optional[int]], configured: bool = False) -> None:
-        pass
-
     def apply_new_options(self, opts: Options) -> None:
         from .fonts.box_drawing import set_scale
         # Update options storage
