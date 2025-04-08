@@ -570,55 +570,6 @@ class Boss:
         self.child_monitor.add_child(window.id, window.child.pid, window.child.child_fd, window.screen)
         self.window_id_map[window.id] = window
 
-    def _handle_remote_command(self, cmd: str, window: Optional[Window] = None, peer_id: int = 0) -> RCResponse:
-        from .remote_control import is_cmd_allowed, parse_cmd, remote_control_allowed
-        response = None
-        window = window or None
-        from_socket = peer_id > 0
-        is_fd_peer = from_socket and peer_id in self.peer_data_map
-        try:
-            pcmd = parse_cmd(cmd, self.encryption_key)
-        except Exception as e:
-            log_error(f'Failed to parse remote command with error: {e}')
-            return response
-        if not pcmd:
-            return response
-        self_window: Optional[Window] = None
-        if window is not None:
-            self_window = window
-        else:
-            try:
-                swid = int(pcmd.get('alatty_window_id', 0))
-            except Exception:
-                pass
-            else:
-                if swid > 0:
-                    self_window = self.window_id_map.get(swid)
-
-        extra_data: Dict[str, Any] = {}
-        try:
-            allowed_unconditionally = (
-                (window and window.remote_control_allowed(pcmd, extra_data)) or
-                (is_fd_peer and remote_control_allowed(pcmd, self.peer_data_map.get(peer_id), None, extra_data))
-            )
-        except PermissionError:
-            return {'ok': False, 'error': 'Remote control disallowed by window specific password'}
-        if allowed_unconditionally:
-            return self._execute_remote_command(pcmd, window, peer_id, self_window)
-        q = is_cmd_allowed(pcmd, window, from_socket, extra_data)
-        if q is True:
-            return self._execute_remote_command(pcmd, window, peer_id, self_window)
-        if q is None:
-            if self.ask_if_remote_cmd_is_allowed(pcmd, window, peer_id, self_window):
-                return AsyncResponse()
-        response = {'ok': False, 'error': 'Remote control is disabled. Add allow_remote_control to your alatty.conf'}
-        if q is False and pcmd.get('password'):
-            response['error'] = 'The user rejected this password or it is disallowed by remote_control_password in alatty.conf'
-        no_response = pcmd.get('no_response') or False
-        if no_response:
-            return None
-        return response
-
     def ask_if_remote_cmd_is_allowed(
         self, pcmd: Dict[str, Any], window: Optional[Window] = None, peer_id: int = 0, self_window: Optional[Window] = None
     ) -> bool:
