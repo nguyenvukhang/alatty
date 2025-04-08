@@ -1076,7 +1076,6 @@ dispatch_dcs(Screen *screen, PyObject DUMP_UNUSED *dump_callback) {
 
                 IF_SIMPLE_PREFIX("overlay-ready|", handle_overlay_ready)
                 } else IF_SIMPLE_PREFIX("kitten-result|", handle_kitten_result)
-                } else IF_SIMPLE_PREFIX("print|", handle_remote_print)
 #undef IF_SIMPLE_PREFIX
                 } else {
                     PyObject *tp = PyUnicode_FromKindAndData(PyUnicode_4BYTE_KIND, screen->parser_buf, screen->parser_buf_pos);
