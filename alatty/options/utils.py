@@ -740,20 +740,6 @@ def config_or_absolute_path(x: str, env: Optional[Dict[str, str]] = None) -> Opt
     return resolve_abs_or_config_path(x, env)
 
 
-def remote_control_password(val: str, current_val: Dict[str, str]) -> Iterable[Tuple[str, Sequence[str]]]:
-    val = val.strip()
-    if val:
-        parts = to_cmdline(val, expand=False)
-        if parts[0].startswith('-'):
-            # this is done so in the future we can add --options to the cmd
-            # line of remote_control_password
-            raise ValueError('Passwords are not allowed to start with hyphens, ignoring this password')
-        if len(parts) == 1:
-            yield parts[0], tuple()
-        else:
-            yield parts[0], tuple(parts[1:])
-
-
 def clipboard_control(x: str) -> Tuple[str, ...]:
     return tuple(x.lower().split())
 

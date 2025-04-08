@@ -159,37 +159,6 @@ active window. The default is to place the window in a layout dependent manner,
 typically, after the currently active window.
 
 
---allow-remote-control
-type=bool-set
-Programs running in this window can control alatty (even if remote control is not
-enabled in :file:`alatty.conf`). Note that any program with the right level of
-permissions can still write to the pipes of any other program on the same
-computer and therefore can control alatty. It can, however, be useful to block
-programs running on other computers (for example, over SSH) or as other users.
-See :option:`--remote-control-password` for ways to restrict actions allowed by
-remote control.
-
-
---remote-control-password
-type=list
-Restrict the actions remote control is allowed to take. This works like
-:opt:`remote_control_password`. You can specify a password and list of actions
-just as for :opt:`remote_control_password`. For example::
-
-    --remote-control-password '"my passphrase" get-* set-colors'
-
-This password will be in effect for this window only.
-Note that any passwords you have defined for :opt:`remote_control_password`
-in :file:`alatty.conf` are also in effect. You can override them by using the same password here.
-You can also disable all :opt:`remote_control_password` global passwords for this window, by using::
-
-    --remote-control-password '!'
-
-This option only takes effect if :option:`--allow-remote-control`
-is also specified. Can be specified multiple times to create multiple passwords.
-This option was added to alatty in version 0.26.0
-
-
 --stdin-source
 type=choices
 default=none

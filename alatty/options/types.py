@@ -393,7 +393,6 @@ option_names = (  # {{{
  'pointer_shape_when_dragging',
  'pointer_shape_when_grabbed',
  'remember_window_size',
- 'remote_control_password',
  'repaint_delay',
  'resize_debounce_time',
  'resize_in_steps',
@@ -619,7 +618,6 @@ class Options:
     menu_map: typing.Dict[typing.Tuple[str, ...], str] = {}
     modify_font: typing.Dict[str, alatty.fonts.FontModification] = {}
     narrow_symbols: typing.Dict[typing.Tuple[int, int], int] = {}
-    remote_control_password: typing.Dict[str, typing.Sequence[str]] = {}
     symbol_map: typing.Dict[typing.Tuple[int, int], str] = {}
     watcher: typing.Dict[str, str] = {}
     map: typing.List[alatty.options.utils.KeyDefinition] = []
@@ -741,7 +739,6 @@ defaults.kitten_alias = {}
 defaults.menu_map = {}
 defaults.modify_font = {}
 defaults.narrow_symbols = {}
-defaults.remote_control_password = {}
 defaults.symbol_map = {}
 defaults.watcher = {}
 defaults.map = [
