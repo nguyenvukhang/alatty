@@ -570,35 +570,6 @@ class Boss:
         self.child_monitor.add_child(window.id, window.child.pid, window.child.child_fd, window.screen)
         self.window_id_map[window.id] = window
 
-    def ask_if_remote_cmd_is_allowed(
-        self, pcmd: Dict[str, Any], window: Optional[Window] = None, peer_id: int = 0, self_window: Optional[Window] = None
-    ) -> bool:
-        in_flight = 0
-        for w in self.window_id_map.values():
-            if w.window_custom_type == 'remote_command_permission_dialog':
-                in_flight += 1
-                if in_flight > 4:
-                    log_error('Denying remote command permission as there are too many existing permission requests')
-                    return False
-        wid = 0 if window is None else window.id
-        hidden_text = pcmd['password']
-        overlay_window = self.choose(
-            _('A program wishes to control alatty.\n'
-              'Action: {1}\n' 'Password: {0}\n\n' '{2}'
-              ).format(
-                  hidden_text, pcmd['cmd'],
-                  '\x1b[m' + _(
-                      'Note that allowing the password will allow all future actions using the same password, in this alatty instance.'
-                      )),
-            partial(self.remote_cmd_permission_received, pcmd, wid, peer_id, self_window),
-            'a;green:Allow request', 'p;yellow:Allow password', 'r;magenta:Deny request', 'd;red:Deny password',
-            window=window, default='a', hidden_text=hidden_text, title=_('Allow remote control?'),
-        )
-        if overlay_window is None:
-            return False
-        overlay_window.window_custom_type = 'remote_command_permission_dialog'
-        return True
-
     def remote_cmd_permission_received(self, pcmd: Dict[str, Any], window_id: int, peer_id: int, self_window: Optional[Window], choice: str) -> None:
         from .remote_control import encode_response_for_peer, set_user_password_allowed
         response: RCResponse = None
