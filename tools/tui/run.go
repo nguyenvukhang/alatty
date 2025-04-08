@@ -44,15 +44,6 @@ func read_relevant_alatty_opts(path string) AlattyOpts {
 	return ans
 }
 
-func get_effective_ksi_env_var(x string) string {
-	parts := strings.Split(strings.TrimSpace(strings.ToLower(x)), " ")
-	current := utils.NewSetWithItems(parts...)
-	if current.Has("disabled") {
-		return ""
-	}
-	return x
-}
-
 var relevant_alatty_opts = sync.OnceValue(func() AlattyOpts {
 	return read_relevant_alatty_opts(filepath.Join(utils.ConfigDir(), "alatty.conf"))
 })
@@ -86,10 +77,6 @@ func ResolveShell(shell string) []string {
 		shell_cmd = []string{"/bin/sh"}
 	}
 	return shell_cmd
-}
-
-func ResolveShellIntegration(shell_integration string) string {
-	return get_effective_ksi_env_var(shell_integration)
 }
 
 func RunShell(shell_cmd []string, cwd string) (err error) {
