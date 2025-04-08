@@ -1214,25 +1214,6 @@ class Window:
             from .launch import remote_edit
             remote_edit(cdata, self)
 
-    def handle_remote_clone(self, msg: str) -> None:
-        cdata = self.append_remote_data(msg)
-        if cdata:
-            ac = get_options().allow_cloning
-            if ac == 'ask':
-                get_boss().confirm(_(
-                    'A program running in this window wants to clone it into another window.'
-                    ' Allow it do so, once?'),
-                    partial(self.handle_remote_clone_confirmation, cdata), window=self,
-                    title=_('Allow cloning of window?'),
-                )
-            elif ac in ('yes', 'y', 'true'):
-                self.handle_remote_clone_confirmation(cdata, True)
-
-    def handle_remote_clone_confirmation(self, cdata: str, confirmed: bool) -> None:
-        if confirmed:
-            from .launch import clone_and_launch
-            clone_and_launch(cdata, self)
-
     def handle_remote_print(self, msg: str) -> None:
         text = process_remote_print(msg)
         print(text, end='', flush=True)
