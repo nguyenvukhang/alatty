@@ -570,53 +570,6 @@ class Boss:
         self.child_monitor.add_child(window.id, window.child.pid, window.child.child_fd, window.screen)
         self.window_id_map[window.id] = window
 
-    @ac('misc', '''
-        Run a remote control command without needing to allow remote control
-
-        For example::
-
-            map f1 remote_control set-spacing margin=30
-
-        See :ref:`rc_mapping` for details.
-        ''')
-    def remote_control(self, *args: str) -> None:
-        try:
-            self.call_remote_control(self.active_window, args)
-        except (Exception, SystemExit) as e:
-            import shlex
-            self.show_error(_('remote_control mapping failed'), shlex.join(args) + '\n' + str(e))
-
-    def call_remote_control(self, self_window: Optional[Window], args: Tuple[str, ...]) -> 'ResponseType':
-        from .rc.base import PayloadGetter, command_for_name, parse_subcommand_cli
-        from .remote_control import parse_rc_args
-        aa = list(args)
-        silent = False
-        if aa and aa[0].startswith('!'):
-            aa[0] = aa[0][1:]
-            silent = True
-        try:
-            global_opts, items = parse_rc_args(['@'] + aa)
-            if not items:
-                return None
-            cmd = items[0]
-            c = command_for_name(cmd)
-            opts, items = parse_subcommand_cli(c, items)
-            payload = c.message_to_alatty(global_opts, opts, items)
-        except SystemExit as e:
-            raise Exception(str(e)) from e
-        import types
-        try:
-            if isinstance(payload, types.GeneratorType):
-                for x in payload:
-                    c.response_from_alatty(self, self_window, PayloadGetter(c, x if isinstance(x, dict) else {}))
-                return None
-            return c.response_from_alatty(self, self_window, PayloadGetter(c, payload if isinstance(payload, dict) else {}))
-        except Exception as e:
-            if silent:
-                log_error(f'Failed to run remote_control mapping: {aa} with error: {e}')
-                return None
-            raise
-
     def peer_message_received(self, msg_bytes: bytes, peer_id: int) -> Union[bytes, bool, None]:
         if peer_id > 0 and msg_bytes == b'peer_death':
             self.peer_data_map.pop(peer_id, None)
