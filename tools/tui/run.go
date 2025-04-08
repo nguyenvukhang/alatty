@@ -26,17 +26,15 @@ import (
 var _ = fmt.Print
 
 type AlattyOpts struct {
-	Shell, Shell_integration string
+	Shell string
 }
 
 func read_relevant_alatty_opts(path string) AlattyOpts {
-	ans := AlattyOpts{Shell: alatty.AlattyConfigDefaults.Shell, Shell_integration: alatty.AlattyConfigDefaults.Shell_integration}
+	ans := AlattyOpts{Shell: alatty.AlattyConfigDefaults.Shell}
 	handle_line := func(key, val string) error {
 		switch key {
 		case "shell":
 			ans.Shell = strings.TrimSpace(val)
-		case "shell_integration":
-			ans.Shell_integration = strings.TrimSpace(val)
 		}
 		return nil
 	}
@@ -116,9 +114,6 @@ func ResolveShell(shell string) []string {
 }
 
 func ResolveShellIntegration(shell_integration string) string {
-	if shell_integration == "" {
-		shell_integration = relevant_alatty_opts().Shell_integration
-	}
 	return get_effective_ksi_env_var(shell_integration)
 }
 

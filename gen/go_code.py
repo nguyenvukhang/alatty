@@ -362,11 +362,11 @@ var ConfigModMap = map[string]uint16{serialize_go_dict(config_mod_map)}
 var RefMap = map[string]string{serialize_go_dict(ref_map['ref'])}
 var DocTitleMap = map[string]string{serialize_go_dict(ref_map['doc'])}
 var AlattyConfigDefaults = struct {{
-Term, Shell_integration, Select_by_word_characters, Url_excluded_characters, Shell string
+Term, Select_by_word_characters, Url_excluded_characters, Shell string
 Wheel_scroll_multiplier int
 Url_prefixes []string
 }}{{
-Term: "{Options.term}", Shell_integration: "{' '.join(Options.shell_integration)}", Url_prefixes: []string{{ {url_prefixes} }},
+Term: "{Options.term}", Url_prefixes: []string{{ {url_prefixes} }},
 Select_by_word_characters: `{Options.select_by_word_characters}`, Wheel_scroll_multiplier: {Options.wheel_scroll_multiplier},
 Shell: "{Options.shell}", Url_excluded_characters: "{Options.url_excluded_characters}",
 }}
