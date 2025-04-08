@@ -344,8 +344,6 @@ func setup_func_for_shell(shell_name string) integration_setup_func {
 	return nil
 }
 
-func IsSupportedShell(shell_name string) bool { return setup_func_for_shell(shell_name) != nil }
-
 func Setup(shell_name string, ksi_var string, argv []string, env map[string]string) ([]string, map[string]string, error) {
 	ksi_dir, err := EnsureShellIntegrationFilesFor(shell_name)
 	if err != nil {

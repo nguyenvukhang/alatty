@@ -12,13 +12,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/shirou/gopsutil/v3/process"
 	"golang.org/x/sys/unix"
 
 	"alatty/tools/config"
 	"alatty/tools/tty"
 	"alatty/tools/tui/loop"
-	"alatty/tools/tui/shell_integration"
 	"alatty/tools/utils"
 	"alatty/tools/utils/shlex"
 )
@@ -72,35 +70,12 @@ func get_shell_from_alatty_conf() (shell string) {
 	return
 }
 
-func find_shell_parent_process() string {
-	var p *process.Process
-	var err error
-	for {
-		if p == nil {
-			p, err = process.NewProcess(int32(os.Getppid()))
-		} else {
-			p, err = p.Parent()
-		}
-		if err != nil {
-			return ""
-		}
-		if cmdline, err := p.CmdlineSlice(); err == nil && len(cmdline) > 0 {
-			exe := get_shell_name(filepath.Base(cmdline[0]))
-			if shell_integration.IsSupportedShell(exe) {
-				return exe
-			}
-		}
-	}
-}
-
 func ResolveShell(shell string) []string {
 	switch shell {
 	case "":
 		shell = get_shell_from_alatty_conf()
 	case ".":
-		if shell = find_shell_parent_process(); shell == "" {
-			shell = get_shell_from_alatty_conf()
-		}
+    shell = get_shell_from_alatty_conf()
 	}
 	shell_cmd, err := shlex.Split(shell)
 	if err != nil {
@@ -117,52 +92,18 @@ func ResolveShellIntegration(shell_integration string) string {
 	return get_effective_ksi_env_var(shell_integration)
 }
 
-func get_shell_name(argv0 string) (ans string) {
-	ans = filepath.Base(argv0)
-	if strings.HasSuffix(strings.ToLower(ans), ".exe") {
-		ans = ans[:len(ans)-4]
-	}
-	return strings.TrimPrefix(ans, "-")
-}
-
 func RunShell(shell_cmd []string, cwd string) (err error) {
-	shell_name := get_shell_name(shell_cmd[0])
-	var shell_env map[string]string
-	if shell_integration.IsSupportedShell(shell_name) {
-		oenv := os.Environ()
-		env := make(map[string]string, len(oenv))
-		for _, x := range oenv {
-			if k, v, found := strings.Cut(x, "="); found {
-				env[k] = v
-			}
-		}
-		argv, env, err := shell_integration.Setup(shell_name, "", shell_cmd, env)
-		if err != nil {
-			return err
-		}
-		shell_cmd = argv
-		shell_env = env
-	}
 	exe := shell_cmd[0]
 	if runtime.GOOS == "darwin" {
 		// ensure shell runs in login mode. On macOS lots of people use ~/.bash_profile instead of ~/.bashrc
 		// which means they expect the shell to run in login mode always. Le Sigh.
 		shell_cmd[0] = "-" + filepath.Base(shell_cmd[0])
 	}
-	var env []string
-	if shell_env != nil {
-		env = make([]string, 0, len(shell_env))
-		for k, v := range shell_env {
-			env = append(env, fmt.Sprintf("%s=%s", k, v))
-		}
-	} else {
-		env = os.Environ()
-	}
 	// fmt.Println(fmt.Sprintf("%s %v\n%#v", utils.FindExe(exe), shell_cmd, env))
 	if cwd != "" {
 		_ = os.Chdir(cwd)
 	}
-	return unix.Exec(utils.FindExe(exe), shell_cmd, env)
+	return unix.Exec(utils.FindExe(exe), shell_cmd, os.Environ())
 }
 
 func RunCommandRestoringTerminalToSaneStateAfter(cmd []string) {
