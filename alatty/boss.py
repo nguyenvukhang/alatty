@@ -570,19 +570,6 @@ class Boss:
         self.child_monitor.add_child(window.id, window.child.pid, window.child.child_fd, window.screen)
         self.window_id_map[window.id] = window
 
-    def _execute_remote_command(
-        self, pcmd: Dict[str, Any], window: Optional[Window] = None, peer_id: int = 0, self_window: Optional[Window] = None
-    ) -> RCResponse:
-        from .remote_control import handle_cmd
-        try:
-            response = handle_cmd(self, window, pcmd, peer_id, self_window)
-        except Exception as err:
-            import traceback
-            response = {'ok': False, 'error': str(err)}
-            if not getattr(err, 'hide_traceback', False):
-                response['tb'] = traceback.format_exc()
-        return response
-
     @ac('misc', '''
         Run a remote control command without needing to allow remote control
 
