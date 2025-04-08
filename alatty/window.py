@@ -1177,14 +1177,6 @@ class Window:
         for result in get_capabilities(q, get_options()):
             self.screen.send_escape_code_to_child(DCS, result)
 
-    def handle_remote_echo(self, msg: str) -> None:
-        from base64 import standard_b64decode
-        data = standard_b64decode(msg)
-        # ensure we are not writing any control char back as this can lead to command injection on shell prompts
-        # Any bytes outside the printable ASCII range are removed.
-        data = re.sub(rb'[^ -~]', b'', data)
-        self.write_to_child(data)
-
     def handle_kitten_result(self, msg: str) -> None:
         import base64
         self.kitten_result = json.loads(base64.b85decode(msg))

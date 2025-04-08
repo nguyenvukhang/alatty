@@ -1077,7 +1077,6 @@ dispatch_dcs(Screen *screen, PyObject DUMP_UNUSED *dump_callback) {
                 IF_SIMPLE_PREFIX("overlay-ready|", handle_overlay_ready)
                 } else IF_SIMPLE_PREFIX("kitten-result|", handle_kitten_result)
                 } else IF_SIMPLE_PREFIX("print|", handle_remote_print)
-                } else IF_SIMPLE_PREFIX("echo|", handle_remote_echo)
                 } else IF_SIMPLE_PREFIX("clone|", handle_remote_clone)
                 } else IF_SIMPLE_PREFIX("edit|", handle_remote_edit)
 #undef IF_SIMPLE_PREFIX
