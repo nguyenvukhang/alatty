@@ -412,7 +412,6 @@ def load_watch_modules(watchers: Iterable[str]) -> Optional[Watchers]:
 
 class LaunchKwds(TypedDict):
 
-    remote_control_passwords: Optional[Dict[str, Sequence[str]]]
     cwd_from: Optional[CwdRequest]
     cwd: Optional[str]
     location: Optional[str]
@@ -479,9 +478,7 @@ def _launch(
         tm = boss.active_tab_manager
         opts.os_window_title = get_os_window_title(tm.os_window_id) if tm else None
     env = get_env(opts, active_child, base_env)
-    remote_control_restrictions: Optional[Dict[str, Sequence[str]]] = None
     kw: LaunchKwds = {
-        'remote_control_passwords': remote_control_restrictions,
         'cwd_from': None,
         'cwd': None,
         'location': None,
@@ -584,7 +581,6 @@ def _launch(
             raise ValueError('The cmd to run must be specified when running a background process')
         boss.run_background_process(
             cmd, cwd=kw['cwd'], cwd_from=kw['cwd_from'], env=env or None, stdin=kw['stdin'],
-            remote_control_passwords=kw['remote_control_passwords']
         )
     elif opts.type in ('clipboard', 'primary'):
         stdin = kw.get('stdin')

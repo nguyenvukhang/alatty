@@ -2225,7 +2225,6 @@ class Boss:
         env: Optional[Dict[str, str]] = None,
         stdin: Optional[bytes] = None,
         cwd_from: Optional[CwdRequest] = None,
-        remote_control_passwords: Optional[Dict[str, Sequence[str]]] = None,
     ) -> None:
         import subprocess
         env = env or None

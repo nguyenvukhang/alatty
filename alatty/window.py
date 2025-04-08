@@ -513,7 +513,6 @@ class Window:
         override_title: Optional[str] = None,
         copy_colors_from: Optional['Window'] = None,
         watchers: Optional[Watchers] = None,
-        remote_control_passwords: Optional[Dict[str, Sequence[str]]] = None,
     ):
         if watchers:
             self.watchers = watchers
@@ -565,7 +564,6 @@ class Window:
             self.screen.copy_colors_from(copy_colors_from.screen)
         else:
             setup_colors(self.screen, opts)
-        self.remote_control_passwords = remote_control_passwords
 
     def remote_control_allowed(self, pcmd: Dict[str, Any], extra_data: Dict[str, Any]) -> bool:
         return False
@@ -664,7 +662,6 @@ class Window:
             'override_title': self.override_title,
             'default_title': self.default_title,
             'title_stack': list(self.title_stack),
-            'remote_control_passwords': self.remote_control_passwords,
             'cwd': self.child.current_cwd or self.child.cwd,
             'env': self.child.environ,
             'cmdline': self.child.cmdline,

@@ -515,7 +515,6 @@ class Tab:  # {{{
         watchers: Optional[Watchers] = None,
         overlay_behind: bool = False,
         is_clone_launch: str = '',
-        remote_control_passwords: Optional[Dict[str, Sequence[str]]] = None,
         hold: bool = False,
     ) -> Window:
         child = self.launch_child(
@@ -526,7 +525,6 @@ class Tab:  # {{{
         window = Window(
             self, child, self.args, override_title=override_title,
             copy_colors_from=copy_colors_from, watchers=watchers,
-            remote_control_passwords=remote_control_passwords
         )
         # Must add child before laying out so that resize_pty succeeds
         get_boss().add_child(window)
