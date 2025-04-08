@@ -125,20 +125,10 @@ func get_shell_name(argv0 string) (ans string) {
 	return strings.TrimPrefix(ans, "-")
 }
 
-func rc_modification_allowed(ksi string) bool {
-	for _, x := range strings.Split(ksi, " ") {
-		switch x {
-		case "disabled", "no-rc":
-			return false
-		}
-	}
-	return ksi != ""
-}
-
 func RunShell(shell_cmd []string, cwd string) (err error) {
 	shell_name := get_shell_name(shell_cmd[0])
 	var shell_env map[string]string
-	if rc_modification_allowed("") && shell_integration.IsSupportedShell(shell_name) {
+	if shell_integration.IsSupportedShell(shell_name) {
 		oenv := os.Environ()
 		env := make(map[string]string, len(oenv))
 		for _, x := range oenv {
