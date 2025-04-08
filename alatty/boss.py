@@ -796,11 +796,6 @@ class Boss:
             log_error('Unknown message received over single instance socket, ignoring')
         return None
 
-    def handle_remote_cmd(self, cmd: str, window: Optional[Window] = None) -> None:
-        response = self._handle_remote_command(cmd, window)
-        if response is not None and not isinstance(response, AsyncResponse) and window is not None:
-            window.send_cmd_response(response)
-
     def mark_os_window_for_close(self, os_window_id: int, request_type: int = IMPERATIVE_CLOSE_REQUESTED) -> None:
         if self.current_visual_select is not None and self.current_visual_select.os_window_id == os_window_id and request_type == IMPERATIVE_CLOSE_REQUESTED:
             self.cancel_current_visual_select()

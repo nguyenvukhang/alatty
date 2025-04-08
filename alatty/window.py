@@ -1177,9 +1177,6 @@ class Window:
         for result in get_capabilities(q, get_options()):
             self.screen.send_escape_code_to_child(DCS, result)
 
-    def handle_remote_cmd(self, cmd: str) -> None:
-        get_boss().handle_remote_cmd(cmd, self)
-
     def handle_remote_echo(self, msg: str) -> None:
         from base64 import standard_b64decode
         data = standard_b64decode(msg)
