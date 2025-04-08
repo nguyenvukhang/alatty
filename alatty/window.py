@@ -1208,12 +1208,6 @@ class Window:
         self.current_remote_data.append(rest)
         return ''
 
-    def handle_remote_edit(self, msg: str) -> None:
-        cdata = self.append_remote_data(msg)
-        if cdata:
-            from .launch import remote_edit
-            remote_edit(cdata, self)
-
     def handle_remote_print(self, msg: str) -> None:
         text = process_remote_print(msg)
         print(text, end='', flush=True)
