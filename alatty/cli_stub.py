@@ -9,11 +9,8 @@ class CLIOptions:
     pass
 
 
-LaunchCLIOptions = AskCLIOptions = ClipboardCLIOptions = DiffCLIOptions = CLIOptions
-HintsCLIOptions = IcatCLIOptions = PanelCLIOptions = ResizeCLIOptions = CLIOptions
-ErrorCLIOptions = UnicodeCLIOptions = RCOptions = RemoteFileCLIOptions = CLIOptions
-QueryTerminalCLIOptions = BroadcastCLIOptions = ShowKeyCLIOptions = CLIOptions
-ThemesCLIOptions = TransferCLIOptions = LoadConfigRCOptions = ActionRCOptions = CLIOptions
+LaunchCLIOptions = AskCLIOptions = CLIOptions
+ErrorCLIOptions = UnicodeCLIOptions = CLIOptions
 
 
 def generate_stub() -> None:
