@@ -565,9 +565,6 @@ class Window:
         else:
             setup_colors(self.screen, opts)
 
-    def remote_control_allowed(self, pcmd: Dict[str, Any], extra_data: Dict[str, Any]) -> bool:
-        return False
-
     def on_dpi_change(self, font_sz: float) -> None:
         self.update_effective_padding()
 

@@ -105,13 +105,6 @@ def fnmatch_pattern(pat: str) -> 're.Pattern[str]':
     return re.compile(translate(pat))
 
 
-def remote_control_allowed(
-    pcmd: Dict[str, Any],
-    window: Optional['Window'], extra_data: Dict[str, Any]
-) -> bool:
-    return True
-
-
 class PasswordAuthorizer:
 
     def __init__(self, auth_items: FrozenSet[str]) -> None:
