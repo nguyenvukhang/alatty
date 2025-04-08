@@ -521,31 +521,6 @@ def generate_unicode_names(src: TextIO, dest: BinaryIO) -> None:
     write_compressed_data(gob.getvalue(), dest)
 
 
-def generate_ssh_kitten_data() -> None:
-    files = {
-        'terminfo/alatty.terminfo', 'terminfo/x/' + Options.term,
-    }
-    for dirpath, dirnames, filenames in os.walk('shell-integration'):
-        for f in filenames:
-            path = os.path.join(dirpath, f)
-            files.add(path.replace(os.sep, '/'))
-    dest = 'tools/tui/shell_integration/data_generated.bin'
-
-    def normalize(t: tarfile.TarInfo) -> tarfile.TarInfo:
-        t.uid = t.gid = 0
-        t.uname = t.gname = ''
-        t.mtime = 0
-        return t
-
-    if newer(dest, *files):
-        buf = io.BytesIO()
-        with tarfile.open(fileobj=buf, mode='w') as tf:
-            for f in sorted(files):
-                tf.add(f, filter=normalize)
-        with open(dest, 'wb') as d:
-            write_compressed_data(buf.getvalue(), d)
-
-
 def main(args: List[str]=sys.argv) -> None:
     with replace_if_needed('constants_generated.go') as f:
         f.write(generate_constants())
@@ -560,7 +535,6 @@ def main(args: List[str]=sys.argv) -> None:
     if newer('tools/unicode_names/data_generated.bin', 'tools/unicode_names/names.txt'):
         with open('tools/unicode_names/data_generated.bin', 'wb') as dest, open('tools/unicode_names/names.txt') as src:
             generate_unicode_names(src, dest)
-    generate_ssh_kitten_data()
 
     kitten_clis()
     stringify()
