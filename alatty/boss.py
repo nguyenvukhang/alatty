@@ -2608,16 +2608,6 @@ class Boss:
         msg = '\n'.join(ans).rstrip()
         self.show_error(_('Errors parsing configuration'), msg)
 
-    @ac('misc', '''
-        Change colors in the specified windows
-
-        For details, see :ref:`at-set-colors`. For example::
-
-            map f5 set_colors --configured /path/to/some/config/file/colors.conf
-        ''')
-    def set_colors(self, *args: str) -> None:
-        pass
-
     def _move_window_to(
         self,
         window: Optional[Window] = None,

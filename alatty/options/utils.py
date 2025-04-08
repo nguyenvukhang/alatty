@@ -292,14 +292,6 @@ def pipe(func: str, rest: str) -> FuncArgsType:
     return func, r
 
 
-@func_with_args('set_colors')
-def set_colors(func: str, rest: str) -> FuncArgsType:
-    r = list(shlex_split(rest))
-    if len(r) < 1:
-        log_error('Too few arguments to set_colors function')
-    return func, r
-
-
 @func_with_args('remote_control')
 def remote_control(func: str, rest: str) -> FuncArgsType:
     func, args = shlex_parse(func, rest)
