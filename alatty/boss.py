@@ -747,25 +747,10 @@ class Boss:
                 return None
             raise
 
-    def peer_message_received(self, msg_bytes: bytes, peer_id: int, is_remote_control: bool) -> Union[bytes, bool, None]:
+    def peer_message_received(self, msg_bytes: bytes, peer_id: int) -> Union[bytes, bool, None]:
         if peer_id > 0 and msg_bytes == b'peer_death':
             self.peer_data_map.pop(peer_id, None)
             return False
-        if is_remote_control:
-            cmd_prefix = b'\x1bP@kitty-cmd'
-            terminator = b'\x1b\\'
-            if msg_bytes.startswith(cmd_prefix) and msg_bytes.endswith(terminator):
-                cmd = msg_bytes[len(cmd_prefix):-len(terminator)].decode('utf-8')
-                response = self._handle_remote_command(cmd, peer_id=peer_id)
-                if response is None:
-                    return None
-                if isinstance(response, AsyncResponse):
-                    return True
-                from alatty.remote_control import encode_response_for_peer
-                return encode_response_for_peer(response)
-            log_error('Malformatted remote control message received from peer, ignoring')
-            return None
-
         try:
             data:SingleInstanceData = json.loads(msg_bytes.decode('utf-8'))
         except Exception:

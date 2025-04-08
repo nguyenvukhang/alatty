@@ -511,7 +511,7 @@ parse_input(ChildMonitor *self) {
             Message *msg = msgs + i;
             PyObject *resp = NULL;
             if (msg->data) {
-                resp = PyObject_CallMethod(global_state.boss, "peer_message_received", "y#KO", msg->data, (int)msg->sz, msg->peer_id, msg->is_remote_control_peer ? Py_True : Py_False);
+                resp = PyObject_CallMethod(global_state.boss, "peer_message_received", "y#K", msg->data, (int)msg->sz, msg->peer_id);
                 free(msg->data);
                 if (!resp) PyErr_Print();
             }
