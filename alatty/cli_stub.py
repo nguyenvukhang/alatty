@@ -30,9 +30,6 @@ def generate_stub() -> None:
     from .launch import options_spec
     do(options_spec(), 'LaunchCLIOptions')
 
-    from .remote_control import global_options_spec
-    do(global_options_spec(), 'RCOptions')
-
     from kittens.ask.main import option_text
     do(option_text(), 'AskCLIOptions')
 
