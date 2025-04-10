@@ -1077,16 +1077,14 @@ def build_launcher(args: Options, launcher_dir: str = '.', bundle_type: str = 's
 
 # Packaging {{{
 def compile_python(base_path: str) -> None:
-    import compileall
-    import py_compile
-    for root, dirs, files in os.walk(base_path):
+    import compileall, py_compile
+    for root, _, files in os.walk(base_path):
         for f in files:
             if f.rpartition('.')[-1] in ('pyc', 'pyo'):
                 os.remove(os.path.join(root, f))
 
-    exclude = re.compile('.*/shell-integration/ssh/bootstrap.py')
     compileall.compile_dir(
-        base_path, rx=exclude, force=True, optimize=(0, 1, 2), quiet=1, workers=0,  # type: ignore
+        base_path, force=True, optimize=(0, 1, 2), quiet=1, workers=0,  # type: ignore
         invalidation_mode=py_compile.PycInvalidationMode.UNCHECKED_HASH, ddir='')
 
 
