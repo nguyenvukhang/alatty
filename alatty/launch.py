@@ -460,9 +460,6 @@ def _launch(
         'hold': False,
     }
     spacing = {}
-    if opts.spacing:
-        from .rc.set_spacing import parse_spacing_settings, patch_window_edges
-        spacing = parse_spacing_settings(opts.spacing)
     if opts.cwd:
         if opts.cwd == 'current':
             if active:

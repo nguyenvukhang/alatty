@@ -150,9 +150,6 @@ from .utils import (
 )
 from .window import CommandOutput, CwdRequest, Window
 
-if TYPE_CHECKING:
-    from .rc.base import ResponseType
-
 RCResponse = Union[Dict[str, Any], None, AsyncResponse]
 
 
