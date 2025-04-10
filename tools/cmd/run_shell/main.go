@@ -62,7 +62,7 @@ func EntryPoint(root *cli.Command) *cli.Command {
 		Name:             "run-shell",
 		Usage:            "[options] [optional cmd to run before running the shell ...]",
 		ShortDescription: "Run the user's shell with shell integration enabled",
-		HelpText:         "Run the users's configured shell. If the shell supports shell integration, enable it based on the user's configured shell_integration setting.",
+		HelpText:         "Run the users's configured shell.",
 		Run: func(cmd *cli.Command, args []string) (ret int, err error) {
 			opts := &Options{}
 			err = cmd.GetOptionValues(opts)
