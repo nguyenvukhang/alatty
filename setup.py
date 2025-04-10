@@ -1671,13 +1671,6 @@ def option_parser() -> argparse.ArgumentParser:  # {{{
         ' be set to this number. Use zero to disable update checking.'
     )
     p.add_argument(
-        '--shell-integration',
-        type=str,
-        default=Options.shell_integration,
-        help='When building a package, the default value for the shell_integration setting will'
-        ' be set to this. Use "enabled no-rc" if you intend to install the shell integration scripts system wide.'
-    )
-    p.add_argument(
         '--egl-library',
         type=str,
         default=Options.egl_library,

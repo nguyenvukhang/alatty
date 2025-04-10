@@ -237,8 +237,7 @@ func EntryPoint(parent *cli.Command) *cli.Command {
 		Name:             "edit-in-alatty",
 		Usage:            "[options] file-to-edit",
 		ShortDescription: "Edit a file in a alatty overlay window",
-		HelpText: "Edit the specified file in a alatty overlay window. Works over SSH as well.\n\n" +
-			"For usage instructions see: https://sw.kovidgoyal.net/alatty/shell-integration/#edit-file",
+		HelpText: "Edit the specified file in a alatty overlay window. Works over SSH as well.",
 		Run: func(cmd *cli.Command, args []string) (ret int, err error) {
 			if len(args) == 0 {
 				fmt.Fprintln(os.Stderr, "Usage:", cmd.Usage)
