@@ -94,12 +94,11 @@ opened window.
 completion=type:directory kwds:current,oldest,last_reported,root
 The working directory for the newly launched child. Use the special value
 :code:`current` to use the working directory of the currently active window.
-The special value :code:`last_reported` uses the last working directory reported
-by the shell (needs :ref:`shell_integration` to work). The special value
-:code:`oldest` works like :code:`current` but uses the working directory of the
-oldest foreground process associated with the currently active window rather
-than the newest foreground process. Finally, the special value :code:`root`
-refers to the process that was originally started when the window was created.
+The special value :code:`oldest` works like :code:`current` but uses the
+working directory of the oldest foreground process associated with the
+currently active window rather than the newest foreground process. Finally, the
+special value :code:`root` refers to the process that was originally started
+when the window was created.
 
 
 --env

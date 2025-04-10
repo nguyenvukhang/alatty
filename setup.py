@@ -159,7 +159,6 @@ class Options:
     extra_library_dirs: List[str] = []
     link_time_optimization: bool = 'ALATTY_NO_LTO' not in os.environ
     update_check_interval: float = 24.0
-    shell_integration: str = 'enabled'
     egl_library: Optional[str] = os.getenv('ALATTY_EGL_LIBRARY')
     startup_notification_library: Optional[str] = os.getenv('ALATTY_STARTUP_NOTIFICATION_LIBRARY')
     canberra_library: Optional[str] = os.getenv('ALATTY_CANBERRA_LIBRARY')
@@ -1463,7 +1462,6 @@ def package(args: Options, bundle_type: str) -> None:
     with open(os.path.join(libdir, 'alatty/options/types.py'), 'r+', encoding='utf-8') as f:
         oraw = raw = f.read()
         raw = repl('update_check_interval', raw, Options.update_check_interval, args.update_check_interval)
-        raw = repl('shell_integration', raw, frozenset(Options.shell_integration.split()), frozenset(args.shell_integration.split()))
         if raw != oraw:
             f.seek(0), f.truncate(), f.write(raw)
 
