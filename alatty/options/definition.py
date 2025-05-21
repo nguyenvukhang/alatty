@@ -1662,10 +1662,6 @@ opt('allow_hyperlinks', 'yes',
     option_type='allow_hyperlinks', ctype='bool',
     )
 
-opt('shell_integration', 'enabled',
-    option_type='shell_integration',
-    )
-
 opt('allow_cloning', 'ask',
     choices=('yes', 'y', 'true', 'no', 'n', 'false', 'ask'),
     )

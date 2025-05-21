@@ -159,7 +159,6 @@ class Options:
     extra_library_dirs: List[str] = []
     link_time_optimization: bool = 'ALATTY_NO_LTO' not in os.environ
     update_check_interval: float = 24.0
-    shell_integration: str = 'enabled'
     egl_library: Optional[str] = os.getenv('ALATTY_EGL_LIBRARY')
     startup_notification_library: Optional[str] = os.getenv('ALATTY_STARTUP_NOTIFICATION_LIBRARY')
     canberra_library: Optional[str] = os.getenv('ALATTY_CANBERRA_LIBRARY')
@@ -1077,16 +1076,14 @@ def build_launcher(args: Options, launcher_dir: str = '.', bundle_type: str = 's
 
 # Packaging {{{
 def compile_python(base_path: str) -> None:
-    import compileall
-    import py_compile
-    for root, dirs, files in os.walk(base_path):
+    import compileall, py_compile
+    for root, _, files in os.walk(base_path):
         for f in files:
             if f.rpartition('.')[-1] in ('pyc', 'pyo'):
                 os.remove(os.path.join(root, f))
 
-    exclude = re.compile('.*/shell-integration/ssh/bootstrap.py')
     compileall.compile_dir(
-        base_path, rx=exclude, force=True, optimize=(0, 1, 2), quiet=1, workers=0,  # type: ignore
+        base_path, force=True, optimize=(0, 1, 2), quiet=1, workers=0,  # type: ignore
         invalidation_mode=py_compile.PycInvalidationMode.UNCHECKED_HASH, ddir='')
 
 
@@ -1465,7 +1462,6 @@ def package(args: Options, bundle_type: str) -> None:
     with open(os.path.join(libdir, 'alatty/options/types.py'), 'r+', encoding='utf-8') as f:
         oraw = raw = f.read()
         raw = repl('update_check_interval', raw, Options.update_check_interval, args.update_check_interval)
-        raw = repl('shell_integration', raw, frozenset(Options.shell_integration.split()), frozenset(args.shell_integration.split()))
         if raw != oraw:
             f.seek(0), f.truncate(), f.write(raw)
 
@@ -1671,13 +1667,6 @@ def option_parser() -> argparse.ArgumentParser:  # {{{
         default=Options.update_check_interval,
         help='When building a package, the default value for the update_check_interval setting will'
         ' be set to this number. Use zero to disable update checking.'
-    )
-    p.add_argument(
-        '--shell-integration',
-        type=str,
-        default=Options.shell_integration,
-        help='When building a package, the default value for the shell_integration setting will'
-        ' be set to this. Use "enabled no-rc" if you intend to install the shell integration scripts system wide.'
     )
     p.add_argument(
         '--egl-library',

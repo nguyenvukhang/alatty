@@ -405,7 +405,6 @@ option_names = (  # {{{
  'selection_background',
  'selection_foreground',
  'shell',
- 'shell_integration',
  'show_hyperlink_targets',
  'single_window_margin_width',
  'single_window_padding_width',
@@ -562,7 +561,6 @@ class Options:
     selection_background: typing.Optional[alatty.fast_data_types.Color] = Color(255, 250, 205)
     selection_foreground: typing.Optional[alatty.fast_data_types.Color] = Color(0, 0, 0)
     shell: str = '.'
-    shell_integration: typing.FrozenSet[str] = frozenset({'enabled'})
     show_hyperlink_targets: bool = False
     single_window_margin_width: FloatEdges = FloatEdges(left=-1.0, top=-1.0, right=-1.0, bottom=-1.0)
     single_window_padding_width: FloatEdges = FloatEdges(left=-1.0, top=-1.0, right=-1.0, bottom=-1.0)
