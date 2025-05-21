@@ -513,8 +513,6 @@ class Window:
         override_title: Optional[str] = None,
         copy_colors_from: Optional['Window'] = None,
         watchers: Optional[Watchers] = None,
-        allow_remote_control: bool = False,
-        remote_control_passwords: Optional[Dict[str, Sequence[str]]] = None,
     ):
         if watchers:
             self.watchers = watchers
@@ -566,14 +564,6 @@ class Window:
             self.screen.copy_colors_from(copy_colors_from.screen)
         else:
             setup_colors(self.screen, opts)
-        self.remote_control_passwords = remote_control_passwords
-        self.allow_remote_control = allow_remote_control
-
-    def remote_control_allowed(self, pcmd: Dict[str, Any], extra_data: Dict[str, Any]) -> bool:
-        if not self.allow_remote_control:
-            return False
-        from .remote_control import remote_control_allowed
-        return remote_control_allowed(pcmd, self.remote_control_passwords, self, extra_data)
 
     def on_dpi_change(self, font_sz: float) -> None:
         self.update_effective_padding()
@@ -669,8 +659,6 @@ class Window:
             'override_title': self.override_title,
             'default_title': self.default_title,
             'title_stack': list(self.title_stack),
-            'allow_remote_control': self.allow_remote_control,
-            'remote_control_passwords': self.remote_control_passwords,
             'cwd': self.child.current_cwd or self.child.cwd,
             'env': self.child.environ,
             'cmdline': self.child.cmdline,
@@ -1186,17 +1174,6 @@ class Window:
         for result in get_capabilities(q, get_options()):
             self.screen.send_escape_code_to_child(DCS, result)
 
-    def handle_remote_cmd(self, cmd: str) -> None:
-        get_boss().handle_remote_cmd(cmd, self)
-
-    def handle_remote_echo(self, msg: str) -> None:
-        from base64 import standard_b64decode
-        data = standard_b64decode(msg)
-        # ensure we are not writing any control char back as this can lead to command injection on shell prompts
-        # Any bytes outside the printable ASCII range are removed.
-        data = re.sub(rb'[^ -~]', b'', data)
-        self.write_to_child(data)
-
     def handle_kitten_result(self, msg: str) -> None:
         import base64
         self.kitten_result = json.loads(base64.b85decode(msg))
@@ -1227,35 +1204,6 @@ class Window:
             self.current_remote_data = []
         self.current_remote_data.append(rest)
         return ''
-
-    def handle_remote_edit(self, msg: str) -> None:
-        cdata = self.append_remote_data(msg)
-        if cdata:
-            from .launch import remote_edit
-            remote_edit(cdata, self)
-
-    def handle_remote_clone(self, msg: str) -> None:
-        cdata = self.append_remote_data(msg)
-        if cdata:
-            ac = get_options().allow_cloning
-            if ac == 'ask':
-                get_boss().confirm(_(
-                    'A program running in this window wants to clone it into another window.'
-                    ' Allow it do so, once?'),
-                    partial(self.handle_remote_clone_confirmation, cdata), window=self,
-                    title=_('Allow cloning of window?'),
-                )
-            elif ac in ('yes', 'y', 'true'):
-                self.handle_remote_clone_confirmation(cdata, True)
-
-    def handle_remote_clone_confirmation(self, cdata: str, confirmed: bool) -> None:
-        if confirmed:
-            from .launch import clone_and_launch
-            clone_and_launch(cdata, self)
-
-    def handle_remote_print(self, msg: str) -> None:
-        text = process_remote_print(msg)
-        print(text, end='', flush=True)
 
     def send_cmd_response(self, response: Any) -> None:
         self.screen.send_escape_code_to_child(DCS, '@kitty-cmd' + json.dumps(response))

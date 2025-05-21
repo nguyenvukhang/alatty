@@ -17,7 +17,6 @@ from alatty.types import FloatEdges
 import alatty.types
 
 choices_for_allow_cloning = typing.Literal['yes', 'y', 'true', 'no', 'n', 'false', 'ask']
-choices_for_allow_remote_control = typing.Literal['password', 'socket-only', 'socket', 'no', 'n', 'false', 'yes', 'y', 'true']
 choices_for_background_image_layout = typing.Literal['mirror-tiled', 'scaled', 'tiled', 'clamped', 'centered', 'cscaled']
 choices_for_default_pointer_shape = typing.Literal['arrow', 'beam', 'text', 'pointer', 'hand', 'help', 'wait', 'progress', 'crosshair', 'cell', 'vertical-text', 'move', 'e-resize', 'ne-resize', 'nw-resize', 'n-resize', 'se-resize', 'sw-resize', 's-resize', 'w-resize', 'ew-resize', 'ns-resize', 'nesw-resize', 'nwse-resize', 'zoom-in', 'zoom-out', 'alias', 'copy', 'not-allowed', 'no-drop', 'grab', 'grabbing']
 choices_for_linux_display_server = typing.Literal['auto', 'wayland', 'x11']
@@ -44,7 +43,6 @@ option_names = (  # {{{
  'active_tab_title_template',
  'allow_cloning',
  'allow_hyperlinks',
- 'allow_remote_control',
  'background',
  'background_blur',
  'background_image',
@@ -395,7 +393,6 @@ option_names = (  # {{{
  'pointer_shape_when_dragging',
  'pointer_shape_when_grabbed',
  'remember_window_size',
- 'remote_control_password',
  'repaint_delay',
  'resize_debounce_time',
  'resize_in_steps',
@@ -468,7 +465,6 @@ class Options:
     active_tab_title_template: typing.Optional[str] = None
     allow_cloning: choices_for_allow_cloning = 'ask'
     allow_hyperlinks: int = 1
-    allow_remote_control: choices_for_allow_remote_control = 'no'
     background: Color = Color(0, 0, 0)
     background_blur: int = 0
     background_image: typing.Optional[str] = None
@@ -622,7 +618,6 @@ class Options:
     menu_map: typing.Dict[typing.Tuple[str, ...], str] = {}
     modify_font: typing.Dict[str, alatty.fonts.FontModification] = {}
     narrow_symbols: typing.Dict[typing.Tuple[int, int], int] = {}
-    remote_control_password: typing.Dict[str, typing.Sequence[str]] = {}
     symbol_map: typing.Dict[typing.Tuple[int, int], str] = {}
     watcher: typing.Dict[str, str] = {}
     map: typing.List[alatty.options.utils.KeyDefinition] = []
@@ -744,7 +739,6 @@ defaults.kitten_alias = {}
 defaults.menu_map = {}
 defaults.modify_font = {}
 defaults.narrow_symbols = {}
-defaults.remote_control_password = {}
 defaults.symbol_map = {}
 defaults.watcher = {}
 defaults.map = [

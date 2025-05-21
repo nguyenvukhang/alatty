@@ -1624,11 +1624,6 @@ opt('close_on_child_death', 'no',
     option_type='to_bool', ctype='bool',
     )
 
-opt('+remote_control_password', '',
-    option_type='remote_control_password',
-    add_to_default=False,
-    )
-
 opt('listen_on', 'none',
     )
 

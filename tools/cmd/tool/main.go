@@ -7,7 +7,6 @@ import (
 
 	"alatty/kittens/ask"
 	"alatty/tools/cli"
-	"alatty/tools/cmd/at"
 	"alatty/tools/cmd/edit_in_alatty"
 	"alatty/tools/cmd/mouse_demo"
 	"alatty/tools/cmd/pytest"
@@ -23,8 +22,6 @@ func AlattyToolEntryPoints(root *cli.Command) {
 	root.Add(cli.OptionSpec{
 		Name: "--version", Type: "bool-set", Help: "The current kitten version."})
 	tui.PrepareRootCmd(root)
-	// @
-	at.EntryPoint(root)
 	// update-self
 	update_self.EntryPoint(root)
 	// edit-in-alatty
