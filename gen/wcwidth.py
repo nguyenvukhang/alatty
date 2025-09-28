@@ -70,7 +70,6 @@ def unicode_version() -> Tuple[int, int, int]:
 class_maps: Dict[str, Set[int]] = {}
 all_symbols: Set[int] = set()
 name_map: Dict[int, str] = {}
-word_search_map: DefaultDict[str, Set[int]] = defaultdict(set)
 soft_hyphen = 0xad
 flag_codepoints = frozenset(range(0x1F1E6, 0x1F1E6 + 26))
 # See https://github.com/harfbuzz/harfbuzz/issues/169
@@ -90,73 +89,6 @@ def parse_prop_list() -> None:
         property_maps[name] |= chars
     # see https://www.unicode.org/faq/unsup_char.html#3
     marks |= property_maps['Other_Default_Ignorable_Code_Point']
-
-
-def parse_ucd() -> None:
-
-    def add_word(w: str, c: int) -> None:
-        if c <= 32 or c == 127 or 128 <= c <= 159:
-            return
-        if len(w) > 1:
-            word_search_map[w.lower()].add(c)
-
-    first: Optional[int] = None
-    for word, c in html5.items():
-        if len(c) == 1:
-            add_word(word.rstrip(';'), ord(c))
-    word_search_map['nnbsp'].add(0x202f)
-    for line in get_data('ucd/UnicodeData.txt'):
-        parts = [x.strip() for x in line.split(';')]
-        codepoint = int(parts[0], 16)
-        name = parts[1] or parts[10]
-        if name == '<control>':
-            name = parts[10]
-        if name:
-            name_map[codepoint] = name
-            for word in name.lower().split():
-                add_word(word, codepoint)
-        category = parts[2]
-        s = class_maps.setdefault(category, set())
-        desc = parts[1]
-        codepoints: Union[Tuple[int, ...], Iterable[int]] = (codepoint,)
-        if first is None:
-            if desc.endswith(', First>'):
-                first = codepoint
-                continue
-        else:
-            codepoints = range(first, codepoint + 1)
-            first = None
-        for codepoint in codepoints:
-            s.add(codepoint)
-            not_assigned.discard(codepoint)
-            if category.startswith('M'):
-                marks.add(codepoint)
-            elif category.startswith('S'):
-                all_symbols.add(codepoint)
-            elif category == 'Cf':
-                # we add Cf to marks as it contains things like tags and zero
-                # width chars. Not sure if *all* of Cf should be treated as
-                # combining chars, might need to add individual exceptions in
-                # the future.
-                marks.add(codepoint)
-
-    with open('gen/nerd-fonts-glyphs.txt') as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith('#'):
-                continue
-            code, category, name = line.split(' ', 2)
-            codepoint = int(code, 16)
-            if name and codepoint not in name_map:
-                name_map[codepoint] = name.upper()
-                for word in name.lower().split():
-                    add_word(word, codepoint)
-
-    # Some common synonyms
-    word_search_map['bee'] |= word_search_map['honeybee']
-    word_search_map['lambda'] |= word_search_map['lamda']
-    word_search_map['lamda'] |= word_search_map['lambda']
-    word_search_map['diamond'] |= word_search_map['gem']
 
 
 def parse_range_spec(spec: str) -> Set[int]:
