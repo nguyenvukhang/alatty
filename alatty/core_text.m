@@ -161,7 +161,7 @@ all_fonts_collection(void) {
 }
 
 static PyObject*
-coretext_all_fonts(PyObject UNUSED *_self) {
+coretext_all_fonts(PyObject UNUSED *_self, PyObject *args UNUSED) {
     CFArrayRef matches = CTFontCollectionCreateMatchingFontDescriptors(all_fonts_collection());
     const CFIndex count = CFArrayGetCount(matches);
     PyObject *ans = PyTuple_New(count), *temp;
@@ -688,7 +688,7 @@ render_glyphs_in_cells(PyObject *s, bool bold, bool italic, hb_glyph_info_t *inf
 // Boilerplate {{{
 
 static PyObject*
-display_name(CTFace *self) {
+display_name(CTFace *self, PyObject *args UNUSED) {
     CFStringRef dn = CTFontCopyDisplayName(self->ct_font);
     const char *d = convert_cfstring(dn, true);
     return Py_BuildValue("s", d);
