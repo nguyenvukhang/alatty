@@ -450,25 +450,6 @@ def gen_ucd() -> None:
             f.write(raw)
 
 
-def gen_names() -> None:
-    aliases_map: Dict[int, Set[str]] = {}
-    for word, codepoints in word_search_map.items():
-        for cp in codepoints:
-            aliases_map.setdefault(cp, set()).add(word)
-    if len(name_map) > 0xffff:
-        raise Exception('Too many named codepoints')
-    with open('tools/unicode_names/names.txt', 'w') as f:
-        print(len(name_map), len(word_search_map), file=f)
-        for cp in sorted(name_map):
-            name = name_map[cp]
-            words = name.lower().split()
-            aliases = aliases_map.get(cp, set()) - set(words)
-            end = '\n'
-            if aliases:
-                end = '\t' + ' '.join(sorted(aliases)) + end
-            print(cp, *words, end=end, file=f)
-
-
 def gen_wcwidth() -> None:
     seen: Set[int] = set()
     non_printing = class_maps['Cc'] | class_maps['Cf'] | class_maps['Cs']
@@ -590,7 +571,6 @@ def main(args: List[str]=sys.argv) -> None:
     gen_ucd()
     gen_wcwidth()
     gen_emoji()
-    gen_names()
     gen_rowcolumn_diacritics()
 
 
