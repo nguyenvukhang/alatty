@@ -497,23 +497,6 @@ def write_compressed_data(data: bytes, d: BinaryIO) -> None:
     d.write(bz2.compress(data))
 
 
-def generate_unicode_names(src: TextIO, dest: BinaryIO) -> None:
-    num_names, num_of_words = map(int, next(src).split())
-    gob = io.BytesIO()
-    gob.write(struct.pack('<II', num_names, num_of_words))
-    for line in src:
-        line = line.strip()
-        if line:
-            a, aliases = line.partition('\t')[::2]
-            cp, name = a.partition(' ')[::2]
-            ename = name.encode()
-            record = struct.pack('<IH', int(cp), len(ename)) + ename
-            if aliases:
-                record += aliases.encode()
-            gob.write(struct.pack('<H', len(record)) + record)
-    write_compressed_data(gob.getvalue(), dest)
-
-
 def main(args: List[str]=sys.argv) -> None:
     with replace_if_needed('constants_generated.go') as f:
         f.write(generate_constants())
@@ -525,9 +508,6 @@ def main(args: List[str]=sys.argv) -> None:
         f.write(generate_mimetypes())
     with replace_if_needed('tools/utils/mimetypes_textual_generated.go') as f:
         f.write(generate_textual_mimetypes())
-    if newer('tools/unicode_names/data_generated.bin', 'tools/unicode_names/names.txt'):
-        with open('tools/unicode_names/data_generated.bin', 'wb') as dest, open('tools/unicode_names/names.txt') as src:
-            generate_unicode_names(src, dest)
 
     kitten_clis()
     print(json.dumps(changed, indent=2))
