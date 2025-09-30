@@ -4,7 +4,7 @@ from subprocess import check_output
 
 
 def get_ancestry():
-    cmd = ("git", "rev-list", "--ancestry-path", "v0.32.2..HEAD")
+    cmd = ("git", "rev-list", "--ancestry-path", "--invert-grep", "--grep=^↓.*", "v0.32.2..HEAD")
     return check_output(cmd, encoding='utf8').split()
 
 
@@ -24,7 +24,7 @@ def __get__(filepath):
         return not any(map(commit.startswith, CHECKED_COMMITS))
 
     x = [x for x in get_ancestry() if unchecked(x)]
-    x = x[:5] # only use the first 5 of the list
+    x = x[:5]  # only use the first 5 of the list
     x = '[' + ", ".join([f'"{x}"' for x in x]) + ']'
     print(x)
 
