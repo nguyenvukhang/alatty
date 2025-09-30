@@ -148,7 +148,6 @@ typedef struct {
         };
         unsigned int val;
     } prompt_settings;
-    char display_window_char;
     struct {
         char ch;
         uint8_t *canvas;
