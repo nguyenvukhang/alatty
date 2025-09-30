@@ -606,56 +606,6 @@ draw_hyperlink_target(OSWindow *os_window, Screen *screen, const CellRenderData 
 }
 
 static void
-draw_window_number(OSWindow *os_window, Screen *screen, const CellRenderData *crd, Window *window) {
-    GLfloat left = os_window->viewport_width * (crd->gl.xstart + 1.f) / 2.f;
-    GLfloat right = left + os_window->viewport_width * crd->gl.width / 2.f;
-    GLfloat title_bar_height = 0;
-    size_t requested_height = (size_t)(os_window->viewport_height * crd->gl.height / 2.f);
-    if (window->title && PyUnicode_Check(window->title) && (requested_height > (os_window->fonts_data->cell_height + 1) * 2)) {
-        title_bar_height = render_a_bar(os_window, screen, crd, &window->title_bar_data, window->title, false);
-    }
-    GLfloat ystart = crd->gl.ystart, height = crd->gl.height, xstart = crd->gl.xstart, width = crd->gl.width;
-    if (title_bar_height > 0) {
-        ystart -= title_bar_height;
-        height -= title_bar_height;
-    }
-    ystart -= crd->gl.dy / 2.f; height -= crd->gl.dy;  // top and bottom margins
-    xstart += crd->gl.dx / 2.f; width -= crd->gl.dx;  // left and right margins
-    GLfloat height_gl = MIN(MIN(12 * crd->gl.dy, height), width);
-    requested_height = (size_t)(os_window->viewport_height * height_gl / 2.f);
-    if (requested_height < 4) return;
-#define lr screen->last_rendered_window_char
-    if (!lr.canvas || lr.ch != screen->display_window_char || lr.requested_height != requested_height) {
-        free(lr.canvas); lr.canvas = NULL;
-        lr.requested_height = requested_height; lr.height_px = requested_height; lr.ch = 0;
-        lr.canvas = draw_single_ascii_char(screen->display_window_char, &lr.width_px, &lr.height_px);
-        if (lr.height_px < 4 || lr.width_px < 4 || !lr.canvas) return;
-        lr.ch = screen->display_window_char;
-    }
-
-    GLfloat width_gl = gl_size(lr.width_px, os_window->viewport_width);
-    height_gl = gl_size(lr.height_px, os_window->viewport_height);
-    left = xstart + (width - width_gl) / 2.f;
-    left = clamp_position_to_nearest_pixel(left, os_window->viewport_width);
-    right = left + width_gl;
-    GLfloat top = ystart - (height - height_gl) / 2.f;
-    top = clamp_position_to_nearest_pixel(top, os_window->viewport_height);
-    GLfloat bottom = top - height_gl;
-    bind_program(GRAPHICS_ALPHA_MASK_PROGRAM);
-    ImageRenderData *ird = load_alpha_mask_texture(lr.width_px, lr.height_px, lr.canvas);
-#undef lr
-    gpu_data_for_image(ird, left, top, right, bottom);
-    glEnable(GL_BLEND);
-    BLEND_PREMULT;
-    glUniform1i(graphics_program_layouts[GRAPHICS_ALPHA_MASK_PROGRAM].uniforms.image, GRAPHICS_UNIT);
-    color_type digit_color = colorprofile_to_color_with_fallback(screen->color_profile, screen->color_profile->overridden.highlight_bg, screen->color_profile->configured.highlight_bg, screen->color_profile->overridden.default_fg, screen->color_profile->configured.default_fg);
-    color_vec3(graphics_program_layouts[GRAPHICS_ALPHA_MASK_PROGRAM].uniforms.amask_fg, digit_color);
-    glUniform4f(graphics_program_layouts[GRAPHICS_ALPHA_MASK_PROGRAM].uniforms.amask_bg_premult, 0.f, 0.f, 0.f, 0.f);
-    draw_graphics(GRAPHICS_ALPHA_MASK_PROGRAM, 0, ird, 0, 1, viewport_for_cells(crd));
-    glDisable(GL_BLEND);
-}
-
-static void
 draw_visual_bell_flash(GLfloat intensity, const CellRenderData *crd, Screen *screen) {
     glEnable(GL_BLEND);
     // BLEND_PREMULT
@@ -765,7 +715,6 @@ draw_cells(ssize_t vao_idx, const ScreenRenderData *srd, OSWindow *os_window, bo
         if (intensity > 0.0f) draw_visual_bell_flash(intensity, &crd, screen);
     }
 
-    if (window && screen->display_window_char) draw_window_number(os_window, screen, &crd, window);
     if (OPT(show_hyperlink_targets) && window && screen->current_hyperlink_under_mouse.id && !is_mouse_hidden(os_window)) draw_hyperlink_target(os_window, screen, &crd, window);
     if (previous_graphics_render_data) {
         free(screen->grman->render_data.item);
