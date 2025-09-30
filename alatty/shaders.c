@@ -552,11 +552,6 @@ draw_cells_simple(ssize_t vao_idx, Screen *screen, const CellRenderData *crd, bo
     }
 }
 
-static bool
-has_bgimage(OSWindow *w) {
-    return w->bgimage && w->bgimage->texture_id > 0;
-}
-
 static void
 draw_tint(bool premult, Screen *screen, const CellRenderData *crd) {
     if (premult) { BLEND_PREMULT } else { BLEND_ONTO_OPAQUE_WITH_OPAQUE_OUTPUT }
@@ -775,16 +770,11 @@ draw_cells_interleaved(ssize_t vao_idx, Screen *screen, OSWindow *w, const CellR
     BLEND_ONTO_OPAQUE;
 
     // draw background for all cells
-    if (!has_bgimage(w)) {
-        bind_program(CELL_BG_PROGRAM);
-        glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 3);
-        glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-    } else if (OPT(background_tint) > 0) {
-        draw_tint(false, screen, crd);
-        BLEND_ONTO_OPAQUE;
-    }
+    bind_program(CELL_BG_PROGRAM);
+    glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 3);
+    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
 
-    if (screen->grman->num_of_below_refs || has_bgimage(w) || wl) {
+    if (screen->grman->num_of_below_refs || wl) {
         if (wl) {
             draw_window_logo(vao_idx, w, wl, crd);
             BLEND_ONTO_OPAQUE;
@@ -820,15 +810,13 @@ draw_cells_interleaved_premult(ssize_t vao_idx, Screen *screen, OSWindow *os_win
         glDisable(GL_BLEND);
     }
     bind_program(CELL_BG_PROGRAM);
-    if (!has_bgimage(os_window)) {
-        // draw background for all cells
-        glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 3);
-        glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-    }
+    // draw background for all cells
+    glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 3);
+    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
     glEnable(GL_BLEND);
     BLEND_PREMULT;
 
-    if (screen->grman->num_of_below_refs || has_bgimage(os_window) || wl) {
+    if (screen->grman->num_of_below_refs || wl) {
         if (wl) {
             draw_window_logo(vao_idx, os_window, wl, crd);
             BLEND_PREMULT;
@@ -857,7 +845,7 @@ draw_cells_interleaved_premult(ssize_t vao_idx, Screen *screen, OSWindow *os_win
 
     if (screen->grman->num_of_positive_refs) draw_graphics(GRAPHICS_PREMULT_PROGRAM, vao_idx, screen->grman->render_data.item, screen->grman->num_of_negative_refs + screen->grman->num_of_below_refs, screen->grman->num_of_positive_refs, viewport_for_cells(crd));
 
-    if (!has_bgimage(os_window)) glDisable(GL_BLEND);
+    glDisable(GL_BLEND);
 }
 
 void
@@ -931,12 +919,6 @@ draw_cells(ssize_t vao_idx, const ScreenRenderData *srd, OSWindow *os_window, bo
     float current_inactive_text_alpha = (!can_be_focused || screen->cursor_render_info.is_focused) && is_active_window ? 1.0f : (float)OPT(inactive_text_alpha);
     set_cell_uniforms(current_inactive_text_alpha, screen->reload_all_gpu_data);
     screen->reload_all_gpu_data = false;
-    bool has_underlying_image = has_bgimage(os_window);
-    WindowLogoRenderData *wl;
-    if (window && (wl = &window->window_logo) && wl->id && (wl->instance = find_window_logo(global_state.all_window_logos, wl->id)) && wl->instance && wl->instance->load_from_disk_ok) {
-        has_underlying_image = true;
-        set_on_gpu_state(window->window_logo.instance, true);
-    } else wl = NULL;
     ImageRenderData *previous_graphics_render_data = NULL;
     if (os_window->live_resize.in_progress && screen->grman->render_data.count && (crd.x_ratio != 1 || crd.y_ratio != 1)) {
         previous_graphics_render_data = malloc(sizeof(previous_graphics_render_data[0]) * screen->grman->render_data.capacity);
@@ -946,14 +928,7 @@ draw_cells(ssize_t vao_idx, const ScreenRenderData *srd, OSWindow *os_window, bo
                 scale_rendered_graphic(screen->grman->render_data.item + i, srd->xstart, srd->ystart, crd.x_ratio, crd.y_ratio);
         }
     }
-    has_underlying_image |= screen->grman->num_of_below_refs > 0 || screen->grman->num_of_negative_refs > 0;
-    if (os_window->is_semi_transparent) {
-        if (has_underlying_image) draw_cells_interleaved_premult(vao_idx, screen, os_window, &crd, wl);
-        else draw_cells_simple(vao_idx, screen, &crd, os_window->is_semi_transparent);
-    } else {
-        if (has_underlying_image) draw_cells_interleaved(vao_idx, screen, os_window, &crd, wl);
-        else draw_cells_simple(vao_idx, screen, &crd, os_window->is_semi_transparent);
-    }
+    draw_cells_simple(vao_idx, screen, &crd, os_window->is_semi_transparent);
 
     if (screen->start_visual_bell_at) {
         GLfloat intensity = get_visual_bell_intensity(screen);
@@ -1001,15 +976,6 @@ draw_borders(ssize_t vao_idx, unsigned int num_border_rects, BorderRect *rect_bu
     float background_opacity = w->is_semi_transparent ? w->background_opacity: 1.0f;
     float tint_opacity = background_opacity;
     float tint_premult = background_opacity;
-    if (has_bgimage(w)) {
-        glEnable(GL_BLEND);
-        BLEND_ONTO_OPAQUE;
-        draw_background_image(w);
-        BLEND_ONTO_OPAQUE;
-        background_opacity = 1.0f;
-        tint_opacity = OPT(background_tint) * OPT(background_tint_gaps);
-        tint_premult = w->is_semi_transparent ? OPT(background_tint) : 1.0f;
-    }
 
     if (num_border_rects) {
         bind_vertex_array(vao_idx);
@@ -1031,15 +997,10 @@ draw_borders(ssize_t vao_idx, unsigned int num_border_rects, BorderRect *rect_bu
         glUniform1f(border_program_layout.uniforms.tint_opacity, tint_opacity);
         glUniform1f(border_program_layout.uniforms.tint_premult, tint_premult);
         glUniform2ui(border_program_layout.uniforms.viewport, viewport_width, viewport_height);
-        if (has_bgimage(w)) {
-            if (w->is_semi_transparent) { BLEND_PREMULT; }
-            else { BLEND_ONTO_OPAQUE_WITH_OPAQUE_OUTPUT; }
-        }
         glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, num_border_rects);
         unbind_vertex_array();
         unbind_program();
     }
-    if (has_bgimage(w)) glDisable(GL_BLEND);
 }
 
 // }}}
