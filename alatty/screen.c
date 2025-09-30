@@ -3609,15 +3609,6 @@ reset_dirty(Screen *self, PyObject *a UNUSED) {
 }
 
 static PyObject*
-set_window_char(Screen *self, PyObject *a) {
-    const char *text = "";
-    if (!PyArg_ParseTuple(a, "|s", &text)) return NULL;
-    self->is_dirty = true;
-    Py_RETURN_NONE;
-}
-
-
-static PyObject*
 is_using_alternate_linebuf(Screen *self, PyObject *a UNUSED) {
     if (self->linebuf == self->alt_linebuf) Py_RETURN_TRUE;
     Py_RETURN_FALSE;
@@ -4521,7 +4512,6 @@ static PyMethodDef methods[] = {
     MND(draw, METH_O)
     MND(apply_sgr, METH_O)
     MND(cursor_position, METH_VARARGS)
-    MND(set_window_char, METH_VARARGS)
     MND(set_mode, METH_VARARGS)
     MND(reset_mode, METH_VARARGS)
     MND(reset, METH_NOARGS)

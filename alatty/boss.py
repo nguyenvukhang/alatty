@@ -291,10 +291,6 @@ class VisualSelect:
         set_os_window_title(self.os_window_id, '')
         boss = get_boss()
         redirect_mouse_handling(False)
-        for wid in self.window_ids:
-            w = boss.window_id_map.get(wid)
-            if w is not None:
-                w.screen.set_window_char()
         if self.window_used_for_selection_id:
             w = boss.window_id_map.get(self.window_used_for_selection_id)
             if w is not None:
@@ -1156,7 +1152,6 @@ class Boss:
             if idx >= len(alphanumerics):
                 break
             ch = alphanumerics[idx]
-            window.screen.set_window_char(ch)
             self.current_visual_select.window_ids.append(window.id)
             for mods in (0, GLFW_MOD_CONTROL, GLFW_MOD_CONTROL | GLFW_MOD_SHIFT, GLFW_MOD_SUPER, GLFW_MOD_ALT, GLFW_MOD_SHIFT):
                 km.keymap[SingleKey(mods=mods, key=ord(ch.lower()))].append(ac)
