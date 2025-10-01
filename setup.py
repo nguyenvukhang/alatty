@@ -204,7 +204,7 @@ class Options:
     canberra_library: Optional[str] = os.getenv('KITTY_CANBERRA_LIBRARY')
     systemd_library: Optional[str] = os.getenv('KITTY_SYSTEMD_LIBRARY')
     fontconfig_library: Optional[str] = os.getenv('KITTY_FONTCONFIG_LIBRARY')
-    building_arch: str = ''
+    building_arch: str = 'arm64'
 
     # Extras
     compilation_database: CompilationDatabase = CompilationDatabase()
