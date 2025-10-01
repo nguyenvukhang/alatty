@@ -5,41 +5,41 @@ package tool
 import (
 	"fmt"
 
-	"github.com/kovidgoyal/kitty/kittens/ask"
-	"github.com/kovidgoyal/kitty/kittens/choose_files"
-	"github.com/kovidgoyal/kitty/kittens/choose_fonts"
-	"github.com/kovidgoyal/kitty/kittens/clipboard"
-	"github.com/kovidgoyal/kitty/kittens/desktop_ui"
-	"github.com/kovidgoyal/kitty/kittens/diff"
-	"github.com/kovidgoyal/kitty/kittens/hints"
-	"github.com/kovidgoyal/kitty/kittens/hyperlinked_grep"
-	"github.com/kovidgoyal/kitty/kittens/icat"
-	"github.com/kovidgoyal/kitty/kittens/notify"
-	"github.com/kovidgoyal/kitty/kittens/panel"
-	"github.com/kovidgoyal/kitty/kittens/query_terminal"
-	"github.com/kovidgoyal/kitty/kittens/quick_access_terminal"
-	"github.com/kovidgoyal/kitty/kittens/show_key"
-	"github.com/kovidgoyal/kitty/kittens/ssh"
-	"github.com/kovidgoyal/kitty/kittens/themes"
-	"github.com/kovidgoyal/kitty/kittens/transfer"
-	"github.com/kovidgoyal/kitty/kittens/unicode_input"
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/cmd/at"
-	"github.com/kovidgoyal/kitty/tools/cmd/atexit"
-	"github.com/kovidgoyal/kitty/tools/cmd/benchmark"
-	"github.com/kovidgoyal/kitty/tools/cmd/edit_in_kitty"
-	"github.com/kovidgoyal/kitty/tools/cmd/mouse_demo"
-	"github.com/kovidgoyal/kitty/tools/cmd/pytest"
-	"github.com/kovidgoyal/kitty/tools/cmd/run_shell"
-	"github.com/kovidgoyal/kitty/tools/cmd/show_error"
-	"github.com/kovidgoyal/kitty/tools/cmd/update_self"
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/utils/images"
+	"github.com/kovidgoyal/alatty/kittens/ask"
+	"github.com/kovidgoyal/alatty/kittens/choose_files"
+	"github.com/kovidgoyal/alatty/kittens/choose_fonts"
+	"github.com/kovidgoyal/alatty/kittens/clipboard"
+	"github.com/kovidgoyal/alatty/kittens/desktop_ui"
+	"github.com/kovidgoyal/alatty/kittens/diff"
+	"github.com/kovidgoyal/alatty/kittens/hints"
+	"github.com/kovidgoyal/alatty/kittens/hyperlinked_grep"
+	"github.com/kovidgoyal/alatty/kittens/icat"
+	"github.com/kovidgoyal/alatty/kittens/notify"
+	"github.com/kovidgoyal/alatty/kittens/panel"
+	"github.com/kovidgoyal/alatty/kittens/query_terminal"
+	"github.com/kovidgoyal/alatty/kittens/quick_access_terminal"
+	"github.com/kovidgoyal/alatty/kittens/show_key"
+	"github.com/kovidgoyal/alatty/kittens/ssh"
+	"github.com/kovidgoyal/alatty/kittens/themes"
+	"github.com/kovidgoyal/alatty/kittens/transfer"
+	"github.com/kovidgoyal/alatty/kittens/unicode_input"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/cmd/at"
+	"github.com/kovidgoyal/alatty/tools/cmd/atexit"
+	"github.com/kovidgoyal/alatty/tools/cmd/benchmark"
+	"github.com/kovidgoyal/alatty/tools/cmd/edit_in_alatty"
+	"github.com/kovidgoyal/alatty/tools/cmd/mouse_demo"
+	"github.com/kovidgoyal/alatty/tools/cmd/pytest"
+	"github.com/kovidgoyal/alatty/tools/cmd/run_shell"
+	"github.com/kovidgoyal/alatty/tools/cmd/show_error"
+	"github.com/kovidgoyal/alatty/tools/cmd/update_self"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/utils/images"
 )
 
 var _ = fmt.Print
 
-func KittyToolEntryPoints(root *cli.Command) {
+func AlattyToolEntryPoints(root *cli.Command) {
 	root.Add(cli.OptionSpec{
 		Name: "--version", Type: "bool-set", Help: "The current kitten version."})
 	tui.PrepareRootCmd(root)
@@ -47,8 +47,8 @@ func KittyToolEntryPoints(root *cli.Command) {
 	at.EntryPoint(root)
 	// update-self
 	update_self.EntryPoint(root)
-	// edit-in-kitty
-	edit_in_kitty.EntryPoint(root)
+	// edit-in-alatty
+	edit_in_alatty.EntryPoint(root)
 	// clipboard
 	clipboard.EntryPoint(root)
 	// icat
@@ -70,7 +70,7 @@ func KittyToolEntryPoints(root *cli.Command) {
 	// mouse_demo
 	root.AddSubCommand(&cli.Command{
 		Name:             "mouse-demo",
-		ShortDescription: "Demo the mouse handling kitty implements for terminal programs",
+		ShortDescription: "Demo the mouse handling alatty implements for terminal programs",
 		OnlyArgsAllowed:  true,
 		Run: func(cmd *cli.Command, args []string) (rc int, err error) {
 			return mouse_demo.Run(args)

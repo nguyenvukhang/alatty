@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/alecthomas/chroma/v2"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print

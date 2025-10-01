@@ -1,4 +1,4 @@
-#!./kitty/launcher/kitty +launch
+#!./alatty/launcher/alatty +launch
 # License: GPLv3 Copyright: 2021, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -7,7 +7,7 @@ import re
 import subprocess
 import sys
 
-from kitty.conf.generate import write_output
+from alatty.conf.generate import write_output
 
 if __name__ == '__main__' and not __package__:
     import __main__
@@ -40,7 +40,7 @@ def patch_color_list(path: str, colors: list[str], name: str, spc: str = '    ')
 
 
 def main(args: list[str]=sys.argv) -> None:
-    from kitty.options.definition import definition
+    from alatty.options.definition import definition
     nullable_colors = []
     all_colors = []
     for opt in definition.iter_all_options():
@@ -53,7 +53,7 @@ def main(args: list[str]=sys.argv) -> None:
     patch_color_list('tools/cmd/at/set_colors.go', nullable_colors, 'NULLABLE')
     patch_color_list('tools/themes/collection.go', all_colors, 'ALL')
     nc = ',\n    '.join(f'{x!r}' for x in nullable_colors)
-    write_output('kitty', definition, f'\nnullable_colors = frozenset({{\n    {nc}\n}})\n')
+    write_output('alatty', definition, f'\nnullable_colors = frozenset({{\n    {nc}\n}})\n')
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ import (
 	"io"
 	"strconv"
 
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print

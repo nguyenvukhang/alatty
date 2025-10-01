@@ -5,9 +5,9 @@ package themes
 import (
 	"fmt"
 
-	"github.com/kovidgoyal/kitty/tools/themes"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/themes"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print

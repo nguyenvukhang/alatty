@@ -17,15 +17,15 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/crypto"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/base85"
-	"github.com/kovidgoyal/kitty/tools/utils/shlex"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/crypto"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/base85"
+	"github.com/kovidgoyal/alatty/tools/utils/shlex"
 )
 
 const lowerhex = "0123456789abcdef"
@@ -71,19 +71,19 @@ func set_payload_string_field(io_data *rc_io_data, field, data string) {
 
 func get_pubkey(encoded_key string) (encryption_version string, pubkey []byte, err error) {
 	if encoded_key == "" {
-		encoded_key = os.Getenv("KITTY_PUBLIC_KEY")
+		encoded_key = os.Getenv("ALATTY_PUBLIC_KEY")
 		if encoded_key == "" {
-			err = fmt.Errorf("Password usage requested but KITTY_PUBLIC_KEY environment variable is not available")
+			err = fmt.Errorf("Password usage requested but ALATTY_PUBLIC_KEY environment variable is not available")
 			return
 		}
 	}
 	encryption_version, encoded_key, found := strings.Cut(encoded_key, ":")
 	if !found {
-		err = fmt.Errorf("KITTY_PUBLIC_KEY environment variable does not have a : in it")
+		err = fmt.Errorf("ALATTY_PUBLIC_KEY environment variable does not have a : in it")
 		return
 	}
-	if encryption_version != kitty.RC_ENCRYPTION_PROTOCOL_VERSION {
-		err = fmt.Errorf("KITTY_PUBLIC_KEY has unknown version, if you are running on a remote system, update kitty on this system")
+	if encryption_version != alatty.RC_ENCRYPTION_PROTOCOL_VERSION {
+		err = fmt.Errorf("ALATTY_PUBLIC_KEY has unknown version, if you are running on a remote system, update alatty on this system")
 		return
 	}
 	pubkey = make([]byte, base85.DecodedLen(len(encoded_key)))
@@ -230,7 +230,7 @@ func get_response(do_io func(io_data *rc_io_data) ([]byte, error), io_data *rc_i
 			io_data.rc.NoResponse = true
 			io_data.chunks_done = false
 			_, _ = do_io(io_data)
-			err = fmt.Errorf("Timed out waiting for a response from kitty")
+			err = fmt.Errorf("Timed out waiting for a response from alatty")
 		}
 		return nil, err
 	}
@@ -240,13 +240,13 @@ func get_response(do_io func(io_data *rc_io_data) ([]byte, error), io_data *rc_i
 			ans = &res
 			return
 		}
-		err = fmt.Errorf("Received empty response from kitty")
+		err = fmt.Errorf("Received empty response from alatty")
 		return
 	}
 	var response Response
 	err = json.Unmarshal(serialized_response, &response)
 	if err != nil {
-		err = fmt.Errorf("Invalid response received from kitty, unmarshalling error: %w", err)
+		err = fmt.Errorf("Invalid response received from alatty, unmarshalling error: %w", err)
 		return
 	}
 	ans = &response
@@ -268,9 +268,9 @@ func send_rc_command(io_data *rc_io_data) (err error) {
 	if err != nil {
 		return err
 	}
-	wid, err := strconv.Atoi(os.Getenv("KITTY_WINDOW_ID"))
+	wid, err := strconv.Atoi(os.Getenv("ALATTY_WINDOW_ID"))
 	if err == nil && wid > 0 {
-		io_data.rc.KittyWindowId = uint(wid)
+		io_data.rc.AlattyWindowId = uint(wid)
 	}
 	err = create_serializer(global_options.password, "", io_data)
 	if err != nil {
@@ -380,7 +380,7 @@ func setup_global_options(cmd *cli.Command) (err error) {
 		return err
 	}
 	if rc_global_opts.To == "" {
-		rc_global_opts.To = os.Getenv("KITTY_LISTEN_ON")
+		rc_global_opts.To = os.Getenv("ALATTY_LISTEN_ON")
 		global_options.to_address_is_from_env_var = true
 	}
 	if rc_global_opts.To != "" {
@@ -402,8 +402,8 @@ func EntryPoint(tool_root *cli.Command) *cli.Command {
 	at_root_command := tool_root.AddSubCommand(&cli.Command{
 		Name:             "@",
 		Usage:            "[global options] [sub-command] [sub-command options] [sub-command args]",
-		ShortDescription: "Control kitty remotely",
-		HelpText:         "Control kitty by sending it commands. Set the allow_remote_control option in :file:`kitty.conf` for this to work. When run without any sub-commands this will start an interactive shell to control kitty.",
+		ShortDescription: "Control alatty remotely",
+		HelpText:         "Control alatty by sending it commands. Set the allow_remote_control option in :file:`alatty.conf` for this to work. When run without any sub-commands this will start an interactive shell to control alatty.",
 		Run:              shell_main,
 	})
 	add_rc_global_opts(at_root_command)

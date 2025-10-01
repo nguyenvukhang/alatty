@@ -32,7 +32,7 @@
 #include "backend_utils.h"
 #include "linux_notify.h"
 #include "wl_client_side_decorations.h"
-#include "../kitty/monotonic.h"
+#include "../alatty/monotonic.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -563,7 +563,7 @@ fractional_scale_preferred_scale(void *data, struct wp_fractional_scale_v1 *wp_f
     // scale before configure (as of Jan 2025). sway as of 1.10 and Hyprland send it after configure.
     // https://github.com/hyprwm/Hyprland/issues/9126
     // labwc doesnt support preferred buffer scale and seems to send only a
-    // single fraction scale event before configure https://github.com/kovidgoyal/kitty/issues/7540
+    // single fraction scale event before configure https://github.com/kovidgoyal/alatty/issues/7540
     window->wl.window_fully_created = window->wl.once.surface_configured;
     apply_scale_changes(window, true, true);
 }
@@ -599,7 +599,7 @@ create_surface(_GLFWwindow* window, const _GLFWwndconfig* wndconfig) {
     // If we already have been notified of the primary monitor scale, assume
     // the window will be created on it and so avoid a rescale roundtrip in the common
     // case of the window being shown on the primary monitor or all monitors having the same scale.
-    // If you change this also change get_window_content_scale() in the kitty code.
+    // If you change this also change get_window_content_scale() in the alatty code.
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     float xscale = 1.0, yscale = 1.0;
     int scale = 1;
@@ -1168,7 +1168,7 @@ create_layer_shell_surface(_GLFWwindow *window) {
     struct wl_output *wl_output = find_output_by_name(window->wl.layer_shell.config.output_name);
 #define ls window->wl.layer_shell.zwlr_layer_surface_v1
     ls = zwlr_layer_shell_v1_get_layer_surface(
-            _glfw.wl.zwlr_layer_shell_v1, window->wl.surface, wl_output, get_layer_shell_layer(window), window->wl.appId[0] ? window->wl.appId : "kitty");
+            _glfw.wl.zwlr_layer_shell_v1, window->wl.surface, wl_output, get_layer_shell_layer(window), window->wl.appId[0] ? window->wl.appId : "alatty");
     if (!ls) {
         _glfwInputError(GLFW_PLATFORM_ERROR, "Wayland: layer-surface creation failed");
         return false;
@@ -2661,7 +2661,7 @@ _glfwPlatformSetClipboard(GLFWClipboardType t) {
         //
         // However in wl-roots based compositors, using the serial from the keyboard enter event doesn't work. No clue what
         // the correct serial to use here is. Given this Wayland there probably isn't one. What a joke.
-        // Bug report: https://github.com/kovidgoyal/kitty/issues/6890
+        // Bug report: https://github.com/kovidgoyal/alatty/issues/6890
         // Ironically one of the contributors to wl_roots claims the keyboard enter serial is the correct one to use:
         // https://emersion.fr/blog/2020/wayland-clipboard-drag-and-drop/
         // The Wayland spec itself says "serial number of the event that triggered this request"

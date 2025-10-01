@@ -5,10 +5,10 @@ import (
 	"strings"
 
 	"github.com/kovidgoyal/dbus"
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/config"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/config"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -72,13 +72,13 @@ func specialize_command(parent *cli.Command) {
 	})
 	rs.Add(cli.OptionSpec{
 		Name: `--config -c`, Type: "list", Dest: `Config`,
-		Help: strings.ReplaceAll(strings.ReplaceAll(kitty.ConfigHelp, "{appname}", "kitty"), "{conf_name}", server_conf_name),
+		Help: strings.ReplaceAll(strings.ReplaceAll(alatty.ConfigHelp, "{appname}", "alatty"), "{conf_name}", server_conf_name),
 	})
 
 	parent.AddSubCommand(&cli.Command{
 		Name:             "enable-portal",
 		ShortDescription: "This will create or edit the various files needed so that the portal from this kitten is used by xdg-desktop-portal",
-		HelpText:         "Once you run this command, add :code:`kitten desktop-ui run-server` to your window manager startup sequence and reboot your computer (or logout and restart your session) and hopefully xdg-desktop-portal should now delegate to kitty for the portals implemented here. If it doesn't try running :code:`/usr/lib/xdg-desktop-portal -r -v` it will provide a lot of logging about why it is choosing different portal backends. That combined with a careful reading of :code:`man portals.conf` should be enough to learn how to convince xdg-desktop-portal to use kitty.\n\nYou can change the system color-scheme dynamically by running::\n\n:code:`kitten desktop-ui set-color-scheme dark`",
+		HelpText:         "Once you run this command, add :code:`kitten desktop-ui run-server` to your window manager startup sequence and reboot your computer (or logout and restart your session) and hopefully xdg-desktop-portal should now delegate to alatty for the portals implemented here. If it doesn't try running :code:`/usr/lib/xdg-desktop-portal -r -v` it will provide a lot of logging about why it is choosing different portal backends. That combined with a careful reading of :code:`man portals.conf` should be enough to learn how to convince xdg-desktop-portal to use alatty.\n\nYou can change the system color-scheme dynamically by running::\n\n:code:`kitten desktop-ui set-color-scheme dark`",
 		Run: func(cmd *cli.Command, args []string) (rc int, err error) {
 			err = enable_portal()
 			return utils.IfElse(err == nil, 0, 1), err

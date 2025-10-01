@@ -13,10 +13,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kovidgoyal/kitty/tools/config"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/paths"
-	"github.com/kovidgoyal/kitty/tools/utils/shlex"
+	"github.com/kovidgoyal/alatty/tools/config"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/paths"
+	"github.com/kovidgoyal/alatty/tools/utils/shlex"
 
 	"github.com/bmatcuk/doublestar/v4"
 	"golang.org/x/sys/unix"
@@ -145,7 +145,7 @@ type CopyInstruction struct {
 }
 
 func ParseEnvInstruction(spec string) (ans []*EnvInstruction, err error) {
-	const COPY_FROM_LOCAL string = "_kitty_copy_env_var_"
+	const COPY_FROM_LOCAL string = "_alatty_copy_env_var_"
 	ei := &EnvInstruction{}
 	found := false
 	ei.key, ei.val, found = strings.Cut(spec, "=")

@@ -5,9 +5,9 @@ package pytest
 import (
 	"fmt"
 
-	"github.com/kovidgoyal/kitty/kittens/ssh"
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/utils/shm"
+	"github.com/kovidgoyal/alatty/kittens/ssh"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/utils/shm"
 )
 
 var _ = fmt.Print

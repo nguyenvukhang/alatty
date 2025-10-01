@@ -5,8 +5,8 @@ import (
 	"math"
 	"sync"
 
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -55,7 +55,7 @@ func (self *faces) draw_screen() (err error) {
 		go func() {
 			var r map[string]RenderedSampleTransmit
 			s := key.settings
-			self.handler.set_worker_error(kitty_font_backend.query("render_family_samples", map[string]any{
+			self.handler.set_worker_error(alatty_font_backend.query("render_family_samples", map[string]any{
 				"text_style": self.handler.text_style, "font_family": s.font_family,
 				"bold_font": s.bold_font, "italic_font": s.italic_font, "bold_italic_font": s.bold_italic_font,
 				"width": key.width, "height": key.height, "output_dir": self.handler.temp_dir,
@@ -146,7 +146,7 @@ func (self *faces) on_text(text string, from_key_event bool, in_bracketed_paste 
 func (self *faces) on_enter(family string) error {
 	if family != "" {
 		self.family = family
-		r := self.handler.listing.resolved_faces_from_kitty_conf
+		r := self.handler.listing.resolved_faces_from_alatty_conf
 		d := func(conf ResolvedFace, setting *string, defval string) {
 			s := utils.IfElse(conf.Setting == "auto", "auto", conf.Spec)
 			*setting = utils.IfElse(family == conf.Family, s, defval)

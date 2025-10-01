@@ -10,7 +10,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/cli"
 )
 
 func run_mime_loop(opts *Options, args []string) (err error) {

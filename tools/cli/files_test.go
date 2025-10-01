@@ -4,7 +4,7 @@ package cli
 
 import (
 	"fmt"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils"
 	"os"
 	"path/filepath"
 	"reflect"

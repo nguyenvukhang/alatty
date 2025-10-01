@@ -96,7 +96,7 @@ text_input_done(void *data UNUSED, struct zwp_text_input_v3 *txt_input UNUSED, u
     // See https://wayland.app/protocols/text-input-unstable-v3#zwp_text_input_v3:event:done
     // for handling of bad events. As best as I can tell spec says we perform all client side actions as usual
     // but send nothing back to the compositor, aka no cursor position update.
-    // See https://github.com/kovidgoyal/kitty/pull/7283 for discussion
+    // See https://github.com/kovidgoyal/alatty/pull/7283 for discussion
     if ((pending_pre_edit == NULL && current_pre_edit == NULL) ||
         (pending_pre_edit && current_pre_edit && strcmp(pending_pre_edit, current_pre_edit) == 0)) {
         free(pending_pre_edit); pending_pre_edit = NULL;

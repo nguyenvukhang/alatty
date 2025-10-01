@@ -9,9 +9,9 @@ from enum import Enum, auto
 from functools import wraps
 from typing import Any, Optional, TypeVar, Union
 
-from kitty.fast_data_types import Color
-from kitty.rgb import color_as_sharp, to_color
-from kitty.typing_compat import GraphicsCommandType, HandlerType, ScreenSize, UnderlineLiteral
+from alatty.fast_data_types import Color
+from alatty.rgb import color_as_sharp, to_color
+from alatty.typing_compat import GraphicsCommandType, HandlerType, ScreenSize, UnderlineLiteral
 
 from .operations_stub import CMD
 
@@ -288,7 +288,7 @@ class MouseTracking(Enum):
     full = auto()
 
 
-def init_state(alternate_screen: bool = True, mouse_tracking: MouseTracking = MouseTracking.none, kitty_keyboard_mode: bool = True) -> str:
+def init_state(alternate_screen: bool = True, mouse_tracking: MouseTracking = MouseTracking.none, alatty_keyboard_mode: bool = True) -> str:
     sc = SAVE_CURSOR if alternate_screen else ''
     ans = (
         sc + SAVE_PRIVATE_MODE_VALUES + reset_mode(Mode.LNM) +
@@ -311,7 +311,7 @@ def init_state(alternate_screen: bool = True, mouse_tracking: MouseTracking = Mo
             ans += set_mode(Mode.MOUSE_MOTION_TRACKING)
         elif mouse_tracking is MouseTracking.full:
             ans += set_mode(Mode.MOUSE_MOVE_TRACKING)
-    if kitty_keyboard_mode:
+    if alatty_keyboard_mode:
         ans += '\033[>31u'  # extended keyboard mode
     else:
         ans += '\033[>u'  # legacy keyboard mode
@@ -461,9 +461,9 @@ def func_sig(func: Callable[..., Any]) -> Generator[str, None, None]:
 def as_type_stub() -> str:
     ans = [
         'from typing import *  # noqa',
-        'from kitty.typing_compat import GraphicsCommandType, ScreenSize',
-        'from kitty.fast_data_types import Color',
-        'import kitty.rgb',
+        'from alatty.typing_compat import GraphicsCommandType, ScreenSize',
+        'from alatty.fast_data_types import Color',
+        'import alatty.rgb',
         'import kittens.tui.operations',
     ]
     methods = []

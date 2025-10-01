@@ -10,7 +10,7 @@ import (
 
 	gcmp "github.com/google/go-cmp/cmp"
 
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print

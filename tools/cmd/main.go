@@ -8,24 +8,24 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kovidgoyal/kitty/kittens/ssh"
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/cmd/completion"
-	"github.com/kovidgoyal/kitty/tools/cmd/tool"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/kittens/ssh"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/cmd/completion"
+	"github.com/kovidgoyal/alatty/tools/cmd/tool"
+	"github.com/kovidgoyal/alatty/tools/utils"
 	"golang.org/x/sys/unix"
 )
 
 func KittenMain(args ...string) int {
 	defer utils.WaitForAtexitWorkerToFinish()
-	krm := os.Getenv("KITTY_KITTEN_RUN_MODULE")
-	os.Unsetenv("KITTY_KITTEN_RUN_MODULE")
+	krm := os.Getenv("ALATTY_KITTEN_RUN_MODULE")
+	os.Unsetenv("ALATTY_KITTEN_RUN_MODULE")
 	switch krm {
 	case "ssh_askpass":
 		return ssh.RunSSHAskpass()
 	}
 	root := cli.NewRootCommand()
-	root.ShortDescription = "Fast, statically compiled implementations of various kittens (command line tools for use with kitty)"
+	root.ShortDescription = "Fast, statically compiled implementations of various kittens (command line tools for use with alatty)"
 	root.HelpText = "kitten serves as a launcher for running individual kittens. Each kitten can be run as :code:`kitten command`. The list of available kittens is given below."
 	root.Usage = "command [command options] [command args]"
 	root.Run = func(cmd *cli.Command, args []string) (int, error) {
@@ -34,18 +34,18 @@ func KittenMain(args ...string) int {
 			return 0, nil
 		}
 		if strings.HasSuffix(args[0], ".py") {
-			exe := utils.KittyExe()
+			exe := utils.AlattyExe()
 			if !filepath.IsAbs(exe) {
 				exe = utils.Which(exe)
 			}
 			if err := unix.Exec(exe, append([]string{filepath.Base(exe), "+kitten"}, args...), os.Environ()); err != nil {
-				return 1, fmt.Errorf("failed to run python kitten: %s as could not run kitty executable, with error: %w", args[0], err)
+				return 1, fmt.Errorf("failed to run python kitten: %s as could not run alatty executable, with error: %w", args[0], err)
 			}
 		}
 		return 1, fmt.Errorf(":yellow:`%s` is not a known kitten. Use --help to get a list of known kittens.", args[0])
 	}
 
-	tool.KittyToolEntryPoints(root)
+	tool.AlattyToolEntryPoints(root)
 	completion.EntryPoint(root)
 
 	root.SubCommandIsOptional = true

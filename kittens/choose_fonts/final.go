@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kovidgoyal/kitty/tools/config"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/config"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -84,16 +84,16 @@ func (self *final_pane) on_key_event(event *loop.KeyEvent) (err error) {
 		} else {
 			path = filepath.Join(utils.ConfigDir(), self.handler.opts.Config_file_name)
 		}
-		updated, err := patcher.Patch(path, "KITTY_FONTS", self.settings.serialized(), "font_family", "bold_font", "italic_font", "bold_italic_font")
+		updated, err := patcher.Patch(path, "ALATTY_FONTS", self.settings.serialized(), "font_family", "bold_font", "italic_font", "bold_italic_font")
 		if err != nil {
 			return err
 		}
 		if updated {
 			switch self.handler.opts.Reload_in {
 			case "parent":
-				config.ReloadConfigInKitty(true)
+				config.ReloadConfigInAlatty(true)
 			case "all":
-				config.ReloadConfigInKitty(false)
+				config.ReloadConfigInAlatty(false)
 			}
 		}
 		self.lp.Quit(0)

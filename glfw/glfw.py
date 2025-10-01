@@ -219,7 +219,7 @@ def build_wayland_protocols(
         else:
             src = os.path.join(os.path.dirname(os.path.abspath(__file__)), protocol)
             if not os.path.exists(src):
-                raise SystemExit(f'The local Wayland protocol {protocol} is missing from kitty sources')
+                raise SystemExit(f'The local Wayland protocol {protocol} is missing from alatty sources')
         for ext in 'hc':
             dest = wayland_protocol_file_name(src, ext)
             dest = os.path.join(dest_dir, dest)
@@ -367,7 +367,7 @@ typedef void (*GLFWDBusnotificationactivatedfun)(uint32_t, int, const char*);
 
 const char* load_glfw(const char* path);
 '''.format(preamble, '\n\n'.join(declarations))
-    with open('../kitty/glfw-wrapper.h', 'w') as f:
+    with open('../alatty/glfw-wrapper.h', 'w') as f:
         f.write(header)
 
     code = '''
@@ -399,7 +399,7 @@ unload_glfw(void) {
     if (handle) { dlclose(handle); handle = NULL; }
 }
 '''.replace('LOAD', '\n\n    '.join(f.load() for f in functions))
-    with open('../kitty/glfw-wrapper.c', 'w') as f:
+    with open('../alatty/glfw-wrapper.c', 'w') as f:
         f.write(code)
 
 

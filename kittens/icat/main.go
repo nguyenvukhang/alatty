@@ -11,13 +11,13 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/graphics"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/images"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/graphics"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/images"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
 
 	"golang.org/x/sys/unix"
 )
@@ -202,7 +202,7 @@ func main(cmd *cli.Command, o *Options, args []string) (rc int, err error) {
 		}
 	}
 	if screen_size.Xpixel == 0 || screen_size.Ypixel == 0 {
-		return 1, fmt.Errorf("Terminal does not support reporting screen sizes in pixels, use a terminal such as kitty, WezTerm, Konsole, etc. that does.")
+		return 1, fmt.Errorf("Terminal does not support reporting screen sizes in pixels, use a terminal such as alatty, WezTerm, Konsole, etc. that does.")
 	}
 
 	items, err := process_dirs(args...)
@@ -244,7 +244,7 @@ func main(cmd *cli.Command, o *Options, args []string) (rc int, err error) {
 		}
 		if !direct {
 			keep_going.Store(false)
-			return 1, fmt.Errorf("This terminal does not support the graphics protocol use a terminal such as kitty, WezTerm or Konsole that does. If you are running inside a terminal multiplexer such as tmux or screen that might be interfering as well.")
+			return 1, fmt.Errorf("This terminal does not support the graphics protocol use a terminal such as alatty, WezTerm or Konsole that does. If you are running inside a terminal multiplexer such as tmux or screen that might be interfering as well.")
 		}
 		if memory {
 			transfer_by_memory = supported

@@ -22,7 +22,7 @@ import (
 const (
 	folder                     = "dependencies"
 	fonts_folder               = "fonts"
-	macos_prefix               = "/Users/Shared/kitty-build/sw/sw"
+	macos_prefix               = "/Users/Shared/alatty-build/sw/sw"
 	macos_python               = "python/Python.framework/Versions/Current/bin/python3"
 	macos_python_framework     = "python/Python.framework/Versions/Current/Python"
 	macos_python_framework_exe = "python/Python.framework/Versions/Current/Resources/Python.app/Contents/MacOS/Python"
@@ -348,7 +348,7 @@ func dependencies(args []string) {
 		exit(err)
 	}
 
-	fmt.Println(`Dependencies downloaded. Now build kitty with: ./dev.sh build`)
+	fmt.Println(`Dependencies downloaded. Now build alatty with: ./dev.sh build`)
 }
 
 // }}}
@@ -401,7 +401,7 @@ func build(args []string) {
 		fmt.Fprintln(os.Stderr, "The following build command failed:", python, strings.Join(args, " "))
 		exit(err)
 	}
-	fmt.Println("Build successful. Run kitty as: kitty/launcher/kitty")
+	fmt.Println("Build successful. Run alatty as: alatty/launcher/alatty")
 }
 
 func docs(args []string) {

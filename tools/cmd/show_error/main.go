@@ -8,11 +8,11 @@ import (
 	"io"
 	"os"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/cli/markup"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/cli/markup"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
 )
 
 var _ = fmt.Print
@@ -96,7 +96,7 @@ func EntryPoint(root *cli.Command) *cli.Command {
 		Hidden:           true,
 		Usage:            "[options]",
 		ShortDescription: "Show an error message. Internal use.",
-		HelpText:         "Show an error message. Used internally by kitty.",
+		HelpText:         "Show an error message. Used internally by alatty.",
 		Run: func(cmd *cli.Command, args []string) (ret int, err error) {
 			opts := &Options{}
 			err = cmd.GetOptionValues(opts)

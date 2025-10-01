@@ -8,24 +8,24 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/tools/config"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/tools/config"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print
 
-type KittyOpts struct {
+type AlattyOpts struct {
 	Wheel_scroll_multiplier int
 	Copy_on_select          bool
 }
 
-func read_relevant_kitty_opts() KittyOpts {
-	ans := KittyOpts{Wheel_scroll_multiplier: kitty.KittyConfigDefaults.Wheel_scroll_multiplier}
+func read_relevant_alatty_opts() AlattyOpts {
+	ans := AlattyOpts{Wheel_scroll_multiplier: alatty.AlattyConfigDefaults.Wheel_scroll_multiplier}
 	handle_line := func(key, val string) error {
 		switch key {
 		case "wheel_scroll_multiplier":
@@ -38,16 +38,16 @@ func read_relevant_kitty_opts() KittyOpts {
 		}
 		return nil
 	}
-	config.ReadKittyConfig(handle_line)
+	config.ReadAlattyConfig(handle_line)
 	return ans
 }
 
-var RelevantKittyOpts = sync.OnceValue(func() KittyOpts {
-	return read_relevant_kitty_opts()
+var RelevantAlattyOpts = sync.OnceValue(func() AlattyOpts {
+	return read_relevant_alatty_opts()
 })
 
 func (self *Handler) handle_wheel_event(up bool) {
-	amt := RelevantKittyOpts().Wheel_scroll_multiplier
+	amt := RelevantAlattyOpts().Wheel_scroll_multiplier
 	if up {
 		amt *= -1
 	}
@@ -204,7 +204,7 @@ func (self *Handler) finish_mouse_selection(ev *loop.MouseEvent) {
 	self.mouse_selection.Finish()
 	text := self.text_for_current_mouse_selection()
 	if text != "" {
-		if RelevantKittyOpts().Copy_on_select {
+		if RelevantAlattyOpts().Copy_on_select {
 			self.lp.CopyTextToClipboard(text)
 		} else {
 			self.lp.CopyTextToPrimarySelection(text)

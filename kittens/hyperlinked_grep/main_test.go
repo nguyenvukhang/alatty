@@ -4,7 +4,7 @@ package hyperlinked_grep
 
 import (
 	"fmt"
-	"github.com/kovidgoyal/kitty/tools/utils/shlex"
+	"github.com/kovidgoyal/alatty/tools/utils/shlex"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"

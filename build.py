@@ -19,7 +19,7 @@ log = lambda *x: print("[build.py]", *x, file=stderr)
 
 
 def build():
-    BUILD_ARGS.append("kitty.app")
+    BUILD_ARGS.append("alatty.app")
     BUILD_ARGS.append("-I" + cellar("xxhash/0.8.2/include"))
     env = os.environ
     env["LDFLAGS"] = "-L/opt/homebrew/lib"
@@ -33,11 +33,11 @@ def build():
 
 def install():
     subprocess.run(["rm", "-rf", '/Applications/Alatty.app'])
-    subprocess.run(["cp", '-a', "kitty.app", '/Applications/Alatty.app'])
+    subprocess.run(["cp", '-a', "alatty.app", '/Applications/Alatty.app'])
 
 
 build()
-if "kitty" not in os.environ.get("TERMINFO", ""):
+if "alatty" not in os.environ.get("TERMINFO", ""):
     log("installing...")
     install()
 else:

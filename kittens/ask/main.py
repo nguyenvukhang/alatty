@@ -3,7 +3,7 @@
 
 import sys
 
-from kitty.typing_compat import BossType, TypedDict
+from alatty.typing_compat import BossType, TypedDict
 
 from ..tui.handler import result_handler
 

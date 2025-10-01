@@ -9,10 +9,10 @@ from contextlib import suppress
 from types import TracebackType
 from typing import TYPE_CHECKING, Any, ContextManager, Deque, NamedTuple, Optional, cast
 
-from kitty.constants import kitten_exe, running_in_kitty
-from kitty.fast_data_types import monotonic, safe_pipe
-from kitty.types import DecoratedFunc, ParsedShortcut
-from kitty.typing_compat import (
+from alatty.constants import kitten_exe, running_in_alatty
+from alatty.fast_data_types import monotonic, safe_pipe
+from alatty.types import DecoratedFunc, ParsedShortcut
+from alatty.typing_compat import (
     AbstractEventLoop,
     BossType,
     Debug,
@@ -30,7 +30,7 @@ from kitty.typing_compat import (
 from .operations import MouseTracking, pending_update
 
 if TYPE_CHECKING:
-    from kitty.file_transmission import FileTransmissionCommand
+    from alatty.file_transmission import FileTransmissionCommand
 
 
 OpenUrlHandler = Optional[Callable[[BossType, WindowType, str, int, str], bool]]
@@ -66,12 +66,12 @@ class KittenUI:
         if self.initialized:
             return
         self.initialized = True
-        if running_in_kitty():
+        if running_in_alatty():
             return
         if self.allow_remote_control:
-            self.to = os.environ.get('KITTY_LISTEN_ON', '')
+            self.to = os.environ.get('ALATTY_LISTEN_ON', '')
             if not self.to:
-                raise ValueError('Remote control not enabled, this kitten should be run via a map in kitty.conf, not from the command line')
+                raise ValueError('Remote control not enabled, this kitten should be run via a map in alatty.conf, not from the command line')
             self.rc_fd = int(self.to.partition(':')[-1])
             os.set_inheritable(self.rc_fd, False)
         if (self.remote_control_password or self.remote_control_password == '') and not self.password:
@@ -91,11 +91,11 @@ class KittenUI:
             if enable:
                 os.set_inheritable(self.rc_fd, True)
                 if self.password:
-                    os.environ['KITTY_RC_PASSWORD'] = self.password
+                    os.environ['ALATTY_RC_PASSWORD'] = self.password
             else:
                 os.set_inheritable(self.rc_fd, False)
                 if self.password:
-                    os.environ.pop('KITTY_RC_PASSWORD', None)
+                    os.environ.pop('ALATTY_RC_PASSWORD', None)
 
     def remote_control(self, cmd: str | Sequence[str], **kw: Any) -> Any:
         if not self.allow_remote_control:
@@ -184,7 +184,7 @@ class Handler:
         if not hasattr(self, '_key_shortcuts'):
             self._key_shortcuts: dict[ParsedShortcut, KeyActionType] = {}
         if isinstance(spec, str):
-            from kitty.key_encoding import parse_shortcut
+            from alatty.key_encoding import parse_shortcut
             spec = parse_shortcut(spec)
         self._key_shortcuts[spec] = action
 
@@ -281,7 +281,7 @@ class Handler:
     def on_writing_finished(self) -> None:
         pass
 
-    def on_kitty_cmd_response(self, response: dict[str, Any]) -> None:
+    def on_alatty_cmd_response(self, response: dict[str, Any]) -> None:
         pass
 
     def on_clipboard_response(self, text: str, from_primary: bool = False) -> None:

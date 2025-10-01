@@ -8,10 +8,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kovidgoyal/kitty/tools/unicode_names"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/unicode_names"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print

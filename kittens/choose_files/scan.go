@@ -18,9 +18,9 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/kovidgoyal/kitty/tools/fzf"
-	"github.com/kovidgoyal/kitty/tools/ignorefiles"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/fzf"
+	"github.com/kovidgoyal/alatty/tools/ignorefiles"
+	"github.com/kovidgoyal/alatty/tools/utils"
 	"golang.org/x/sys/unix"
 )
 

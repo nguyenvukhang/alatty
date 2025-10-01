@@ -26,7 +26,7 @@
 // It is fine to use C99 in this file because it will not be built with VS
 //========================================================================
 
-#include "../kitty/monotonic.h"
+#include "../alatty/monotonic.h"
 #include "glfw3.h"
 #include "internal.h"
 
@@ -607,7 +607,7 @@ static const NSRange kEmptyRange = { NSNotFound, 0 };
     }
     // Because of a bug in macOS Tahoe we cannot redraw the window in response
     // to a resize event that was caused by a screen change as the OpenGL
-    // context is not ready yet. See: https://github.com/kovidgoyal/kitty/issues/8983
+    // context is not ready yet. See: https://github.com/kovidgoyal/alatty/issues/8983
     if (window->ns.resizeCallback && !is_screen_change) window->ns.resizeCallback((GLFWwindow*)window);
 }
 
@@ -779,7 +779,7 @@ static const NSRange kEmptyRange = { NSNotFound, 0 };
         markedRect = NSMakeRect(0.0, 0.0, 0.0, 0.0);
         input_source_at_last_key_event = nil;
         in_key_handler = 0;
-        self.identifier = @"kitty-content-view";
+        self.identifier = @"alatty-content-view";
 
         [self updateTrackingAreas];
         [self registerForDraggedTypes:@[NSPasteboardTypeFileURL, NSPasteboardTypeString]];
@@ -1416,7 +1416,7 @@ is_modifier_pressed(NSUInteger flags, NSUInteger target_mask, NSUInteger other_m
         markedText = [[NSMutableAttributedString alloc] initWithString:string];
     }
     if (!in_key_handler || in_key_handler == 2) {
-        debug_key("Updating IME text in kitty from setMarkedText called from %s: %s\n", in_key_handler ? "flagsChanged" : "event loop", _glfw.ns.text);
+        debug_key("Updating IME text in alatty from setMarkedText called from %s: %s\n", in_key_handler ? "flagsChanged" : "event loop", _glfw.ns.text);
         GLFWkeyevent glfw_keyevent = {.text=[[markedText string] UTF8String], .ime_state = GLFW_IME_PREEDIT_CHANGED};
         _glfwInputKeyboard(window, &glfw_keyevent);
         _glfw.ns.text[0] = 0;
@@ -1510,7 +1510,7 @@ void _glfwPlatformUpdateIMEState(_GLFWwindow *w, const GLFWIMEUpdateEvent *ev) {
         _glfw.ns.text[sizeof(_glfw.ns.text) - 1] = 0;
         if ((!in_key_handler || in_key_handler == 2) && _glfw.ns.text[0]) {
             if (!is_ascii_control_char(_glfw.ns.text[0])) {
-                debug_key("Sending text to kitty from insertText called from %s: %s\n", in_key_handler ? "flagsChanged" : "event loop", _glfw.ns.text);
+                debug_key("Sending text to alatty from insertText called from %s: %s\n", in_key_handler ? "flagsChanged" : "event loop", _glfw.ns.text);
                 GLFWkeyevent glfw_keyevent = {.text=_glfw.ns.text, .ime_state=GLFW_IME_COMMIT_TEXT};
                 _glfwInputKeyboard(window, &glfw_keyevent);
             }
@@ -1572,7 +1572,7 @@ void _glfwPlatformUpdateIMEState(_GLFWwindow *w, const GLFWIMEUpdateEvent *ev) {
 }
 
 // Selected text as input to be sent to Services
-// For example, after selecting an absolute path, open the global menu bar kitty->Services and click `Show in Finder`.
+// For example, after selecting an absolute path, open the global menu bar alatty->Services and click `Show in Finder`.
 - (BOOL)writeSelectionToPasteboard:(NSPasteboard *)pboard types:(NSArray *)types
 {
     if (!_glfw.callbacks.get_current_selection) return NO;
@@ -2306,7 +2306,7 @@ void _glfwPlatformShowWindow(_GLFWwindow* window, bool move_to_active_screen)
         // fullscreen. So to work around that, we change the collection
         // behavior temporarily to NSWindowCollectionBehaviorMoveToActiveSpace
         // and then change it back asynchronously.
-        // See https://github.com/kovidgoyal/kitty/issues/8740
+        // See https://github.com/kovidgoyal/alatty/issues/8740
         NSWindowCollectionBehavior old = nw.collectionBehavior;
         nw.collectionBehavior = (old & !NSWindowCollectionBehaviorCanJoinAllSpaces) | NSWindowCollectionBehaviorMoveToActiveSpace;
         [nw orderFront:nil];
@@ -2891,7 +2891,7 @@ bool _glfwPlatformToggleFullscreen(_GLFWwindow* w, unsigned int flags) {
         if (!in_fullscreen && !_glfwPlatformWindowVisible(w)) {
             // Bug in Apple's fullscreen implementation causes fullscreen to
             // not work before window is shown (at creation) if another window
-            // is already fullscreen. Le sigh. https://github.com/kovidgoyal/kitty/issues/7448
+            // is already fullscreen. Le sigh. https://github.com/kovidgoyal/alatty/issues/7448
             _glfwPlatformAddTimer(0, false, make_window_fullscreen_after_show, (void*)(uintptr_t)(w->id), NULL);
             return made_fullscreen;
         }
@@ -3272,7 +3272,7 @@ GLFWAPI GLFWcocoarenderframefun glfwCocoaSetWindowResizeCallback(GLFWwindow *w, 
 
 static
 void clear_title_bar_background_views(NSWindow *window) {
-#define tag @"kitty-for-transparent-titlebar"
+#define tag @"alatty-for-transparent-titlebar"
     NSView *contentView = window.contentView, *titlebarContainer = contentView ? contentView.superview : nil;
     if (titlebarContainer) {
         for (NSView *subview in [titlebarContainer viewsWithIdentifier:tag]) [subview removeFromSuperview];
@@ -3396,7 +3396,7 @@ GLFWAPI void glfwCocoaSetWindowChrome(GLFWwindow *w, unsigned int color, bool us
             break;
     }
     // shadow causes burn-in/ghosting because cocoa doesnt invalidate it on OS window resize/minimize/restore.
-    // https://github.com/kovidgoyal/kitty/issues/6439
+    // https://github.com/kovidgoyal/alatty/issues/6439
     if (is_transparent) has_shadow = false;
     bool hide_titlebar_buttons = !in_fullscreen && window->ns.titlebar_hidden;
     [nsw setTitlebarAppearsTransparent:titlebar_transparent];
@@ -3426,7 +3426,7 @@ GLFWAPI void glfwCocoaSetWindowChrome(GLFWwindow *w, unsigned int color, bool us
     [[nsw standardWindowButton: NSWindowMiniaturizeButton] setHidden:hide_titlebar_buttons];
     [[nsw standardWindowButton: NSWindowZoomButton] setHidden:hide_titlebar_buttons];
     // Apple throws a hissy fit if one attempts to clear the value of NSWindowStyleMaskFullScreen outside of a full screen transition
-    // event. See https://github.com/kovidgoyal/kitty/issues/7106
+    // event. See https://github.com/kovidgoyal/alatty/issues/7106
     NSWindowStyleMask fsmask = current_style_mask & NSWindowStyleMaskFullScreen;
     window->ns.pre_full_screen_style_mask = getStyleMask(window);
     if (in_fullscreen && window->ns.in_traditional_fullscreen) {

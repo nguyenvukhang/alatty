@@ -19,8 +19,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/shm"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/shm"
 
 	"github.com/kovidgoyal/exiffix"
 	"github.com/kovidgoyal/imaging"
@@ -28,7 +28,7 @@ import (
 
 var _ = fmt.Print
 
-const TempTemplate = "kitty-tty-graphics-protocol-*"
+const TempTemplate = "alatty-tty-graphics-protocol-*"
 
 func CreateTemp() (*os.File, error) {
 	return os.CreateTemp("", TempTemplate)
@@ -183,7 +183,7 @@ func SetGIFFrameDisposal(number, anchor_frame int, disposal byte) (int, int) {
 
 func MakeTempDir(template string) (ans string, err error) {
 	if template == "" {
-		template = "kitty-img-*"
+		template = "alatty-img-*"
 	}
 	if shm.SHM_DIR != "" {
 		ans, err = os.MkdirTemp(shm.SHM_DIR, template)
@@ -196,7 +196,7 @@ func MakeTempDir(template string) (ans string, err error) {
 
 func check_resize(frame *ImageFrame, filename string) error {
 	// ImageMagick sometimes generates RGBA images smaller than the specified
-	// size. See https://github.com/kovidgoyal/kitty/issues/276 for examples
+	// size. See https://github.com/kovidgoyal/alatty/issues/276 for examples
 	s, err := os.Stat(filename)
 	if err != nil {
 		return err

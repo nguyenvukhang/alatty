@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/graphics"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/graphics"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -93,9 +93,9 @@ func (h *handler) initialize() (err error) {
 	h.graphics_manager.initialize(h.lp)
 	go func() {
 		var r ListResult
-		h.set_worker_error(kitty_font_backend.query("list_monospaced_fonts", nil, &r))
+		h.set_worker_error(alatty_font_backend.query("list_monospaced_fonts", nil, &r))
 		h.listing.fonts = r.Fonts
-		h.listing.resolved_faces_from_kitty_conf = r.Resolved_faces
+		h.listing.resolved_faces_from_alatty_conf = r.Resolved_faces
 		h.lp.WakeupMainThread()
 	}()
 	h.draw_screen()

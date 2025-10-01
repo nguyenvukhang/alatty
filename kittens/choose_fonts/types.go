@@ -7,8 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/shlex"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/shlex"
 )
 
 var _ = fmt.Print
@@ -164,7 +164,7 @@ func ensure_variable_data_for_fonts(fonts ...ListedFont) error {
 	}
 	variable_data_cache_mutex.Unlock()
 	var data []VariableData
-	if err := kitty_font_backend.query("read_variable_data", map[string]any{"descriptors": descriptors}, &data); err != nil {
+	if err := alatty_font_backend.query("read_variable_data", map[string]any{"descriptors": descriptors}, &data); err != nil {
 		return err
 	}
 	variable_data_cache_mutex.Lock()

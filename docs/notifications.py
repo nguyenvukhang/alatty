@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 # A sample script to process notifications. Save it as
-# ~/.config/kitty/notifications.py
+# ~/.config/alatty/notifications.py
 
 import subprocess
 
-from kitty.notifications import NotificationCommand, Urgency
+from alatty.notifications import NotificationCommand, Urgency
 
 
 def log_notification(nc: NotificationCommand) -> None:

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kovidgoyal/kitty/tools/tui/graphics"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/tui/graphics"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -83,7 +83,7 @@ func (g *graphics_manager) display_image(slot int, path string, img_width, img_h
 
 func (g *graphics_manager) on_response(gc *graphics.GraphicsCommand) (err error) {
 	if gc.ResponseMessage() != "OK" {
-		return fmt.Errorf("Failed to load image with error: %s\n\nNote that the choose-fonts kitten does not work over SSH as it is meant to select a locally available font to use in kitty.", gc.ResponseMessage())
+		return fmt.Errorf("Failed to load image with error: %s\n\nNote that the choose-fonts kitten does not work over SSH as it is meant to select a locally available font to use in alatty.", gc.ResponseMessage())
 	}
 	for _, img := range g.images {
 		if img.image_number == gc.ImageNumber() {

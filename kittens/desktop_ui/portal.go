@@ -21,8 +21,8 @@ import (
 	"github.com/kovidgoyal/dbus"
 	"github.com/kovidgoyal/dbus/introspect"
 	"github.com/kovidgoyal/dbus/prop"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
 	"golang.org/x/sys/unix"
 )
 
@@ -32,17 +32,17 @@ const PORTAL_APPEARANCE_NAMESPACE = "org.freedesktop.appearance"
 const PORTAL_COLOR_SCHEME_KEY = "color-scheme"
 const PORTAL_ACCENT_COLOR_KEY = "accent-color"
 const PORTAL_CONTRAST_KEY = "contrast"
-const PORTAL_BUS_NAME = "org.freedesktop.impl.portal.desktop.kitty"
+const PORTAL_BUS_NAME = "org.freedesktop.impl.portal.desktop.alatty"
 const DESKTOP_OBJECT_PATH = "/org/freedesktop/portal/desktop"
 const SETTINGS_INTERFACE = "org.freedesktop.impl.portal.Settings"
 const FILE_CHOOSER_INTERFACE = "org.freedesktop.impl.portal.FileChooser"
-const KITTY_OBJECT_PATH = "/net/kovidgoyal/kitty/portal"
-const CHANGE_SETTINGS_INTERFACE = "net.kovidgoyal.kitty.settings"
+const ALATTY_OBJECT_PATH = "/net/kovidgoyal/alatty/portal"
+const CHANGE_SETTINGS_INTERFACE = "net.kovidgoyal.alatty.settings"
 const DESKTOP_PORTAL_NAME = "org.freedesktop.portal.Desktop"
 const REQUEST_INTERFACE = "org.freedesktop.impl.portal.Request"
 
 // Special portal setting used to check if we are being called by xdg-desktop-portal
-const SETTINGS_CANARY_NAMESPACE = "net.kovidgoyal.kitty"
+const SETTINGS_CANARY_NAMESPACE = "net.kovidgoyal.alatty"
 const SETTINGS_CANARY_KEY = "status"
 
 type ColorScheme uint32
@@ -219,7 +219,7 @@ func (self *Portal) Start() (err error) {
 		"RemoveSetting": {{"namespace", "s", false}, {"key", "s", false}},
 	}
 	props["version"].Value = uint32(1)
-	if err = ExportInterface(self.bus, self, CHANGE_SETTINGS_INTERFACE, KITTY_OBJECT_PATH, methods, props, nil); err != nil {
+	if err = ExportInterface(self.bus, self, CHANGE_SETTINGS_INTERFACE, ALATTY_OBJECT_PATH, methods, props, nil); err != nil {
 		return
 	}
 	return
@@ -359,7 +359,7 @@ func patch_portals_conf(text []byte) []byte {
 			in_preferred = sl == "[preferred]"
 			lines = append(lines, line)
 			for _, iface := range AllPortalInterfaces() {
-				lines = append(lines, iface+"=kitty")
+				lines = append(lines, iface+"=alatty")
 			}
 			patched = true
 		} else if in_preferred {
@@ -380,7 +380,7 @@ func patch_portals_conf(text []byte) []byte {
 		// the file was empty or did not contain a section
 		lines = append(lines, "[preferred]")
 		for _, iface := range AllPortalInterfaces() {
-			lines = append(lines, iface+"=kitty")
+			lines = append(lines, iface+"=alatty")
 		}
 	}
 
@@ -403,7 +403,7 @@ func enable_portal() (err error) {
 	if portals_dir == "" {
 		return fmt.Errorf("Could not find any writable portals directories. Make sure XDG_DATA_HOME is set and point to a directory for which you have write permission.")
 	}
-	portals_defn := filepath.Join(portals_dir, "kitty.portal")
+	portals_defn := filepath.Join(portals_dir, "alatty.portal")
 	if err = os.WriteFile(portals_defn, utils.UnsafeStringToBytes(fmt.Sprintf(
 		`[portal]
 DBusName=%s
@@ -411,7 +411,7 @@ Interfaces=%s;
 `, PORTAL_BUS_NAME, strings.Join(AllPortalInterfaces(), ";"))), 0o644); err != nil {
 		return err
 	}
-	fmt.Println("Wrote kitty portal definition to:", portals_defn)
+	fmt.Println("Wrote alatty portal definition to:", portals_defn)
 	dbus_service_dir := ""
 	for _, x := range WritableDataDirs() {
 		q := filepath.Join(x, "dbus-1", "services")
@@ -438,7 +438,7 @@ Exec=%s desktop-ui run-server
 `, PORTAL_BUS_NAME, exe_path)), 0o644); err != nil {
 		return err
 	}
-	fmt.Println("Wrote kitty DBUS activation service file to:", dbus_service_defn)
+	fmt.Println("Wrote alatty DBUS activation service file to:", dbus_service_defn)
 
 	d := os.Getenv("XDG_CURRENT_DESKTOP")
 	cf := os.Getenv("XDG_CONFIG_HOME")
@@ -458,7 +458,7 @@ Exec=%s desktop-ui run-server
 			text := patch_portals_conf(text)
 			if err = os.WriteFile(q, text, 0o644); err == nil {
 				patched_file = q
-				fmt.Printf("Patched %s to use the kitty portals\n", patched_file)
+				fmt.Printf("Patched %s to use the alatty portals\n", patched_file)
 				break
 			}
 		}
@@ -471,7 +471,7 @@ Exec=%s desktop-ui run-server
 			return err
 		}
 		patched_file = q
-		fmt.Printf("Created %s to use the kitty portals\n", patched_file)
+		fmt.Printf("Created %s to use the alatty portals\n", patched_file)
 	}
 	return
 }
@@ -495,7 +495,7 @@ func set_variant_setting(namespace, key string, v dbus.Variant, remove_setting b
 	} else {
 		vals = append(vals, v)
 	}
-	obj := conn.Object(PORTAL_BUS_NAME, dbus.ObjectPath(KITTY_OBJECT_PATH))
+	obj := conn.Object(PORTAL_BUS_NAME, dbus.ObjectPath(ALATTY_OBJECT_PATH))
 	call := obj.Call(CHANGE_SETTINGS_INTERFACE+"."+method, dbus.FlagNoAutoStart, vals...)
 	if err = call.Store(); err != nil {
 		return fmt.Errorf("failed to call %s with error: %w", method, err)
@@ -553,7 +553,7 @@ func set_color_scheme(which string) (err error) {
 	if val == nval {
 		return
 	}
-	obj := conn.Object(PORTAL_BUS_NAME, dbus.ObjectPath(KITTY_OBJECT_PATH))
+	obj := conn.Object(PORTAL_BUS_NAME, dbus.ObjectPath(ALATTY_OBJECT_PATH))
 	call := obj.Call(CHANGE_SETTINGS_INTERFACE+".ChangeSetting", dbus.FlagNoAutoStart, PORTAL_APPEARANCE_NAMESPACE, PORTAL_COLOR_SCHEME_KEY, dbus.MakeVariant(nval))
 	if err = call.Store(); err != nil {
 		return fmt.Errorf("failed to call ChangeSetting with error: %w", err)
@@ -727,7 +727,7 @@ type ChooserResponse struct {
 
 func (self *Portal) run_file_chooser(cfd ChooseFilesData) (response uint32, result_dict vmap) {
 	response = RESPONSE_ENDED
-	tdir, err := os.MkdirTemp("", "kitty-cfd")
+	tdir, err := os.MkdirTemp("", "alatty-cfd")
 	if err != nil {
 		log.Println("cannot run file chooser as failed to create a temporary directory with error: ", err)
 		return
@@ -782,10 +782,10 @@ func (self *Portal) run_file_chooser(cfd ChooseFilesData) (response uint32, resu
 		if edge == "center-sized" {
 			args = append(args, "--lines="+lines, "--columns="+columns)
 		}
-		for _, x := range self.opts.File_chooser_kitty_conf {
+		for _, x := range self.opts.File_chooser_alatty_conf {
 			args = append(args, `-c`, x)
 		}
-		for _, x := range self.opts.File_chooser_kitty_override {
+		for _, x := range self.opts.File_chooser_alatty_override {
 			args = append(args, `-o`, x)
 		}
 		if self.file_chooser_first_instance == nil {
@@ -796,7 +796,7 @@ func (self *Portal) run_file_chooser(cfd ChooseFilesData) (response uint32, resu
 			}
 			fa := slices.Clone(args)
 			fa = append(fa, "--start-as-hidden", "sh", "-c", "echo a > '"+fifo_path+"'; read")
-			cmd := exec.Command(utils.KittyExe(), fa...)
+			cmd := exec.Command(utils.AlattyExe(), fa...)
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			cmd.Start()
@@ -835,7 +835,7 @@ func (self *Portal) run_file_chooser(cfd ChooseFilesData) (response uint32, resu
 		}
 		args = append(args, "--write-pid-to", pid_path)
 		args = append(args, utils.IfElse(cfd.Cwd == "", "~", cfd.Cwd))
-		cmd := exec.Command(utils.KittyExe(), args...)
+		cmd := exec.Command(utils.AlattyExe(), args...)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		return cmd

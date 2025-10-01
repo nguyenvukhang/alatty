@@ -441,7 +441,7 @@ typedef struct SignatureVal {
 #define VAL_TY SignatureVal
 static void free_signature_val(SignatureVal x) { free(x.weak_hash_collisions); }
 #define VAL_DTOR_FN free_signature_val
-#include "kitty-verstable.h"
+#include "alatty-verstable.h"
 
 typedef struct Differ {
     PyObject_HEAD

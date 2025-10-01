@@ -1,4 +1,4 @@
-package kitty
+package alatty
 
 import (
 	_ "embed"
@@ -8,7 +8,7 @@ import (
 
 var _ = fmt.Print
 
-//go:embed kitty_tests/GraphemeBreakTest.json
+//go:embed alatty_tests/GraphemeBreakTest.json
 var grapheme_break_test_data []byte
 
 type GraphemeBreakTest struct {

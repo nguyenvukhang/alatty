@@ -20,14 +20,14 @@ import (
 
 	"golang.org/x/exp/constraints"
 
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/tools/cli/markup"
-	"github.com/kovidgoyal/kitty/tools/rsync"
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/humanize"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/tools/cli/markup"
+	"github.com/kovidgoyal/alatty/tools/rsync"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/humanize"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print
@@ -381,7 +381,7 @@ func (self *SendManager) initialize() {
 	self.active_idx = -1
 	self.current_chunk_uncompressed_sz = -1
 	self.current_chunk_for_file_id = ""
-	self.prefix = fmt.Sprintf("\x1b]%d;id=%s;", kitty.FileTransferCode, self.request_id)
+	self.prefix = fmt.Sprintf("\x1b]%d;id=%s;", alatty.FileTransferCode, self.request_id)
 	self.suffix = "\x1b\\"
 	for _, f := range self.files {
 		if f.file_size > 0 {
@@ -1220,7 +1220,7 @@ func send_loop(opts *Options, files []*File) (err error, rc int) {
 		lp.SetCursorVisible(true)
 		return ""
 	}
-	ftc_code := strconv.Itoa(kitty.FileTransferCode)
+	ftc_code := strconv.Itoa(alatty.FileTransferCode)
 	lp.OnEscapeCode = func(et loop.EscapeCodeType, payload []byte) error {
 		if et == loop.OSC {
 			if idx := bytes.IndexByte(payload, ';'); idx > 0 {

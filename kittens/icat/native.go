@@ -4,11 +4,11 @@ package icat
 
 import (
 	"fmt"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/tui/graphics"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/images"
-	"github.com/kovidgoyal/kitty/tools/utils/shm"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/tui/graphics"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/images"
+	"github.com/kovidgoyal/alatty/tools/utils/shm"
 	"image"
 	"image/gif"
 
@@ -29,7 +29,7 @@ func resize_frame(imgd *image_data, img image.Image) (image.Image, image.Rectang
 	return img, image.Rect(newleft, newtop, newleft+new_width, newtop+new_height)
 }
 
-const shm_template = "kitty-icat-*"
+const shm_template = "alatty-icat-*"
 
 func add_frame(ctx *images.Context, imgd *image_data, img image.Image) *image_frame {
 	is_opaque := false

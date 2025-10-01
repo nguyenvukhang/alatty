@@ -4,12 +4,12 @@ The :command:`launch` command
 .. program:: launch
 
 
-|kitty| has a :code:`launch` action that can be used to run arbitrary programs
+|alatty| has a :code:`launch` action that can be used to run arbitrary programs
 in new windows/tabs. It can be mapped to user defined shortcuts in
-:file:`kitty.conf`. It is very powerful and allows sending the contents of the
+:file:`alatty.conf`. It is very powerful and allows sending the contents of the
 current window to the launched program, as well as many other options.
 
-In the simplest form, you can use it to open a new kitty window running the
+In the simplest form, you can use it to open a new alatty window running the
 shell, as shown below::
 
     map f1 launch
@@ -54,12 +54,12 @@ The piping environment
 --------------------------
 
 When using :option:`launch --stdin-source`, the program to which the data is
-piped has a special environment variable declared, :envvar:`KITTY_PIPE_DATA`
+piped has a special environment variable declared, :envvar:`ALATTY_PIPE_DATA`
 whose contents are::
 
-   KITTY_PIPE_DATA={scrolled_by}:{cursor_x},{cursor_y}:{lines},{columns}
+   ALATTY_PIPE_DATA={scrolled_by}:{cursor_x},{cursor_y}:{lines},{columns}
 
-where ``scrolled_by`` is the number of lines kitty is currently scrolled by,
+where ``scrolled_by`` is the number of lines alatty is currently scrolled by,
 ``cursor_(x|y)`` is the position of the cursor on the screen with ``(1,1)``
 being the top left corner and ``{lines},{columns}`` being the number of rows
 and columns of the screen.
@@ -75,8 +75,8 @@ the command line:
 ``@selection``
     Replaced by the currently selected text.
 
-``@active-kitty-window-id``
-    Replaced by the id of the currently active kitty window.
+``@active-alatty-window-id``
+    Replaced by the id of the currently active alatty window.
 
 ``@line-count``
     Replaced by the number of lines in STDIN. Only present when passing some
@@ -84,10 +84,10 @@ the command line:
 
 ``@input-line-number``
     Replaced by the number of lines a pager should scroll to match the current
-    scroll position in kitty. See :opt:`scrollback_pager` for details.
+    scroll position in alatty. See :opt:`scrollback_pager` for details.
 
 ``@scrolled-by``
-    Replaced by the number of lines kitty is currently scrolled by.
+    Replaced by the number of lines alatty is currently scrolled by.
 
 ``@cursor-x``
     Replaced by the current cursor x position with 1 being the leftmost cell.
@@ -104,7 +104,7 @@ the command line:
 
 For example::
 
-    map f1 launch my-program @active-kitty-window-id
+    map f1 launch my-program @active-alatty-window-id
 
 
 .. _watchers:
@@ -117,21 +117,21 @@ that will be called at specific events, such as when the window is resized or
 closed. Note that you can also specify watchers that are loaded for all windows,
 via :opt:`watcher`. To create a watcher, specify the path to a Python module
 that specifies callback functions for the events you are interested in, for
-create :file:`~/.config/kitty/mywatcher.py` and use :option:`launch --watcher` = :file:`mywatcher.py`:
+create :file:`~/.config/alatty/mywatcher.py` and use :option:`launch --watcher` = :file:`mywatcher.py`:
 
 .. code-block:: python
 
-    # ~/.config/kitty/mywatcher.py
+    # ~/.config/alatty/mywatcher.py
     from typing import Any
 
-    from kitty.boss import Boss
-    from kitty.window import Window
+    from alatty.boss import Boss
+    from alatty.window import Window
 
 
     def on_load(boss: Boss, data: dict[str, Any]) -> None:
         # This is a special function that is called just once when this watcher
         # module is first loaded, can be used to perform any initializztion/one
-        # time setup. Any exceptions in this function are printed to kitty's
+        # time setup. Any exceptions in this function are printed to alatty's
         # STDERR but otherwise ignored.
         ...
 
@@ -178,9 +178,9 @@ create :file:`~/.config/kitty/mywatcher.py` and use :option:`launch --watcher` =
     def on_tab_bar_dirty(boss: Boss, window: Window, data: dict[str, Any]) -> None:
         # called when any changes happen to the tab bar, such a new tabs being
         # created, tab titles changing, tabs moving, etc. Useful to display the
-        # tab bar externally to kitty. This is called even if the tab bar is
+        # tab bar externally to alatty. This is called even if the tab bar is
         # hidden. Note that this is called only in *global watchers*, that is
-        # watchers defined in kitty.conf or using the --watcher command line
+        # watchers defined in alatty.conf or using the --watcher command line
         # flag. data contains tab_manager which is the object responsible for
         # managing all tabs in a single OS Window.
         ...
@@ -188,9 +188,9 @@ create :file:`~/.config/kitty/mywatcher.py` and use :option:`launch --watcher` =
 
 Every callback is passed a reference to the global ``Boss`` object as well as
 the ``Window`` object the action is occurring on. The ``data`` object is a dict
-that contains event dependent data. You have full access to kitty internals in
-the watcher scripts, however kitty internals are not documented/stable so for
-most things you are better off using the kitty :doc:`Remote control API </remote-control>`.
+that contains event dependent data. You have full access to alatty internals in
+the watcher scripts, however alatty internals are not documented/stable so for
+most things you are better off using the alatty :doc:`Remote control API </remote-control>`.
 Simply call :code:`boss.call_remote_control()`, with the same arguments you
 would pass to ``kitten @``. For example:
 
@@ -200,7 +200,7 @@ would pass to ``kitten @``. For example:
         # send some text to the resized window
         boss.call_remote_control(window, ('send-text', f'--match=id:{window.id}', 'hello world'))
 
-Run, ``kitten @ --help`` in a kitty terminal, to see all the remote control
+Run, ``kitten @ --help`` in a alatty terminal, to see all the remote control
 commands available to you.
 
 

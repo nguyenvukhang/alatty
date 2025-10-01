@@ -2,7 +2,7 @@ package humanize
 
 import (
 	"fmt"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 	"math"
 	"sort"
 	"strings"

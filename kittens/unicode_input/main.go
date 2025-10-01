@@ -16,15 +16,15 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/tui/readline"
-	"github.com/kovidgoyal/kitty/tools/unicode_names"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/tui/readline"
+	"github.com/kovidgoyal/alatty/tools/unicode_names"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print
@@ -454,7 +454,7 @@ func (self *handler) handle_favorites_key_event(event *loop.KeyEvent) {
 			}
 		}
 		err = self.lp.SuspendAndRun(func() error {
-			cmd := exec.Command(exe, "edit-in-kitty", "--type=overlay", fp)
+			cmd := exec.Command(exe, "edit-in-alatty", "--type=overlay", fp)
 			cmd.Stdin = os.Stdin
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
@@ -463,7 +463,7 @@ func (self *handler) handle_favorites_key_event(event *loop.KeyEvent) {
 				load_favorites(true)
 			} else {
 				fmt.Fprintln(os.Stderr, err)
-				fmt.Fprintln(os.Stderr, "Failed to run edit-in-kitty, favorites have not been changed. Press Enter to continue.")
+				fmt.Fprintln(os.Stderr, "Failed to run edit-in-alatty, favorites have not been changed. Press Enter to continue.")
 				var ln string
 				fmt.Scanln(&ln)
 			}
