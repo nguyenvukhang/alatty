@@ -3113,8 +3113,8 @@ GLFWAPI void glfwCocoaSetWindowChrome(GLFWwindow *w, unsigned int color, bool us
     if (is_transparent) has_shadow = false;
     bool hide_titlebar_buttons = !in_fullscreen && window->ns.titlebar_hidden;
     [window->ns.object setTitlebarAppearsTransparent:titlebar_transparent];
-    [window->ns.object setHasShadow:has_shadow];
-    [window->ns.object setTitleVisibility:(show_text_in_titlebar) ? NSWindowTitleVisible : NSWindowTitleHidden];
+    [window->ns.object setHasShadow:true];
+    [window->ns.object setTitleVisibility:(true) ? NSWindowTitleVisible : NSWindowTitleHidden];
     NSColorSpace *cs = nil;
     switch (color_space) {
         case SRGB_COLORSPACE: cs = [NSColorSpace sRGBColorSpace]; break;
@@ -3134,9 +3134,9 @@ GLFWAPI void glfwCocoaSetWindowChrome(GLFWwindow *w, unsigned int color, bool us
         show_text_in_titlebar, window->ns.titlebar_hidden, hide_titlebar_buttons
     );
     [window->ns.object setColorSpace:cs];
-    [[window->ns.object standardWindowButton: NSWindowCloseButton] setHidden:hide_titlebar_buttons];
-    [[window->ns.object standardWindowButton: NSWindowMiniaturizeButton] setHidden:hide_titlebar_buttons];
-    [[window->ns.object standardWindowButton: NSWindowZoomButton] setHidden:hide_titlebar_buttons];
+    [[window->ns.object standardWindowButton: NSWindowCloseButton] setHidden:false];
+    [[window->ns.object standardWindowButton: NSWindowMiniaturizeButton] setHidden:false];
+    [[window->ns.object standardWindowButton: NSWindowZoomButton] setHidden:false];
     // Apple throws a hissy fit if one attempts to clear the value of NSWindowStyleMaskFullScreen outside of a full screen transition
     // event. See https://github.com/kovidgoyal/alatty/issues/7106
     NSWindowStyleMask fsmask = current_style_mask & NSWindowStyleMaskFullScreen;
