@@ -1,4 +1,4 @@
-module github.com/kovidgoyal/kitty
+module github.com/kovidgoyal/alatty
 
 go 1.24.0
 

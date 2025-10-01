@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/cli/markup"
-	"github.com/kovidgoyal/kitty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/cli/markup"
+	"github.com/kovidgoyal/alatty/tools/tui"
 )
 
 var _ = fmt.Print

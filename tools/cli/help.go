@@ -14,11 +14,11 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/tools/cli/markup"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/tools/cli/markup"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
 )
 
 var _ = fmt.Print
@@ -30,7 +30,7 @@ func ShowError(err error) {
 }
 
 func (self *Command) version_string(formatter *markup.Context) string {
-	return fmt.Sprintln(formatter.Italic(self.CommandStringForUsage()), formatter.Opt(kitty.VersionString), "created by", formatter.Title("Kovid Goyal"))
+	return fmt.Sprintln(formatter.Italic(self.CommandStringForUsage()), formatter.Opt(alatty.VersionString), "created by", formatter.Title("Kovid Goyal"))
 }
 
 func (self *Command) ShowVersion() {
@@ -127,7 +127,7 @@ func (self *Command) ShowHelp() {
 }
 
 func ShowHelpInPager(text string) {
-	pager := exec.Command(kitty.DefaultPager[0], kitty.DefaultPager[1:]...)
+	pager := exec.Command(alatty.DefaultPager[0], alatty.DefaultPager[1:]...)
 	pager.Stdin = strings.NewReader(text)
 	pager.Stdout = os.Stdout
 	pager.Stderr = os.Stderr
@@ -155,7 +155,7 @@ func (self *Command) GenerateManPages(level int, recurse bool) (err error) {
 		return err
 	}
 	defer outf.Close()
-	fmt.Fprintf(outf, `.TH "%s" "1" "%s" "%s" "%s"`, name, getDeterministicTimestamp().Format("Jan 02, 2006"), kitty.VersionString, "kitten Manual")
+	fmt.Fprintf(outf, `.TH "%s" "1" "%s" "%s" "%s"`, name, getDeterministicTimestamp().Format("Jan 02, 2006"), alatty.VersionString, "kitten Manual")
 	fmt.Fprintln(outf)
 	fmt.Fprintln(outf, ".SH Name")
 	fmt.Fprintln(outf, name, "\\-", escape_text_for_man(self.ShortDescription))

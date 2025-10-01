@@ -18,8 +18,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/tools/utils"
 
 	"github.com/shirou/gopsutil/v3/process"
 	"golang.org/x/sys/unix"
@@ -62,7 +62,7 @@ var key_pat = sync.OnceValue(func() *regexp.Regexp {
 	return regexp.MustCompile(`([a-zA-Z][a-zA-Z0-9_-]*)\s+(.+)$`)
 })
 
-var kitty_os = sync.OnceValue(func() string {
+var alatty_os = sync.OnceValue(func() string {
 	switch runtime.GOOS {
 	case "linux":
 		return "linux"
@@ -77,12 +77,12 @@ var kitty_os = sync.OnceValue(func() string {
 func geninclude(path string) (string, error) {
 	cmd := exec.Command(path)
 	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, "KITTY_OS="+kitty_os())
+	cmd.Env = append(cmd.Env, "ALATTY_OS="+alatty_os())
 	if strings.HasSuffix(path, ".py") && unix.Access(path, unix.X_OK) != nil {
-		if utils.KittyExe() == "" || strings.HasPrefix(path, ":") {
+		if utils.AlattyExe() == "" || strings.HasPrefix(path, ":") {
 			cmd = exec.Command("python", path)
 		} else {
-			cmd = exec.Command(utils.KittyExe(), "+launch", path)
+			cmd = exec.Command(utils.AlattyExe(), "+launch", path)
 		}
 	}
 	stdout, err := cmd.StdoutPipe()
@@ -104,8 +104,8 @@ func geninclude(path string) (string, error) {
 
 func ExpandVars(x string) string {
 	return os.Expand(x, func(k string) string {
-		if k == "KITTY_OS" {
-			return kitty_os()
+		if k == "ALATTY_OS" {
+			return alatty_os()
 		}
 		return os.Getenv(k)
 	})
@@ -289,7 +289,7 @@ func (self *ConfigParser) ParseFiles(paths ...string) error {
 }
 
 func (self *ConfigParser) LoadConfig(name string, paths []string, overrides []string) (err error) {
-	const SYSTEM_CONF = "/etc/xdg/kitty"
+	const SYSTEM_CONF = "/etc/xdg/alatty"
 	system_conf := filepath.Join(SYSTEM_CONF, name)
 	add_if_exists := func(q string) {
 		err = self.ParseFiles(q)
@@ -346,11 +346,11 @@ func (self *ConfigParser) ParseOverrides(overrides ...string) error {
 	return self.parse(&s, "<overrides>", utils.ConfigDir(), 0)
 }
 
-func is_kitty_gui_cmdline(exe string, cmd ...string) bool {
+func is_alatty_gui_cmdline(exe string, cmd ...string) bool {
 	if len(cmd) == 0 {
 		return false
 	}
-	if filepath.Base(exe) != "kitty" {
+	if filepath.Base(exe) != "alatty" {
 		return false
 	}
 	if len(cmd) == 1 {
@@ -389,7 +389,7 @@ func (self Patcher) Patch(path, sentinel, content string, settings_to_comment_ou
 	add_at_top := ""
 	backup := true
 	if raw == nil {
-		cc := kitty.CommentedOutDefaultConfig
+		cc := alatty.CommentedOutDefaultConfig
 		if idx := strings.Index(cc, "\n\n"); idx > 0 {
 			add_at_top = cc[:idx+2]
 			raw = []byte(cc[idx+2:])
@@ -430,12 +430,12 @@ func (self Patcher) Patch(path, sentinel, content string, settings_to_comment_ou
 	return false, nil
 }
 
-func ReloadConfigInKitty(in_parent_only bool) error {
+func ReloadConfigInAlatty(in_parent_only bool) error {
 	if in_parent_only {
-		if pid, err := strconv.ParseInt(os.Getenv("KITTY_PID"), 10, 32); err == nil {
+		if pid, err := strconv.ParseInt(os.Getenv("ALATTY_PID"), 10, 32); err == nil {
 			if p, err := process.NewProcess(int32(pid)); err == nil {
 				if exe, eerr := p.Exe(); eerr == nil {
-					if c, err := p.CmdlineSlice(); err == nil && is_kitty_gui_cmdline(exe, c...) {
+					if c, err := p.CmdlineSlice(); err == nil && is_alatty_gui_cmdline(exe, c...) {
 						return p.SendSignal(unix.SIGUSR1)
 					}
 				}
@@ -451,10 +451,10 @@ func ReloadConfigInKitty(in_parent_only bool) error {
 		for _, line := range utils.Splitlines(utils.UnsafeBytesToString(ps_out)) {
 			line = strings.TrimSpace(line)
 			if pid_string, argv0, found := strings.Cut(line, " "); found {
-				if pid, err := strconv.ParseInt(strings.TrimSpace(pid_string), 10, 32); err == nil && strings.Contains(argv0, "kitty") {
+				if pid, err := strconv.ParseInt(strings.TrimSpace(pid_string), 10, 32); err == nil && strings.Contains(argv0, "alatty") {
 					if p, err := process.NewProcess(int32(pid)); err == nil {
 						if cmdline, err := p.CmdlineSlice(); err == nil {
-							if exe, err := p.Exe(); err == nil && is_kitty_gui_cmdline(exe, cmdline...) {
+							if exe, err := p.Exe(); err == nil && is_alatty_gui_cmdline(exe, cmdline...) {
 								_ = p.SendSignal(unix.SIGUSR1)
 							}
 						}
@@ -468,21 +468,21 @@ func ReloadConfigInKitty(in_parent_only bool) error {
 
 var OverrideEffectiveConfigPath string
 
-func ReadKittyConfig(line_handler func(key, val string) error, override_effective_config_path ...string) error {
-	kp := os.Getenv("KITTY_PID")
-	kitty_conf_path := ""
+func ReadAlattyConfig(line_handler func(key, val string) error, override_effective_config_path ...string) error {
+	kp := os.Getenv("ALATTY_PID")
+	alatty_conf_path := ""
 	if len(override_effective_config_path) > 0 {
-		kitty_conf_path = override_effective_config_path[0]
+		alatty_conf_path = override_effective_config_path[0]
 	}
-	if _, err := strconv.Atoi(kp); err == nil && kitty_conf_path == "" {
+	if _, err := strconv.Atoi(kp); err == nil && alatty_conf_path == "" {
 		effective_config_path := filepath.Join(utils.CacheDir(), "effective-config", kp)
 		if unix.Access(effective_config_path, unix.R_OK) == nil {
-			kitty_conf_path = effective_config_path
+			alatty_conf_path = effective_config_path
 		}
 	}
-	if kitty_conf_path == "" {
-		kitty_conf_path = filepath.Join(utils.ConfigDir(), "kitty.conf")
+	if alatty_conf_path == "" {
+		alatty_conf_path = filepath.Join(utils.ConfigDir(), "alatty.conf")
 	}
 	cp := ConfigParser{LineHandler: line_handler}
-	return cp.ParseFiles(kitty_conf_path)
+	return cp.ParseFiles(alatty_conf_path)
 }

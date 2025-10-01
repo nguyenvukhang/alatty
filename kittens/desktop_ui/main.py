@@ -4,7 +4,7 @@
 
 import sys
 
-from kitty.conf.types import Definition
+from alatty.conf.types import Definition
 
 definition = Definition(
     '!kittens.choose_files',
@@ -28,11 +28,11 @@ The size in lines and columns of the file chooser popup window. By default it is
 :code:`file_chooser_size 25 80` will cause the popup to be of size 25 lines and 80 columns. Note that if you
 use this option, depending on the compositor you are running, the popup window may not be properly modal.
 ''')
-opt('+file_chooser_kitty_conf', '',
-    long_text='Path to config file to use for kitty when drawing the file chooser window. Can be specified multiple times. By default, the'
-    ' normal kitty.conf is used. Relative paths are resolved with respect to the kitty config directory.'
+opt('+file_chooser_alatty_conf', '',
+    long_text='Path to config file to use for alatty when drawing the file chooser window. Can be specified multiple times. By default, the'
+    ' normal alatty.conf is used. Relative paths are resolved with respect to the alatty config directory.'
 )
-opt('+file_chooser_kitty_override', '', long_text='Override individual kitty configuration options, for the file chooser window.'
+opt('+file_chooser_alatty_override', '', long_text='Override individual alatty configuration options, for the file chooser window.'
     ' Can be specified multiple times. Syntax: :italic:`name=value`. For example: :code:`font_size=20`.'
 )
 

@@ -3,9 +3,9 @@
 Sessions
 =============
 
-kitty has robust support for sessions. A session is basically a simple text
-file where you can define kitty windows, tabs and what programs to run in them
-as well as how to layout the windows. kitty also supports actions to easily
+alatty has robust support for sessions. A session is basically a simple text
+file where you can define alatty windows, tabs and what programs to run in them
+as well as how to layout the windows. alatty also supports actions to easily
 :ac:`create and switch between existing sessions <goto_session>`, so that you
 can move seamlessly from working on one project to another with a couple of keystrokes.
 
@@ -25,14 +25,14 @@ a session file to develop a project:
     # Create another side window to keep an eye on some useful log file
     launch --title "Log for my project" /usr/bin/tail -f /path/to/project/log/file
 
-Save this file as :file:`~/path/to/myproject/launch.kitty-session`. Now when
+Save this file as :file:`~/path/to/myproject/launch.alatty-session`. Now when
 you want to work on the project, simply run:
 
 .. code-block:: sh
 
-    kitty --session ~/path/to/myproject/launch.kitty-session
+    alatty --session ~/path/to/myproject/launch.alatty-session
 
-You can also set the session in :file:`kitty.conf` via :opt:`startup_session`.
+You can also set the session in :file:`alatty.conf` via :opt:`startup_session`.
 
 Thus, it is very easy to create sessions and work on projects. To learn how to
 create more complex sessions, see :ref:`complex_sessions`.
@@ -44,15 +44,15 @@ Creating/Switching to sessions with a keypress
 ------------------------------------------------
 
 If you like to manage multiple sessions within a single terminal and
-easily swap between them, kitty has you covered. You can use the
-:ac:`goto_session` action in kitty.conf, like this:
+easily swap between them, alatty has you covered. You can use the
+:ac:`goto_session` action in alatty.conf, like this:
 
 .. code-block:: conf
 
    # Press F7 and then c to jump to the "cool" project
-   map f7>c goto_session ~/path/to/cool/cool.kitty-session
+   map f7>c goto_session ~/path/to/cool/cool.alatty-session
    # Press F7 and then h to jump to the "hot" project
-   map f7>h goto_session ~/path/to/hot/hot.kitty-session
+   map f7>h goto_session ~/path/to/hot/hot.alatty-session
    # Browse and select from the list of known projects defined via goto_session commands
    map f7>/ goto_session
    # Same as above, but the sessions are listed alphabetically instead of by most recent
@@ -70,7 +70,7 @@ all windows in the session with a single keypress.
 Displaying the currently active session name
 ----------------------------------------------
 
-You can display the name of the currently active session file in the kitty tab
+You can display the name of the currently active session file in the alatty tab
 bar using :opt:`tab_title_template`. For example, using the value::
 
     {session_name} {title}
@@ -89,21 +89,21 @@ More complex sessions
 
 If you want to create more complex sessions, with sophisticated layouts, such
 as :ref:`splits_layout`, the easiest way is to set up the state you want to
-save manually by first starting kitty like this:
+save manually by first starting alatty like this:
 
 .. code-block:: sh
 
-    kitty -o 'map f1 save_as_session --use-foreground-process --relocatable'
+    alatty -o 'map f1 save_as_session --use-foreground-process --relocatable'
 
 Now create whatever splits and tabs you need and start whatever programs such
 as editors, REPLs, debuggers, etc. you want to start in each of them. Once
-kitty is the way you want it, press the :kbd:`F1` key, and you will be prompted
+alatty is the way you want it, press the :kbd:`F1` key, and you will be prompted
 for a path at which to save the session file. Specify the path and the session
 will be saved there with the exact setup you created. The saved file will even
 be opened in your editor for you to review, automatically.
 
 If instead, you want to create these by hand, see the example below which shows
-all the major keywords you can use in kitty session files:
+all the major keywords you can use in alatty session files:
 
 .. code-block:: session
 
@@ -194,9 +194,9 @@ they don't belong to the session. If you would prefer to have them belong
 to the currently active session, you can use the :ac:`new_window_with_cwd`
 and :ac:`new_tab_with_cwd` actions instead, like this::
 
-    map kitty_mod+enter new_window_with_cwd
-    map kitty_mod+t new_tab_with_cwd
-    map kitty_mod+n new_os_window_with_cwd
+    map alatty_mod+enter new_window_with_cwd
+    map alatty_mod+t new_tab_with_cwd
+    map alatty_mod+n new_os_window_with_cwd
 
 This will cause newly created windows and tabs to belong to the currently active
 session, if any. Note that adding a window to a session in this way is
@@ -218,9 +218,9 @@ Sessions with remote connections
 If you use the :doc:`ssh kitten </kittens/ssh>` to connect to remote computers,
 :ac:`save_as_session` is smart enough to save the ssh kitten invocation to your
 session file, preserving the remote working directory and even the currently
-running program on the remote host! Try it, run kitty with::
+running program on the remote host! Try it, run alatty with::
 
-    kitty -o 'map f1 save_as_session --use-foreground-process --relocatable' --session <(echo "layout vertical\nlaunch\nlaunch")
+    alatty -o 'map f1 save_as_session --use-foreground-process --relocatable' --session <(echo "layout vertical\nlaunch\nlaunch")
 
 Now in both windows, run::
 
@@ -229,17 +229,17 @@ Now in both windows, run::
 To connect them both to a remote computer (replace ``localhost`` with another
 computer if you like). In one window change the directory to /tmp and in the
 other start some program. Then press :kbd:`F1` to save the session file.
-When you run the session file in another kitty instance you will see both
+When you run the session file in another alatty instance you will see both
 windows re-created, as expected with the correct working directories and
 running programs.
 
 Managing multi tab sessions in a single OS Window
 ----------------------------------------------------
 
-The natural way to organise sessions in kitty is one per :term:`os_window`.
+The natural way to organise sessions in alatty is one per :term:`os_window`.
 However, if you prefer to manage multiple sessions in a single OS Window, you
-can configure the kitty tab bar to only show tabs that belong to the currently
-active session. To do so, use :opt:`tab_bar_filter` in :file:`kitty.conf` set::
+can configure the alatty tab bar to only show tabs that belong to the currently
+active session. To do so, use :opt:`tab_bar_filter` in :file:`alatty.conf` set::
 
     tab_bar_filter session:~ or session:^$
 
@@ -268,7 +268,7 @@ documentation for them.
 
 ``focus_os_window``
     Give keyboard focus to the current OS Window. This is guaranteed to work
-    only is some other OS Window in the current kitty process has focus,
+    only is some other OS Window in the current alatty process has focus,
     otherwise the window manager might block changing focus to prevent *focus
     stealing*.
 
@@ -293,7 +293,7 @@ documentation for them.
 
 ``new_tab [tab title]``
     Create a new tab with the specified title. If no title is specified, the
-    title behaves just as for a regular tab in kitty.
+    title behaves just as for a regular tab in alatty.
 
 ``os_window_title``
     Set the title for the current OS Window. The OS Window will then always
@@ -332,7 +332,7 @@ documentation for them.
 The save_as_session action
 ------------------------------
 
-This action can be mapped to a key press in :file:`kitty.conf`. It will save
+This action can be mapped to a key press in :file:`alatty.conf`. It will save
 the currently open OS Windows, tabs, windows, running programs, working
 directories, etc. into a session file. It is a convenient way to
 :ref:`complex_sessions`. The options this action takes are documented below.

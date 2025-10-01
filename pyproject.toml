@@ -10,7 +10,7 @@ requires = [
 ]
 
 [tool.mypy]
-files = 'kitty,kittens,glfw,*.py,docs/conf.py,gen'
+files = 'alatty,kittens,glfw,*.py,docs/conf.py,gen'
 no_implicit_optional = true
 sqlite_cache = true
 cache_fine_grained = true
@@ -31,7 +31,7 @@ no_implicit_reexport = true
 [tool.pylsp-mypy]
 enabled = true
 dmypy = true
-exclude = ['kitty_tests/*']
+exclude = ['alatty_tests/*']
 report_progress = true
 
 [tool.ruff]
@@ -41,8 +41,8 @@ line-length = 160
 select = ['E', 'F', 'I', 'RUF100']
 
 [tool.ruff.lint.per-file-ignores]
-"kitty/options/types.py" = ["E501"]
-"kitty/options/parse.py" = ["E501"]
+"alatty/options/types.py" = ["E501"]
+"alatty/options/parse.py" = ["E501"]
 
 [tool.ruff.lint.isort]
 detect-same-package = true

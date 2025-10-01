@@ -16,11 +16,11 @@ from enum import Enum, IntFlag, auto
 from functools import partial
 from typing import Any, NamedTuple
 
-from kitty.constants import is_macos
-from kitty.fast_data_types import FILE_TRANSFER_CODE, close_tty, normal_tty, open_tty, parse_input_from_terminal, raw_tty
-from kitty.key_encoding import ALT, CTRL, SHIFT, backspace_key, decode_key_event, enter_key
-from kitty.typing_compat import ImageManagerType, KeyEventType, Protocol
-from kitty.utils import ScreenSize, ScreenSizeGetter, screen_size_function, write_all
+from alatty.constants import is_macos
+from alatty.fast_data_types import FILE_TRANSFER_CODE, close_tty, normal_tty, open_tty, parse_input_from_terminal, raw_tty
+from alatty.key_encoding import ALT, CTRL, SHIFT, backspace_key, decode_key_event, enter_key
+from alatty.typing_compat import ImageManagerType, KeyEventType, Protocol
+from alatty.utils import ScreenSize, ScreenSizeGetter, screen_size_function, write_all
 
 from .handler import Handler
 from .operations import MouseTracking, init_state, reset_state
@@ -289,7 +289,7 @@ class Loop:
     def _on_dcs(self, dcs: str) -> None:
         if dcs.startswith('@kitty-cmd'):
             import json
-            self.handler.on_kitty_cmd_response(json.loads(dcs[len('@kitty-cmd'):]))
+            self.handler.on_alatty_cmd_response(json.loads(dcs[len('@kitty-cmd'):]))
         elif dcs.startswith('1+r'):
             from binascii import unhexlify
             vals = dcs[3:].split(';')
@@ -347,7 +347,7 @@ class Loop:
                 payload = standard_b64decode(data[widx+1:]).decode('utf-8')
             self.handler.on_clipboard_response(payload, from_primary)
         elif q == ftc_code:
-            from kitty.file_transmission import FileTransmissionCommand
+            from alatty.file_transmission import FileTransmissionCommand
             data = memoryview(osc.encode('ascii'))
             self.handler.on_file_transfer_response(FileTransmissionCommand.deserialize(data[idx+1:]))
 

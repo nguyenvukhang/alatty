@@ -12,10 +12,10 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 type ScreenSize struct {
@@ -156,30 +156,30 @@ func NoAlternateScreen(self *Loop) {
 }
 
 func (self *Loop) OnlyDisambiguateKeys() *Loop {
-	self.terminal_options.kitty_keyboard_mode = DISAMBIGUATE_KEYS
+	self.terminal_options.alatty_keyboard_mode = DISAMBIGUATE_KEYS
 	return self
 }
 
 func OnlyDisambiguateKeys(self *Loop) {
-	self.terminal_options.kitty_keyboard_mode = DISAMBIGUATE_KEYS
+	self.terminal_options.alatty_keyboard_mode = DISAMBIGUATE_KEYS
 }
 
 func (self *Loop) NoKeyboardStateChange() *Loop {
-	self.terminal_options.kitty_keyboard_mode = NO_KEYBOARD_STATE_CHANGE
+	self.terminal_options.alatty_keyboard_mode = NO_KEYBOARD_STATE_CHANGE
 	return self
 }
 
 func NoKeyboardStateChange(self *Loop) {
-	self.terminal_options.kitty_keyboard_mode = NO_KEYBOARD_STATE_CHANGE
+	self.terminal_options.alatty_keyboard_mode = NO_KEYBOARD_STATE_CHANGE
 }
 
 func (self *Loop) FullKeyboardProtocol() *Loop {
-	self.terminal_options.kitty_keyboard_mode = FULL_KEYBOARD_PROTOCOL
+	self.terminal_options.alatty_keyboard_mode = FULL_KEYBOARD_PROTOCOL
 	return self
 }
 
 func FullKeyboardProtocol(self *Loop) {
-	self.terminal_options.kitty_keyboard_mode = FULL_KEYBOARD_PROTOCOL
+	self.terminal_options.alatty_keyboard_mode = FULL_KEYBOARD_PROTOCOL
 }
 
 func (self *Loop) MouseTrackingMode(mt MouseTracking) *Loop {
@@ -528,7 +528,7 @@ func (self *Loop) QueryTerminal(fields ...string) IdType {
 	}
 	q := make([]string, len(fields))
 	for i, x := range fields {
-		q[i] = hex.EncodeToString(utils.UnsafeStringToBytes("kitty-query-" + x))
+		q[i] = hex.EncodeToString(utils.UnsafeStringToBytes("alatty-query-" + x))
 	}
 	return self.QueueWriteString(fmt.Sprintf("\x1bP+q%s\a", strings.Join(q, ";")))
 }
@@ -594,9 +594,9 @@ func (self *Loop) RecoverFromPanicInGoRoutine() {
 	if r := recover(); r != nil {
 		text, err := utils.Format_stacktrace_on_panic(r)
 		err = fmt.Errorf("Panicked in non-main go routine\n%s\n%w", text, err)
-		// print to kitty stdout as multiple go routines might panic but only
+		// print to alatty stdout as multiple go routines might panic but only
 		// one panic is reported by the main loop panic_channel
-		if f := tty.KittyStdout(); f != nil {
+		if f := tty.AlattyStdout(); f != nil {
 			fmt.Fprintln(f, err)
 		}
 		self.panic_channel <- err

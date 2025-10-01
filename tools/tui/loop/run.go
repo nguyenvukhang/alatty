@@ -16,8 +16,8 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var SIGNULL unix.Signal
@@ -29,7 +29,7 @@ func new_loop() *Loop {
 	l.terminal_options.focus_tracking = true
 	l.terminal_options.in_band_resize_notification = true
 	l.terminal_options.color_scheme_change_notification = false
-	l.terminal_options.kitty_keyboard_mode = DISAMBIGUATE_KEYS | REPORT_ALTERNATE_KEYS | REPORT_ALL_KEYS_AS_ESCAPE_CODES | REPORT_TEXT_WITH_KEYS
+	l.terminal_options.alatty_keyboard_mode = DISAMBIGUATE_KEYS | REPORT_ALTERNATE_KEYS | REPORT_ALL_KEYS_AS_ESCAPE_CODES | REPORT_TEXT_WITH_KEYS
 	l.escape_code_parser.HandleCSI = l.handle_csi
 	l.escape_code_parser.HandleOSC = l.handle_osc
 	l.escape_code_parser.HandleDCS = l.handle_dcs
@@ -247,8 +247,8 @@ func (self *Loop) handle_dcs(raw []byte) error {
 		for s.Scan() {
 			key, val, _ := strings.Cut(s.Text(), "=")
 			if k, err := hex.DecodeString(key); err == nil {
-				if bytes.HasPrefix(k, utils.UnsafeStringToBytes("kitty-query-")) {
-					k = k[len("kitty-query-"):]
+				if bytes.HasPrefix(k, utils.UnsafeStringToBytes("alatty-query-")) {
+					k = k[len("alatty-query-"):]
 					if v, err := hex.DecodeString(val); err == nil {
 						if err = self.OnQueryResponse(string(k), string(v), valid); err != nil {
 							return err

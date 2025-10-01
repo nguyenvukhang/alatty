@@ -5,8 +5,8 @@ package show_key
 import (
 	"errors"
 	"fmt"
-	"github.com/kovidgoyal/kitty/tools/cli/markup"
-	"github.com/kovidgoyal/kitty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/cli/markup"
+	"github.com/kovidgoyal/alatty/tools/tty"
 	"io"
 	"os"
 

@@ -6,8 +6,8 @@ import os
 from collections.abc import Callable, Generator, Sequence
 from typing import Any
 
-from kitty.fast_data_types import wcswidth
-from kitty.utils import ScreenSize, screen_size_function
+from alatty.fast_data_types import wcswidth
+from alatty.utils import ScreenSize, screen_size_function
 
 from .operations import styled
 

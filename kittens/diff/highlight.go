@@ -7,9 +7,9 @@ import (
 	"os"
 	"sync"
 
-	"github.com/kovidgoyal/kitty/tools/highlight"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/images"
+	"github.com/kovidgoyal/alatty/tools/highlight"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/images"
 )
 
 var _ = fmt.Print

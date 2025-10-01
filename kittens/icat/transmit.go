@@ -8,7 +8,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/kovidgoyal/kitty"
+	"github.com/kovidgoyal/alatty"
 	"io"
 	"math"
 	not_rand "math/rand/v2"
@@ -16,12 +16,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/graphics"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/images"
-	"github.com/kovidgoyal/kitty/tools/utils/shm"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/graphics"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/images"
+	"github.com/kovidgoyal/alatty/tools/utils/shm"
 )
 
 var _ = fmt.Print
@@ -270,7 +270,7 @@ func write_unicode_placeholder(imgd *image_data) {
 			os.Stdout.WriteString(prefix)
 		}
 		for c := 0; c < imgd.width_cells; c++ {
-			os.Stdout.WriteString(string(kitty.ImagePlaceholderChar) + string(images.NumberToDiacritic[r]) + string(images.NumberToDiacritic[c]) + id_char)
+			os.Stdout.WriteString(string(alatty.ImagePlaceholderChar) + string(images.NumberToDiacritic[r]) + string(images.NumberToDiacritic[c]) + id_char)
 		}
 		if r < imgd.height_cells-1 {
 			os.Stdout.WriteString("\n\r")

@@ -8,8 +8,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
 )
 
 var nullable_colors = map[string]bool{

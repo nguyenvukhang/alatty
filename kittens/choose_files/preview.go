@@ -11,13 +11,13 @@ import (
 	"sync"
 	"unicode/utf8"
 
-	"github.com/kovidgoyal/kitty/tools/highlight"
-	"github.com/kovidgoyal/kitty/tools/icons"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/humanize"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/highlight"
+	"github.com/kovidgoyal/alatty/tools/icons"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/humanize"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print

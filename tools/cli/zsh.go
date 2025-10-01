@@ -4,20 +4,20 @@ package cli
 
 import (
 	"fmt"
-	"github.com/kovidgoyal/kitty/tools/cli/markup"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/cli/markup"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 	"strings"
 )
 
 var _ = fmt.Print
 
 func zsh_completion_script(commands []string) (string, error) {
-	return `#compdef kitty
+	return `#compdef alatty
 
-_kitty() {
+_alatty() {
     (( ${+commands[kitten]} )) || builtin return
     builtin local src cmd=${(F)words:0:$CURRENT}
     # Send all words up to the word the cursor is currently on.
@@ -26,9 +26,9 @@ _kitty() {
 }
 
 if (( $+functions[compdef] )); then
-    compdef _kitty kitty
-    compdef _kitty clone-in-kitty
-    compdef _kitty kitten
+    compdef _alatty alatty
+    compdef _alatty clone-in-alatty
+    compdef _alatty kitten
 fi
 `, nil
 }

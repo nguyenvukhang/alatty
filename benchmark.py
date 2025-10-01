@@ -1,4 +1,4 @@
-#!./kitty/launcher/kitty +launch
+#!./alatty/launcher/alatty +launch
 # License: GPL v3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 import fcntl
@@ -12,9 +12,9 @@ import termios
 import time
 from pty import CHILD, fork
 
-from kitty.constants import kitten_exe
-from kitty.fast_data_types import Screen, safe_pipe
-from kitty.utils import read_screen_size
+from alatty.constants import kitten_exe
+from alatty.fast_data_types import Screen, safe_pipe
+from alatty.utils import read_screen_size
 
 
 def run_parsing_benchmark(cell_width: int = 10, cell_height: int = 20, scrollback: int = 20000) -> None:

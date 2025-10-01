@@ -1,13 +1,13 @@
 Developing builtin kittens
 =============================
 
-Builtin kittens in kitty are written in the Go language, with small Python
+Builtin kittens in alatty are written in the Go language, with small Python
 wrapper scripts to define command line options and handle UI integration.
 
 Getting started
 -----------------------
 
-To get started with creating a builtin kitten, one that will become part of kitty
+To get started with creating a builtin kitten, one that will become part of alatty
 and be available as ``kitten my-kitten``, create a directory named
 :file:`my_kitten` in the :file:`kittens` directory. Then, in this directory
 add three, files: :file:`__init__.py` (an empty file), :file:`__main__.py` and
@@ -25,7 +25,7 @@ The file :file:`main.py` contains the command line option definitions for your k
 
     import sys
 
-    # See the file kitty/cli.py in the kitty sourcecode for more examples of
+    # See the file alatty/cli.py in the alatty sourcecode for more examples of
     # the syntax for defining options
     OPTIONS = r'''
     --some-string-option -s
@@ -89,7 +89,7 @@ Template for `main.go`
     import (
         "fmt"
 
-        "kitty/tools/cli"
+        "alatty/tools/cli"
     )
 
     var _ = fmt.Print
@@ -111,8 +111,8 @@ Edit :file:`tools/cmd/tool/main.go`
 
 Add the entry point of the kitten into :file:`tools/cmd/tool/main.go`.
 
-First, import the kitten into this file. To do this, add :code:`"kitty/kittens/my_kitten"` into the :code:`import ( ... )` section at the top.
-Then, add ``my_kitten.EntryPoint(root)`` into ``func KittyToolEntryPoints(root *cli.Command)`` and you are done. After running make you should
+First, import the kitten into this file. To do this, add :code:`"alatty/kittens/my_kitten"` into the :code:`import ( ... )` section at the top.
+Then, add ``my_kitten.EntryPoint(root)`` into ``func AlattyToolEntryPoints(root *cli.Command)`` and you are done. After running make you should
 be able to test your kitten by running::
 
     kitten my-kitten

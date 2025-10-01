@@ -8,11 +8,11 @@ import sys
 import tempfile
 from typing import TYPE_CHECKING, Any, Literal, Optional, TypedDict
 
-from kitty.cli import create_default_opts
-from kitty.conf.utils import to_color
-from kitty.constants import kitten_exe
-from kitty.fonts import Descriptor
-from kitty.fonts.common import (
+from alatty.cli import create_default_opts
+from alatty.conf.utils import to_color
+from alatty.constants import kitten_exe
+from alatty.fonts import Descriptor
+from alatty.fonts.common import (
     face_from_descriptor,
     get_axis_map,
     get_font_files,
@@ -22,21 +22,21 @@ from kitty.fonts.common import (
     is_variable,
     spec_for_face,
 )
-from kitty.fonts.features import Type, known_features
-from kitty.fonts.list import create_family_groups
-from kitty.fonts.render import display_bitmap
-from kitty.options.types import Options
-from kitty.options.utils import parse_font_spec
-from kitty.typing_compat import NotRequired
-from kitty.utils import screen_size_function
+from alatty.fonts.features import Type, known_features
+from alatty.fonts.list import create_family_groups
+from alatty.fonts.render import display_bitmap
+from alatty.options.types import Options
+from alatty.options.utils import parse_font_spec
+from alatty.typing_compat import NotRequired
+from alatty.utils import screen_size_function
 
 if TYPE_CHECKING:
-    from kitty.fast_data_types import FeatureData
+    from alatty.fast_data_types import FeatureData
 
 def setup_debug_print() -> bool:
-    if 'KITTY_STDIO_FORWARDED' in os.environ:
+    if 'ALATTY_STDIO_FORWARDED' in os.environ:
         try:
-            fd = int(os.environ['KITTY_STDIO_FORWARDED'])
+            fd = int(os.environ['ALATTY_STDIO_FORWARDED'])
         except Exception:
             return False
         try:
@@ -222,7 +222,7 @@ def main() -> None:
             raise SystemExit(f'Unknown action: {action}')
 
 
-def query_kitty() -> dict[str, str]:
+def query_alatty() -> dict[str, str]:
     import subprocess
     ans = {}
     for line in subprocess.check_output([kitten_exe(), 'query-terminal']).decode().splitlines():
@@ -233,7 +233,7 @@ def query_kitty() -> dict[str, str]:
 
 
 def showcase(family: str = 'family="Fira Code"', sample_text: str = '') -> None:
-    q = query_kitty()
+    q = query_alatty()
     opts = Options()
     opts.foreground = to_color(q['foreground'])
     opts.background = to_color(q['background'])

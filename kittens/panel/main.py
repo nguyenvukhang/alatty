@@ -8,10 +8,10 @@ from functools import partial
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping, Sequence
 
-from kitty.cli import parse_args
-from kitty.cli_stub import PanelCLIOptions
-from kitty.constants import is_macos, kitten_exe
-from kitty.fast_data_types import (
+from alatty.cli import parse_args
+from alatty.cli_stub import PanelCLIOptions
+from alatty.constants import is_macos, kitten_exe
+from alatty.fast_data_types import (
     GLFW_EDGE_BOTTOM,
     GLFW_EDGE_CENTER,
     GLFW_EDGE_CENTER_SIZED,
@@ -30,10 +30,10 @@ from kitty.fast_data_types import (
     set_layer_shell_config,
     toggle_os_window_visibility,
 )
-from kitty.simple_cli_definitions import panel_options_spec
-from kitty.types import LayerShellConfig, run_once
-from kitty.typing_compat import BossType
-from kitty.utils import log_error
+from alatty.simple_cli_definitions import panel_options_spec
+from alatty.types import LayerShellConfig, run_once
+from alatty.typing_compat import BossType
+from alatty.utils import log_error
 
 args = PanelCLIOptions()
 help_text = 'Use a command line program to draw a GPU accelerated panel on your desktop'
@@ -49,7 +49,7 @@ def panel_kitten_options_spec() -> str:
 
 def parse_panel_args(args: list[str], track_seen_options: dict[str, Any] | None = None) -> tuple[PanelCLIOptions, list[str]]:
     return parse_args(
-        args, panel_kitten_options_spec, usage, help_text, 'kitty +kitten panel',
+        args, panel_kitten_options_spec, usage, help_text, 'alatty +kitten panel',
         result_class=PanelCLIOptions, track_seen_options=track_seen_options)
 
 
@@ -155,8 +155,8 @@ def have_config_files_been_updated(config_files: Iterable[str]) -> bool:
 
 def handle_single_instance_command(boss: BossType, sys_args: Sequence[str], environ: Mapping[str, str], notify_on_os_window_death: str | None = '') -> None:
     global args
-    from kitty.cli import parse_override
-    from kitty.tabs import SpecialWindow
+    from alatty.cli import parse_override
+    from alatty.tabs import SpecialWindow
     try:
         new_args, items = parse_panel_args(list(sys_args[1:]))
     except BaseException as e:
@@ -196,7 +196,7 @@ def actual_main(sys_args: list[str]) -> None:
     global args
     args, items = parse_panel_args(sys_args[1:])
     have_config_files_been_updated(args.config)
-    sys.argv = ['kitty']
+    sys.argv = ['alatty']
     if args.debug_rendering:
         sys.argv.append('--debug-rendering')
     if args.debug_input:
@@ -225,8 +225,8 @@ def actual_main(sys_args: list[str]) -> None:
         sys.argv.append(f'--listen-on={args.listen_on}')
 
     sys.argv.extend(items)
-    from kitty.main import main as real_main
-    from kitty.main import run_app
+    from alatty.main import main as real_main
+    from alatty.main import run_app
     run_app.cached_values_name = 'panel'
     run_app.layer_shell_config = layer_shell_config(args)
     real_main(called_from_panel=True)

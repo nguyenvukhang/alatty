@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/utils/shm"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/utils/shm"
 )
 
 var _ = fmt.Print
@@ -93,11 +93,11 @@ func RunSSHAskpass() int {
 
 	// Auto-fill from ssh.conf if configured
 	if !is_confirm && !is_fingerprint_check {
-		host := os.Getenv("KITTY_SSH_ASKPASS_HOST")
-		user := os.Getenv("KITTY_SSH_ASKPASS_USER")
+		host := os.Getenv("ALATTY_SSH_ASKPASS_HOST")
+		user := os.Getenv("ALATTY_SSH_ASKPASS_USER")
 		if host != "" {
 			var overrides []string
-			_ = json.Unmarshal([]byte(os.Getenv("KITTY_SSH_ASKPASS_OVERRIDES")), &overrides)
+			_ = json.Unmarshal([]byte(os.Getenv("ALATTY_SSH_ASKPASS_OVERRIDES")), &overrides)
 			if cfg, _, err := load_config(host, user, overrides); err == nil && cfg != nil {
 				if err = resolve_secrets(cfg, false); err != nil {
 					return fatal(err)

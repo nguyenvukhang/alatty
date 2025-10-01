@@ -13,11 +13,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kovidgoyal/kitty/kittens/ssh"
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/config"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/kittens/ssh"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/config"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -185,7 +185,7 @@ func main(_ *cli.Command, opts_ *Options, args []string) (rc int, err error) {
 	}
 	lp.OnCapabilitiesReceived = func(tc loop.TerminalCapabilities) error {
 		if !tc.KeyboardProtocol {
-			return fmt.Errorf("This terminal does not support the kitty keyboard protocol, or you are running inside a terminal multiplexer that is blocking querying for kitty keyboard protocol support. The diff kitten cannot function without it.")
+			return fmt.Errorf("This terminal does not support the alatty keyboard protocol, or you are running inside a terminal multiplexer that is blocking querying for alatty keyboard protocol support. The diff kitten cannot function without it.")
 		}
 		h.on_capabilities_received(tc)
 		return nil

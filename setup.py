@@ -47,7 +47,7 @@ def check_version_info() -> None:
 check_version_info()
 verbose = False
 build_dir = 'build'
-constants = os.path.join('kitty', 'constants.py')
+constants = os.path.join('alatty', 'constants.py')
 with open(constants, 'rb') as f:
     constants = f.read().decode('utf-8')
 appname = re.search(r"^appname: str = '([^']+)'", constants, re.MULTILINE).group(1)  # type: ignore
@@ -196,14 +196,14 @@ class Options:
     extra_logging: List[str] = []
     extra_include_dirs: List[str] = []
     extra_library_dirs: List[str] = []
-    link_time_optimization: bool = 'KITTY_NO_LTO' not in os.environ
+    link_time_optimization: bool = 'ALATTY_NO_LTO' not in os.environ
     update_check_interval: float = 24.0
     shell_integration: str = 'enabled'
-    egl_library: Optional[str] = os.getenv('KITTY_EGL_LIBRARY')
-    startup_notification_library: Optional[str] = os.getenv('KITTY_STARTUP_NOTIFICATION_LIBRARY')
-    canberra_library: Optional[str] = os.getenv('KITTY_CANBERRA_LIBRARY')
-    systemd_library: Optional[str] = os.getenv('KITTY_SYSTEMD_LIBRARY')
-    fontconfig_library: Optional[str] = os.getenv('KITTY_FONTCONFIG_LIBRARY')
+    egl_library: Optional[str] = os.getenv('ALATTY_EGL_LIBRARY')
+    startup_notification_library: Optional[str] = os.getenv('ALATTY_STARTUP_NOTIFICATION_LIBRARY')
+    canberra_library: Optional[str] = os.getenv('ALATTY_CANBERRA_LIBRARY')
+    systemd_library: Optional[str] = os.getenv('ALATTY_SYSTEMD_LIBRARY')
+    fontconfig_library: Optional[str] = os.getenv('ALATTY_FONTCONFIG_LIBRARY')
     building_arch: str = 'arm64'
 
     # Extras
@@ -401,7 +401,7 @@ def get_python_flags(args: Options, cflags: List[str], for_main_executable: bool
         lval = sysconfig.get_config_var('LINKFORSHARED') or ''
         if not for_main_executable:
             # Python sets the stack size on macOS which is not allowed unless
-            # compiling an executable https://github.com/kovidgoyal/kitty/issues/289
+            # compiling an executable https://github.com/kovidgoyal/alatty/issues/289
             lval = re.sub(r'-Wl,-stack_size,\d+', '', lval)
         libs += list(filter(None, lval.split()))
     return libs
@@ -440,7 +440,7 @@ def test_compile(
     get_output_arch: bool = False,
 ) -> Union[bool, BinaryArch]:
     src = src or 'int main(void) { return 0; }'
-    with tempfile.TemporaryDirectory(prefix='kitty-test-compile-') as tdir:
+    with tempfile.TemporaryDirectory(prefix='alatty-test-compile-') as tdir:
         with open(os.path.join(tdir, f'source.{source_ext}'), 'w', encoding='utf-8') as srcf:
             print(src, file=srcf)
         output = os.path.join(tdir, 'source.output')
@@ -558,7 +558,7 @@ def init_env(
         ldflags.append('-flto')
 
     if debug:
-        cflags.append('-DKITTY_DEBUG_BUILD')
+        cflags.append('-DALATTY_DEBUG_BUILD')
 
     if profile:
         cppflags.append('-DWITH_PROFILER')
@@ -577,10 +577,10 @@ def init_env(
             library_paths.setdefault(which, []).append(f'{name}="{val}"')
 
     add_lpath('glfw/egl_context.c', '_GLFW_EGL_LIBRARY', egl_library)
-    add_lpath('kitty/desktop.c', '_KITTY_STARTUP_NOTIFICATION_LIBRARY', startup_notification_library)
-    add_lpath('kitty/desktop.c', '_KITTY_CANBERRA_LIBRARY', canberra_library)
-    add_lpath('kitty/systemd.c', '_KITTY_SYSTEMD_LIBRARY', systemd_library)
-    add_lpath('kitty/fontconfig.c', '_KITTY_FONTCONFIG_LIBRARY', fontconfig_library)
+    add_lpath('alatty/desktop.c', '_ALATTY_STARTUP_NOTIFICATION_LIBRARY', startup_notification_library)
+    add_lpath('alatty/desktop.c', '_ALATTY_CANBERRA_LIBRARY', canberra_library)
+    add_lpath('alatty/systemd.c', '_ALATTY_SYSTEMD_LIBRARY', systemd_library)
+    add_lpath('alatty/fontconfig.c', '_ALATTY_FONTCONFIG_LIBRARY', fontconfig_library)
 
     for path in extra_include_dirs:
         cflags.append(f'-I{path}')
@@ -599,14 +599,14 @@ def init_env(
     ba = test_compile(cc, *(cppflags + cflags), ldflags=ldflags, get_output_arch=True)
     assert isinstance(ba, BinaryArch)
     if ba.isa not in (ISA.AMD64, ISA.X86, ISA.ARM64):
-        cppflags.append('-DKITTY_NO_SIMD')
+        cppflags.append('-DALATTY_NO_SIMD')
 
     control_flow_protection = ''
     if ba.isa == ISA.AMD64:
         control_flow_protection = '-fcf-protection=full' if ccver >= (9, 0) else ''
     elif ba.isa == ISA.ARM64:
         # Using -mbranch-protection=standard causes crashes on Linux ARM, reported
-        # in https://github.com/kovidgoyal/kitty/issues/6845#issuecomment-1835886938
+        # in https://github.com/kovidgoyal/alatty/issues/6845#issuecomment-1835886938
         if is_macos:
             control_flow_protection = '-mbranch-protection=standard'
 
@@ -629,7 +629,7 @@ def init_env(
     return ans
 
 
-def kitty_env(args: Options) -> Env:
+def alatty_env(args: Options) -> Env:
     ans = env.copy()
     cflags = ans.cflags
     cflags.append('-pthread')
@@ -775,17 +775,17 @@ def base64_defines(isa: ISA) -> List[str]:
 
 
 def get_source_specific_defines(env: Env, src: str) -> Tuple[str, List[str], Optional[List[str]]]:
-    if src == 'kitty/vt-parser-dump.c':
-        return 'kitty/vt-parser.c', [], ['DUMP_COMMANDS']
-    if src == 'kitty/data-types.c':
+    if src == 'alatty/vt-parser-dump.c':
+        return 'alatty/vt-parser.c', [], ['DUMP_COMMANDS']
+    if src == 'alatty/data-types.c':
         if not env.vcs_rev:
             env.vcs_rev = get_vcs_rev()
-        return src, [], [f'KITTY_VCS_REV="{env.vcs_rev}"', f'WRAPPED_KITTENS="{wrapped_kittens()}"']
+        return src, [], [f'ALATTY_VCS_REV="{env.vcs_rev}"', f'WRAPPED_KITTENS="{wrapped_kittens()}"']
     if src.startswith('3rdparty/base64/'):
         return src, ['3rdparty/base64',], base64_defines(env.binary_arch.isa)
-    if src == 'kitty/screen.c':
+    if src == 'alatty/screen.c':
         return src, [], [f'PRIMARY_VERSION={env.primary_version}', f'SECONDARY_VERSION={env.secondary_version}', f'XT_VERSION="{env.xt_version}"']
-    if src == 'kitty/fast-file-copy.c':
+    if src == 'alatty/fast-file-copy.c':
         return src, [], (['HAS_COPY_FILE_RANGE'] if env.has_copy_file_range else None)
     try:
         return src, [], env.library_paths[src]
@@ -796,7 +796,7 @@ def get_source_specific_defines(env: Env, src: str) -> Tuple[str, List[str], Opt
 def get_source_specific_cflags(env: Env, src: str) -> List[str]:
     ans = list(env.cflags)
     # SIMD specific flags
-    if src in ('kitty/simd-string-128.c', 'kitty/simd-string-256.c'):
+    if src in ('alatty/simd-string-128.c', 'alatty/simd-string-256.c'):
         # simde recommends these are used for best performance
         ans.extend(('-fopenmp-simd', '-DSIMDE_ENABLE_OPENMP'))
         if env.binary_arch.isa in (ISA.AMD64, ISA.X86):
@@ -962,7 +962,7 @@ def compile_c_extension(
 
 def find_c_files() -> Tuple[List[str], List[str]]:
     ans, headers = [], []
-    d = 'kitty'
+    d = 'alatty'
     exclude = {
         'fontconfig.c', 'freetype.c', 'desktop.c', 'freetype_render_ui_text.c'
     } if is_macos else {
@@ -971,10 +971,10 @@ def find_c_files() -> Tuple[List[str], List[str]]:
     for x in sorted(os.listdir(d)):
         ext = os.path.splitext(x)[1]
         if ext in ('.c', '.m') and os.path.basename(x) not in exclude:
-            ans.append(os.path.join('kitty', x))
+            ans.append(os.path.join('alatty', x))
         elif ext == '.h':
-            headers.append(os.path.join('kitty', x))
-    ans.append('kitty/vt-parser-dump.c')
+            headers.append(os.path.join('alatty', x))
+    ans.append('alatty/vt-parser-dump.c')
 
     # ringbuf
     ans.append('3rdparty/ringbuf/ringbuf.c')
@@ -1007,7 +1007,7 @@ def compile_glfw(compilation_database: CompilationDatabase, build_dsym: bool = F
                 print(error('Disabling building of wayland backend'), file=sys.stderr)
                 continue
         compile_c_extension(
-            genv, f'kitty/glfw-{module}', compilation_database,
+            genv, f'alatty/glfw-{module}', compilation_database,
             sources, all_headers, desc_prefix=f'[{module}] ', build_dsym=build_dsym)
 
 
@@ -1015,7 +1015,7 @@ def kittens_env(args: Options) -> Env:
     kenv = env.copy()
     cflags = kenv.cflags
     cflags.append('-pthread')
-    cflags.append('-Ikitty')
+    cflags.append('-Ialatty')
     pylib = get_python_flags(args, cflags)
     kenv.ldpaths += pylib
     return kenv
@@ -1047,7 +1047,7 @@ def compile_kittens(args: Options) -> None:
         final_env.cflags.extend(includes)
         final_env.ldpaths[:0] = list(libraries)
         compile_c_extension(
-            final_env, dest, args.compilation_database, sources, all_headers + ['kitty/data-types.h'], build_dsym=args.build_dsym)
+            final_env, dest, args.compilation_database, sources, all_headers + ['alatty/data-types.h'], build_dsym=args.build_dsym)
 
 
 def init_env_from_args(args: Options, native_optimizations: bool = False) -> None:
@@ -1076,7 +1076,7 @@ def update_if_changed(path: str, text: str) -> None:
 
 
 def build_ref_map(skip_generation: bool = False) -> str:
-    dest = 'kitty/docs_ref_map_generated.h'
+    dest = 'alatty/docs_ref_map_generated.h'
     if not skip_generation:
         d = extract_rst_targets()
         h = 'static const char docs_ref_map[] = {\n' + textwrap.fill(', '.join(map(str, bytearray(json.dumps(d, sort_keys=True).encode('utf-8'))))) + '\n};\n'
@@ -1085,16 +1085,16 @@ def build_ref_map(skip_generation: bool = False) -> str:
 
 
 def build_cli_parser_specs(skip_generation: bool = False) -> str:
-    dest = 'kitty/launcher/cli-parser-data_generated.h'
+    dest = 'alatty/launcher/cli-parser-data_generated.h'
     if not skip_generation:
-        m = runpy.run_path('kitty/simple_cli_definitions.py', {'appname': appname})
+        m = runpy.run_path('alatty/simple_cli_definitions.py', {'appname': appname})
         h = '\n'.join(m['generate_c_parsers']())
         update_if_changed(dest, h)
     return dest
 
 
 def build_uniforms_header(skip_generation: bool = False) -> str:
-    dest = 'kitty/uniforms_generated.h'
+    dest = 'alatty/uniforms_generated.h'
     if skip_generation:
         return dest
     lines: list[str] = []
@@ -1108,7 +1108,7 @@ def build_uniforms_header(skip_generation: bool = False) -> str:
             for x in m.group(1).split(','):
                 yield x.strip().partition('[')[0]
 
-    for x in sorted(glob.glob('kitty/*.glsl')):
+    for x in sorted(glob.glob('alatty/*.glsl')):
         name = os.path.basename(x).partition('.')[0]
         name, sep, shader_type = name.rpartition('_')
         if not sep or shader_type not in ('fragment', 'vertex'):
@@ -1144,12 +1144,12 @@ def build_uniforms_header(skip_generation: bool = False) -> str:
 
 @lru_cache
 def wrapped_kittens() -> str:
-    with open('shell-integration/ssh/kitty') as f:
+    with open('shell-integration/ssh/alatty') as f:
         for line in f:
             if line.startswith('    wrapped_kittens="'):
                 val = line.strip().partition('"')[2][:-1]
                 return ' '.join(sorted(filter(None, val.split())))
-    raise Exception('Failed to read wrapped kittens from kitty wrapper script')
+    raise Exception('Failed to read wrapped kittens from alatty wrapper script')
 
 
 def build(args: Options, native_optimizations: bool = True, call_init: bool = True) -> None:
@@ -1160,7 +1160,7 @@ def build(args: Options, native_optimizations: bool = True, call_init: bool = Tr
     headers.append(build_cli_parser_specs(args.skip_code_generation))
     headers.append(build_uniforms_header(args.skip_code_generation))
     compile_c_extension(
-        kitty_env(args), 'kitty/fast_data_types', args.compilation_database, sources, headers,
+        alatty_env(args), 'alatty/fast_data_types', args.compilation_database, sources, headers,
         build_dsym=args.build_dsym,
     )
     compile_glfw(args.compilation_database, args.build_dsym)
@@ -1171,7 +1171,7 @@ def safe_makedirs(path: str) -> None:
     os.makedirs(path, exist_ok=True)
 
 
-def update_go_generated_files(args: Options, kitty_exe: str) -> None:
+def update_go_generated_files(args: Options, alatty_exe: str) -> None:
     if args.skip_code_generation:
         print('Skipping generation of Go files due to command line option', flush=True)
         return
@@ -1181,7 +1181,7 @@ def update_go_generated_files(args: Options, kitty_exe: str) -> None:
 
     env = os.environ.copy()
     env['ASAN_OPTIONS'] = 'detect_leaks=0'
-    cp = subprocess.run([kitty_exe, '+launch', os.path.join(src_base, 'gen/go_code.py')], stdout=subprocess.DEVNULL, env=env)
+    cp = subprocess.run([alatty_exe, '+launch', os.path.join(src_base, 'gen/go_code.py')], stdout=subprocess.DEVNULL, env=env)
     if cp.returncode != 0:
         if os.environ.get('CI') == 'true' and cp.returncode < 0 and shutil.which('coredumpctl'):
             subprocess.run(['sh', '-c', 'echo bt | coredumpctl debug'])
@@ -1232,11 +1232,11 @@ def build_static_kittens(
     cmd = go + ['build', '-v']
     vcs_rev = args.vcs_rev or get_vcs_rev()
     ld_flags: List[str] = []
-    binary_data_flags = [f"-X kitty.VCSRevision={vcs_rev}"]
+    binary_data_flags = [f"-X alatty.VCSRevision={vcs_rev}"]
     if for_freeze:
-        binary_data_flags.append("-X kitty.IsFrozenBuild=true")
+        binary_data_flags.append("-X alatty.IsFrozenBuild=true")
     if for_platform:
-        binary_data_flags.append("-X kitty.IsStandaloneBuild=true")
+        binary_data_flags.append("-X alatty.IsStandaloneBuild=true")
     if not args.debug:
         ld_flags.append('-s')
         ld_flags.append('-w')
@@ -1251,7 +1251,7 @@ def build_static_kittens(
         if args.verbose:
             print(shlex.join(c))
         e = os.environ.copy()
-        # https://github.com/kovidgoyal/kitty/issues/6051#issuecomment-1441369828
+        # https://github.com/kovidgoyal/alatty/issues/6051#issuecomment-1441369828
         e.pop('PWD', None)
         if for_platform:
             e['CGO_ENABLED'] = '0'
@@ -1287,7 +1287,7 @@ def build_static_binaries(args: Options, launcher_dir: str) -> None:
             build_static_kittens(args, launcher_dir, args.dir_for_static_binaries, for_platform=(os_, arch))
 
 
-def read_bool_options(path: str = 'kitty/cli.py') -> Tuple[str, ...]:
+def read_bool_options(path: str = 'alatty/cli.py') -> Tuple[str, ...]:
     with open(os.path.join(src_base, path)) as f:
         raw = f.read()
     m = re.search(r"^\s*OPTIONS = r?'''(.+?)'''", raw, flags=re.MULTILINE | re.DOTALL)
@@ -1332,7 +1332,7 @@ def build_launcher(args: Options, launcher_dir: str = '.', bundle_type: str = 's
     if bundle_type.endswith('-freeze'):
         cppflags.append('-DFOR_BUNDLE')
         cppflags.append(f'-DPYVER="{sysconfig.get_python_version()}"')
-        cppflags.append(f'-DKITTY_LIB_DIR_NAME="{args.libdir_name}"')
+        cppflags.append(f'-DALATTY_LIB_DIR_NAME="{args.libdir_name}"')
     elif bundle_type == 'source':
         cppflags.append('-DFROM_SOURCE')
     elif bundle_type == 'develop':
@@ -1342,17 +1342,17 @@ def build_launcher(args: Options, launcher_dir: str = '.', bundle_type: str = 's
         if not is_macos:
             ldflags += ['-Wl,--disable-new-dtags', f'-Wl,-rpath,$ORIGIN/../../{ph}/lib']
     if bundle_type.startswith('macos-'):
-        klp = '../Resources/kitty'
+        klp = '../Resources/alatty'
     elif bundle_type.startswith('linux-'):
-        klp = '../{}/kitty'.format(args.libdir_name.strip('/'))
+        klp = '../{}/alatty'.format(args.libdir_name.strip('/'))
     elif bundle_type == 'source':
         klp = os.path.relpath('.', launcher_dir)
     elif bundle_type == 'develop':
-        # make the kitty executable relocatable
+        # make the alatty executable relocatable
         klp = src_base
     else:
         raise SystemExit(f'Unknown bundle type: {bundle_type}')
-    cppflags.append(f'-DKITTY_LIB_PATH="{klp}"')
+    cppflags.append(f'-DALATTY_LIB_PATH="{klp}"')
     pylib = get_python_flags(args, cflags, for_main_executable=True)
     cppflags += shlex.split(os.environ.get('CPPFLAGS', ''))
     cflags += shlex.split(os.environ.get('CFLAGS', ''))
@@ -1369,26 +1369,26 @@ def build_launcher(args: Options, launcher_dir: str = '.', bundle_type: str = 's
     os.makedirs(launcher_dir, exist_ok=True)
     os.makedirs(build_dir, exist_ok=True)
     objects = []
-    headers = glob.glob('kitty/launcher/*.h')
-    cppflags.append('-DKITTY_VERSION="' + '.'.join(map(str, version)) + '"')
-    for src in ('kitty/launcher/main.c', 'kitty/launcher/single-instance.c', 'kitty/launcher/cmdline.c'):
+    headers = glob.glob('alatty/launcher/*.h')
+    cppflags.append('-DALATTY_VERSION="' + '.'.join(map(str, version)) + '"')
+    for src in ('alatty/launcher/main.c', 'alatty/launcher/single-instance.c', 'alatty/launcher/cmdline.c'):
         obj = os.path.join(build_dir, src.replace('/', '-').replace('.c', '.o'))
         objects.append(obj)
         cmd = env.cc + cppflags + cflags + ['-c', src, '-o', obj]
         key = CompileKey(src, os.path.basename(obj))
         args.compilation_database.add_command(
             f'Compiling {emphasis(src)} ...', cmd, partial(newer, obj, src, *dependecies_for(src, obj, headers)), key=key, keyfile=src)
-    dest = kitty_exe = os.path.join(launcher_dir, 'kitty')
+    dest = alatty_exe = os.path.join(launcher_dir, 'alatty')
     link_targets.append(os.path.abspath(dest))
     desc = f'Linking {emphasis("launcher")} ...'
     cmd = env.cc + ldflags + objects + libs + pylib + ['-o', dest]
-    args.compilation_database.add_command(desc, cmd, partial(newer, dest, *objects), key=LinkKey('kitty'))
+    args.compilation_database.add_command(desc, cmd, partial(newer, dest, *objects), key=LinkKey('alatty'))
     if args.build_dsym and is_macos:
         desc = f'Linking dSYM {emphasis("launcher")} ...'
         dsym = f'{dest}.dSYM/Contents/Resources/DWARF/{os.path.basename(dest)}'
         args.compilation_database.add_command(desc, ['dsymutil', dest], partial(newer, dsym, dest), key=LinkKey(dsym), is_post_link=True)
     args.compilation_database.build_all()
-    return kitty_exe
+    return alatty_exe
 
 
 # Packaging {{{
@@ -1402,7 +1402,7 @@ def copy_man_pages(ddir: str) -> None:
     src = 'docs/_build/man'
     if not os.path.exists(src):
         raise SystemExit('''\
-The kitty man pages are missing. If you are building from git then run:
+The alatty man pages are missing. If you are building from git then run:
 make && make docs
 (needs the sphinx documentation system to be installed)
 ''')
@@ -1420,7 +1420,7 @@ def copy_html_docs(ddir: str) -> None:
     src = 'docs/_build/html'
     if not os.path.exists(src):
         raise SystemExit('''\
-The kitty html docs are missing. If you are building from git then run:
+The alatty html docs are missing. If you are building from git then run:
 make && make docs
 (needs the sphinx documentation system to be installed)
 ''')
@@ -1444,8 +1444,8 @@ def compile_python(base_path: str) -> None:
 def create_linux_bundle_gunk(ddir: str, args: Options) -> None:
     libdir_name = args.libdir_name
     base = Path(ddir)
-    in_src_launcher = base / (f'{libdir_name}/kitty/kitty/launcher/kitty')
-    launcher = base / 'bin/kitty'
+    in_src_launcher = base / (f'{libdir_name}/alatty/alatty/launcher/alatty')
+    launcher = base / 'bin/alatty'
     skip_docs = False
     if not os.path.exists('docs/_build/html'):
         kitten_exe = os.path.join(os.path.dirname(str(launcher)), 'kitten')
@@ -1467,22 +1467,22 @@ def create_linux_bundle_gunk(ddir: str, args: Options) -> None:
     for (icdir, ext) in {'256x256': 'png', 'scalable': 'svg'}.items():
         icdir = os.path.join(ddir, 'share', 'icons', 'hicolor', icdir, 'apps')
         safe_makedirs(icdir)
-        shutil.copy2(f'logo/kitty.{ext}', icdir)
+        shutil.copy2(f'logo/alatty.{ext}', icdir)
     deskdir = os.path.join(ddir, 'share', 'applications')
     safe_makedirs(deskdir)
-    with open(os.path.join(deskdir, 'kitty.desktop'), 'w') as f:
+    with open(os.path.join(deskdir, 'alatty.desktop'), 'w') as f:
         f.write(
             '''\
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=kitty
+Name=alatty
 GenericName=Terminal emulator
 Comment=Fast, feature-rich, GPU based terminal
-TryExec=kitty
+TryExec=alatty
 StartupNotify=true
-Exec=kitty
-Icon=kitty
+Exec=alatty
+Icon=alatty
 Categories=System;TerminalEmulator;
 X-TerminalArgExec=--
 X-TerminalArgTitle=--title
@@ -1490,22 +1490,22 @@ X-TerminalArgAppId=--class
 X-TerminalArgDir=--working-directory
 X-TerminalArgHold=--hold
 ''')
-    with open(os.path.join(deskdir, 'kitty-open.desktop'), 'w') as f:
+    with open(os.path.join(deskdir, 'alatty-open.desktop'), 'w') as f:
         f.write(
             '''\
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=kitty URL Launcher
+Name=alatty URL Launcher
 GenericName=Terminal emulator
-Comment=Open URLs with kitty
+Comment=Open URLs with alatty
 StartupNotify=true
-TryExec=kitty
-Exec=kitty +open %U
-Icon=kitty
+TryExec=alatty
+Exec=alatty +open %U
+Icon=alatty
 Categories=System;TerminalEmulator;
 NoDisplay=true
-MimeType=image/*;application/x-sh;application/x-shellscript;inode/directory;text/*;x-scheme-handler/kitty;x-scheme-handler/ssh;
+MimeType=image/*;application/x-sh;application/x-shellscript;inode/directory;text/*;x-scheme-handler/alatty;x-scheme-handler/ssh;
 ''')
 
     if os.path.exists(in_src_launcher):
@@ -1519,7 +1519,7 @@ def macos_info_plist(for_quake: str = '') -> bytes:
     VERSION = '.'.join(map(str, version))
 
     def access(what: str, verb: str = 'would like to access') -> str:
-        return f'A program running inside kitty {verb} {what}'
+        return f'A program running inside alatty {verb} {what}'
 
     docs = [] if for_quake else [
         {
@@ -1550,7 +1550,7 @@ def macos_info_plist(for_quake: str = '') -> bytes:
             'CFBundleTypeRole': 'Viewer',
             'LSHandlerRank': 'Alternate',
         },
-        # Allows dragging arbitrary files to kitty Dock icon, and list kitty in the Open With context menu.
+        # Allows dragging arbitrary files to alatty Dock icon, and list alatty in the Open With context menu.
         {
             'CFBundleTypeName': 'All files',
             'LSItemContentTypes': ['public.archive', 'public.content', 'public.data'],
@@ -1589,8 +1589,8 @@ def macos_info_plist(for_quake: str = '') -> bytes:
             'CFBundleURLSchemes': ['irc', 'irc6', 'ircs'],
         },
         {
-            'CFBundleURLName': 'kitty URL',
-            'CFBundleURLSchemes': ['kitty'],
+            'CFBundleURLName': 'alatty URL',
+            'CFBundleURLSchemes': ['alatty'],
             'LSHandlerRank': 'Owner',
             'LSIsAppleDefaultForScheme': True,
         },
@@ -1650,7 +1650,7 @@ def macos_info_plist(for_quake: str = '') -> bytes:
         CFBundleShortVersionString=VERSION,
         CFBundleInfoDictionaryVersion='6.0',
         NSHumanReadableCopyright=time.strftime('Copyright %Y, Kovid Goyal'),
-        CFBundleGetInfoString='kitty - The fast, feature-rich, GPU based terminal emulator. https://sw.kovidgoyal.net/kitty/',
+        CFBundleGetInfoString='alatty - The fast, feature-rich, GPU based terminal emulator. https://sw.kovidgoyal.net/alatty/',
         # Operating System Version
         LSMinimumSystemVersion='11.0.0',
         # Categorization
@@ -1659,11 +1659,11 @@ def macos_info_plist(for_quake: str = '') -> bytes:
         LSApplicationCategoryType='public.app-category.utilities',
         # App Execution
         CFBundleExecutable=quake_name if for_quake else appname,
-        LSEnvironment={'KITTY_LAUNCHED_BY_LAUNCH_SERVICES': '1'},
+        LSEnvironment={'ALATTY_LAUNCHED_BY_LAUNCH_SERVICES': '1'},
         LSRequiresNativeExecution=True,
         NSSupportsSuddenTermination=False,
         # Localization
-        # see https://github.com/kovidgoyal/kitty/issues/1233
+        # see https://github.com/kovidgoyal/alatty/issues/1233
         CFBundleDevelopmentRegion='English',
         CFBundleAllowMixedLocalizations=True,
         TICapsLockLanguageSwitchCapable=True,
@@ -1734,7 +1734,7 @@ def create_macos_app_icon(where: str = 'Resources') -> None:
 quake_name = f'{appname}-quick-access'
 
 
-def create_quick_access_bundle(kapp: str, quake_desc: str = 'Quick access to kitty') -> None:
+def create_quick_access_bundle(kapp: str, quake_desc: str = 'Quick access to alatty') -> None:
     qapp = os.path.join(kapp, 'Contents', f'{quake_name}.app')
     base_exe_dir = os.path.join(kapp, 'Contents/MacOS')
     if os.path.exists(qapp):
@@ -1745,7 +1745,7 @@ def create_quick_access_bundle(kapp: str, quake_desc: str = 'Quick access to kit
         f.write(macos_info_plist(quake_desc))
     for exe in os.listdir(base_exe_dir):
         os.symlink(f'../../../MacOS/{exe}', os.path.join(bin_dir, exe))
-    base_exe = os.path.join(base_exe_dir, 'kitty')
+    base_exe = os.path.join(base_exe_dir, 'alatty')
     if os.path.exists(base_exe):  # during freeze launcher is built after bundle is created
         shutil.copy2(base_exe, os.path.join(bin_dir, quake_name))
     for x in ('Frameworks', 'Resources'):
@@ -1753,7 +1753,7 @@ def create_quick_access_bundle(kapp: str, quake_desc: str = 'Quick access to kit
 
 
 def create_minimal_macos_bundle(args: Options, launcher_dir: str, relocate: bool = False) -> None:
-    kapp = os.path.join(launcher_dir, 'kitty.app')
+    kapp = os.path.join(launcher_dir, 'alatty.app')
     if os.path.exists(kapp):
         shutil.rmtree(kapp)
     bin_dir = os.path.join(kapp, 'Contents/MacOS')
@@ -1763,17 +1763,17 @@ def create_minimal_macos_bundle(args: Options, launcher_dir: str, relocate: bool
     with open(os.path.join(kapp, 'Contents/Info.plist'), 'wb') as f:
         f.write(macos_info_plist())
     if relocate:
-        shutil.copy2(os.path.join(launcher_dir, "kitty"), bin_dir)
+        shutil.copy2(os.path.join(launcher_dir, "alatty"), bin_dir)
         shutil.copy2(os.path.join(launcher_dir, "kitten"), bin_dir)
     else:
         build_launcher(args, bin_dir)
         build_static_kittens(args, launcher_dir=bin_dir)
-        kitty_exe = os.path.join(launcher_dir, appname)
+        alatty_exe = os.path.join(launcher_dir, appname)
         with suppress(FileNotFoundError):
-            os.remove(kitty_exe)
-        os.symlink(os.path.join(os.path.relpath(bin_dir, launcher_dir), appname), kitty_exe)
+            os.remove(alatty_exe)
+        os.symlink(os.path.join(os.path.relpath(bin_dir, launcher_dir), appname), alatty_exe)
     create_macos_app_icon(resources_dir)
-    create_quick_access_bundle(kapp, 'Quick access to kitty built from source')
+    create_quick_access_bundle(kapp, 'Quick access to alatty built from source')
 
 
 def create_macos_bundle_gunk(dest: str, for_freeze: bool, args: Options) -> str:
@@ -1784,22 +1784,22 @@ def create_macos_bundle_gunk(dest: str, for_freeze: bool, args: Options) -> str:
     os.rename(ddir / 'share', ddir / 'Contents/Resources')
     os.rename(ddir / 'bin', ddir / 'Contents/MacOS')
     os.rename(ddir / 'lib', ddir / 'Contents/Frameworks')
-    os.rename(ddir / 'Contents/Frameworks/kitty', ddir / 'Contents/Resources/kitty')
-    kitty_exe = ddir / 'Contents/MacOS/kitty'
-    in_src_launcher = ddir / 'Contents/Resources/kitty/kitty/launcher/kitty'
+    os.rename(ddir / 'Contents/Frameworks/alatty', ddir / 'Contents/Resources/alatty')
+    alatty_exe = ddir / 'Contents/MacOS/alatty'
+    in_src_launcher = ddir / 'Contents/Resources/alatty/alatty/launcher/alatty'
     if os.path.exists(in_src_launcher):
         os.remove(in_src_launcher)
     os.makedirs(os.path.dirname(in_src_launcher), exist_ok=True)
-    os.symlink(os.path.relpath(kitty_exe, os.path.dirname(in_src_launcher)), in_src_launcher)
+    os.symlink(os.path.relpath(alatty_exe, os.path.dirname(in_src_launcher)), in_src_launcher)
     create_macos_app_icon(os.path.join(ddir, 'Contents', 'Resources'))
     if not for_freeze:
-        kitten_exe = build_static_kittens(args, launcher_dir=os.path.dirname(kitty_exe))
+        kitten_exe = build_static_kittens(args, launcher_dir=os.path.dirname(alatty_exe))
         if not kitten_exe:
             raise SystemExit('kitten not built cannot create macOS bundle')
         os.symlink(os.path.relpath(kitten_exe, os.path.dirname(in_src_launcher)),
                    os.path.join(os.path.dirname(in_src_launcher), os.path.basename(kitten_exe)))
     create_quick_access_bundle(dest)
-    return str(kitty_exe)
+    return str(alatty_exe)
 
 
 def package(args: Options, bundle_type: str, do_build_all: bool = True) -> None:
@@ -1807,7 +1807,7 @@ def package(args: Options, bundle_type: str, do_build_all: bool = True) -> None:
     for_freeze = bundle_type.endswith('-freeze')
     if bundle_type == 'linux-freeze':
         args.libdir_name = 'lib'
-    libdir = os.path.join(ddir, args.libdir_name.strip('/'), 'kitty')
+    libdir = os.path.join(ddir, args.libdir_name.strip('/'), 'alatty')
     if os.path.exists(libdir):
         shutil.rmtree(libdir)
     launcher_dir = os.path.join(ddir, 'bin')
@@ -1823,11 +1823,11 @@ def package(args: Options, bundle_type: str, do_build_all: bool = True) -> None:
         odir = os.path.join(x, 'terminfo')
         safe_makedirs(odir)
         build_terminfo['compile_terminfo'](odir)
-    shutil.copy2('terminfo/kitty.terminfo', os.path.join(libdir, 'terminfo'))
-    shutil.copy2('terminfo/kitty.termcap', os.path.join(libdir, 'terminfo'))
+    shutil.copy2('terminfo/alatty.terminfo', os.path.join(libdir, 'terminfo'))
+    shutil.copy2('terminfo/alatty.termcap', os.path.join(libdir, 'terminfo'))
     shutil.copy2('__main__.py', libdir)
-    shutil.copy2('logo/kitty-128.png', os.path.join(libdir, 'logo'))
-    shutil.copy2('logo/kitty.png', os.path.join(libdir, 'logo'))
+    shutil.copy2('logo/alatty-128.png', os.path.join(libdir, 'logo'))
+    shutil.copy2('logo/alatty.png', os.path.join(libdir, 'logo'))
     shutil.copy2('logo/beam-cursor.png', os.path.join(libdir, 'logo'))
     shutil.copy2('logo/beam-cursor@2x.png', os.path.join(libdir, 'logo'))
     shutil.copytree('shell-integration', os.path.join(libdir, 'shell-integration'), dirs_exist_ok=True)
@@ -1840,10 +1840,10 @@ def package(args: Options, bundle_type: str, do_build_all: bool = True) -> None:
             allowed_extensions
         ]
 
-    shutil.copytree('kitty', os.path.join(libdir, 'kitty'), ignore=src_ignore)
+    shutil.copytree('alatty', os.path.join(libdir, 'alatty'), ignore=src_ignore)
     shutil.copytree('kittens', os.path.join(libdir, 'kittens'), ignore=src_ignore)
     if for_freeze:
-        shutil.copytree('kitty_tests', os.path.join(libdir, 'kitty_tests'))
+        shutil.copytree('alatty_tests', os.path.join(libdir, 'alatty_tests'))
 
     def repl(name: str, raw: str, defval: Union[str, float, FrozenSet[str]], val: Union[str, float, FrozenSet[str]]) -> str:
         if defval == val:
@@ -1857,7 +1857,7 @@ def package(args: Options, bundle_type: str, do_build_all: bool = True) -> None:
             raise SystemExit(f'Failed to change the value of {name}')
         return nraw
 
-    with open(os.path.join(libdir, 'kitty/options/types.py'), 'r+', encoding='utf-8') as f:
+    with open(os.path.join(libdir, 'alatty/options/types.py'), 'r+', encoding='utf-8') as f:
         oraw = raw = f.read()
         raw = repl('update_check_interval', raw, Options.update_check_interval, args.update_check_interval)
         raw = repl('shell_integration', raw, frozenset(Options.shell_integration.split()), frozenset(args.shell_integration.split()))
@@ -1870,7 +1870,7 @@ def package(args: Options, bundle_type: str, do_build_all: bool = True) -> None:
         if path.endswith('.so'):
             return True
         q = path.split(os.sep)[-2:]
-        if len(q) == 2 and q[0] == 'ssh' and q[1] in ('kitty', 'kitten'):
+        if len(q) == 2 and q[0] == 'ssh' and q[1] in ('alatty', 'kitten'):
             return True
         return False
 
@@ -1908,11 +1908,11 @@ def clean(for_cross_compile: bool = False) -> None:
 
     safe_remove(
         'build', 'compile_commands.json', 'link_commands.json',
-        'linux-package', 'kitty.app', 'asan-launcher',
-        'kitty-profile')  # no fonts as that is not generated by build
+        'linux-package', 'alatty.app', 'asan-launcher',
+        'alatty-profile')  # no fonts as that is not generated by build
     if not for_cross_compile:
         safe_remove('docs/generated')
-    clean_launcher_dir('kitty/launcher')
+    clean_launcher_dir('alatty/launcher')
 
     def excluded(root: str, d: str) -> bool:
         q = os.path.relpath(os.path.join(root, d), src_base).replace(os.sep, '/')
@@ -1954,7 +1954,7 @@ def option_parser() -> argparse.ArgumentParser:  # {{{
                  'test',
                  'develop',
                  'linux-package',
-                 'kitty.app',
+                 'alatty.app',
                  'linux-freeze',
                  'macos-freeze',
                  'build-launcher',
@@ -2141,7 +2141,7 @@ def build_dep() -> None:
         platform: str = 'all'
         deps: List[str] = []
 
-    p = argparse.ArgumentParser(prog=f'{sys.argv[0]} build-dep', description='Build dependencies for the kitty binary packages')
+    p = argparse.ArgumentParser(prog=f'{sys.argv[0]} build-dep', description='Build dependencies for the alatty binary packages')
     p.add_argument(
         '--platform',
         default=Options.platform,
@@ -2197,13 +2197,13 @@ def macos_freeze(args: Options, launcher_dir: str, only_frozen_launcher: bool = 
         os.makedirs(build_dir, exist_ok=True)
         print('Building for arch:', arch, 'in', build_dir)
         if arch is not macos_universal_arches[0]:
-            args.skip_code_generation = True  # cant run kitty as its not a native arch
+            args.skip_code_generation = True  # cant run alatty as its not a native arch
         link_targets.clear()
         with CompilationDatabase() as cdb:
             args.compilation_database = cdb
             init_env_from_args(args, native_optimizations=False)
             if only_frozen_launcher:
-                kitty_exe_path = build_launcher(args, launcher_dir=launcher_dir, bundle_type=bundle_type)
+                alatty_exe_path = build_launcher(args, launcher_dir=launcher_dir, bundle_type=bundle_type)
             else:
                 build_launcher(args, launcher_dir=launcher_dir)
                 build(args, native_optimizations=False, call_init=False)
@@ -2216,16 +2216,16 @@ def macos_freeze(args: Options, launcher_dir: str, only_frozen_launcher: bool = 
     lipo(link_target_map)
     if only_frozen_launcher:
         if is_macos:
-            shutil.copy2(kitty_exe_path, os.path.dirname(kitty_exe_path) + f'/../Contents/{quake_name}.app/Contents/MacOS/{quake_name}')
+            shutil.copy2(alatty_exe_path, os.path.dirname(alatty_exe_path) + f'/../Contents/{quake_name}.app/Contents/MacOS/{quake_name}')
     else:
         package(args, bundle_type=bundle_type, do_build_all=False)
 
 
 def do_build(args: Options) -> None:
-    launcher_dir = 'kitty/launcher'
+    launcher_dir = 'alatty/launcher'
 
     if args.action == 'test':
-        texe = os.path.abspath(os.path.join(launcher_dir, 'kitty'))
+        texe = os.path.abspath(os.path.join(launcher_dir, 'alatty'))
         os.execl(texe, texe, '+launch', 'test.py')
     if args.action == 'clean':
         clean(for_cross_compile=args.clean_for_cross_compile)
@@ -2267,15 +2267,15 @@ def do_build(args: Options) -> None:
         elif args.action == 'linux-freeze':
             build(args, native_optimizations=False)
             package(args, bundle_type='linux-freeze')
-        elif args.action == 'kitty.app':
-            args.prefix = 'kitty.app'
+        elif args.action == 'alatty.app':
+            args.prefix = 'alatty.app'
             if os.path.exists(args.prefix):
                 shutil.rmtree(args.prefix)
             build(args)
             package(args, bundle_type='macos-package')
-            print('kitty.app successfully built!')
+            print('alatty.app successfully built!')
         elif args.action == 'export-ci-bundles':
-            cmd = [sys.executable, '../bypy', 'export', 'download.calibre-ebook.com:/srv/download/ci/kitty']
+            cmd = [sys.executable, '../bypy', 'export', 'download.calibre-ebook.com:/srv/download/ci/alatty']
             subprocess.check_call(cmd + ['linux'])
             subprocess.check_call(cmd + ['macos'])
         elif args.action == 'build-static-binaries':

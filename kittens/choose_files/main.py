@@ -3,9 +3,9 @@
 
 import sys
 
-from kitty.conf.types import Definition
-from kitty.constants import appname
-from kitty.simple_cli_definitions import CONFIG_HELP, CompletionSpec
+from alatty.conf.types import Definition
+from alatty.constants import appname
+from alatty.simple_cli_definitions import CONFIG_HELP, CompletionSpec
 
 definition = Definition(
     '!kittens.choose_files',

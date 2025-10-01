@@ -36,7 +36,7 @@ To add buttons to the notification::
 
     kitten notify --wait-for-completion --button One --button Two "Good morning" Hello world, it is a nice day!
 
-.. program:: kitty +kitten notify
+.. program:: alatty +kitten notify
 
 .. tip:: Learn about the underlying :doc:`/desktop-notifications` escape code protocol.
 

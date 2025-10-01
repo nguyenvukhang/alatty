@@ -3,24 +3,24 @@ package query_terminal
 import (
 	"bytes"
 	"fmt"
-	"github.com/kovidgoyal/kitty"
+	"github.com/kovidgoyal/alatty"
 	"os"
 	"slices"
 	"strings"
 	"time"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
 )
 
 var _ = fmt.Print
 
 func main(cmd *cli.Command, opts *Options, args []string) (rc int, err error) {
-	queries := kitty.QueryNames
+	queries := alatty.QueryNames
 	if len(args) > 0 && !slices.Contains(args, "all") {
 		queries = make([]string, len(args))
 		for i, x := range args {
-			if !slices.Contains(kitty.QueryNames, x) {
+			if !slices.Contains(alatty.QueryNames, x) {
 				return 1, fmt.Errorf("Unknown query: %s", x)
 			}
 			queries[i] = x

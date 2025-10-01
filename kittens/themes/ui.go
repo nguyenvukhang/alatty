@@ -4,7 +4,7 @@ package themes
 
 import (
 	"fmt"
-	"github.com/kovidgoyal/kitty"
+	"github.com/kovidgoyal/alatty"
 	"io"
 	"maps"
 	"regexp"
@@ -12,12 +12,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kovidgoyal/kitty/tools/config"
-	"github.com/kovidgoyal/kitty/tools/themes"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/tui/readline"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/config"
+	"github.com/kovidgoyal/alatty/tools/themes"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/tui/readline"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print
@@ -161,7 +161,7 @@ func (self *handler) set_current_category(category string) {
 	self.cached_data.Category = category
 }
 
-func ReadKittyColorSettings() map[string]string {
+func ReadAlattyColorSettings() map[string]string {
 	settings := make(map[string]string, 512)
 	handle_line := func(key, val string) error {
 		if themes.AllColorSettingNames[key] {
@@ -169,7 +169,7 @@ func ReadKittyColorSettings() map[string]string {
 		}
 		return nil
 	}
-	config.ReadKittyConfig(handle_line)
+	config.ReadAlattyConfig(handle_line)
 	return settings
 }
 
@@ -188,7 +188,7 @@ func (self *handler) set_colors_to_current_theme() bool {
 			}
 		}
 	}
-	self.lp.QueueWriteString(themes.ColorSettingsAsEscapeCodes(ReadKittyColorSettings()))
+	self.lp.QueueWriteString(themes.ColorSettingsAsEscapeCodes(ReadAlattyColorSettings()))
 	return true
 }
 
@@ -530,13 +530,13 @@ func (self *handler) on_accepting_key_event(ev *loop.KeyEvent) error {
 
 	}
 	if ev.MatchesCaseInsensitiveTextOrKey("d") || ev.MatchesPressOrRepeat("shift+d") {
-		return scheme(kitty.DarkThemeFileName)
+		return scheme(alatty.DarkThemeFileName)
 	}
 	if ev.MatchesCaseInsensitiveTextOrKey("l") || ev.MatchesPressOrRepeat("shift+l") {
-		return scheme(kitty.LightThemeFileName)
+		return scheme(alatty.LightThemeFileName)
 	}
 	if ev.MatchesCaseInsensitiveTextOrKey("n") || ev.MatchesPressOrRepeat("shift+n") {
-		return scheme(kitty.NoPreferenceThemeFileName)
+		return scheme(alatty.NoPreferenceThemeFileName)
 	}
 	return nil
 }

@@ -11,9 +11,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/tools/config"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/tools/config"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -214,12 +214,12 @@ var GetSSHVersion = sync.OnceValue(func() SSHVersion {
 	return SSHVersion{}
 })
 
-type KittyOpts struct {
+type AlattyOpts struct {
 	Term, Shell_integration string
 }
 
-func read_relevant_kitty_opts(override_conf_path ...string) KittyOpts {
-	ans := KittyOpts{Term: kitty.KittyConfigDefaults.Term, Shell_integration: kitty.KittyConfigDefaults.Shell_integration}
+func read_relevant_alatty_opts(override_conf_path ...string) AlattyOpts {
+	ans := AlattyOpts{Term: alatty.AlattyConfigDefaults.Term, Shell_integration: alatty.AlattyConfigDefaults.Shell_integration}
 	handle_line := func(key, val string) error {
 		switch key {
 		case "term":
@@ -229,10 +229,10 @@ func read_relevant_kitty_opts(override_conf_path ...string) KittyOpts {
 		}
 		return nil
 	}
-	config.ReadKittyConfig(handle_line, override_conf_path...)
+	config.ReadAlattyConfig(handle_line, override_conf_path...)
 	return ans
 }
 
-var RelevantKittyOpts = sync.OnceValue(func() KittyOpts {
-	return read_relevant_kitty_opts()
+var RelevantAlattyOpts = sync.OnceValue(func() AlattyOpts {
+	return read_relevant_alatty_opts()
 })

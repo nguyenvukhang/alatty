@@ -16,7 +16,7 @@ features are:
 
 * Replace the typical File Open/Save dialogs used in GUI programs with the
   fast and keyboard centric :doc:`choose-files </kittens/choose-files>` kitten
-  running in a semi-transparent kitty overlay.
+  running in a semi-transparent alatty overlay.
 
 * Allow simple command line based management of the desktop light/dark modes.
 
@@ -85,14 +85,14 @@ Troubleshooting
 First, ensure that DBUS is able to auto-start the kitten when it is needed. If
 the kitten is not already running, try the following command::
 
-    dbus-send --session --print-reply --dest=org.freedesktop.impl.portal.desktop.kitty \
-        /net/kovidgoyal/kitty/portal org.freedesktop.DBus.Properties.GetAll \
-        string:net.kovidgoyal.kitty.settings
+    dbus-send --session --print-reply --dest=org.freedesktop.impl.portal.desktop.alatty \
+        /net/kovidgoyal/alatty/portal org.freedesktop.DBus.Properties.GetAll \
+        string:net.kovidgoyal.alatty.settings
 
 If DBUS is able to start the kitten or if it is already running it will print
 out the version property, otherwise it will fail with an error. If it fails,
 check the file
-:file:`~/.local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.kitty.service`
+:file:`~/.local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.alatty.service`
 that should have been created by the ``enable-portal`` command. It's ``Exec``
 key must point to the full path to the kitten executable.
 
@@ -101,7 +101,7 @@ settings backend. Run::
 
     dbus-send --session --print-reply --dest=org.freedesktop.portal.Desktop \
         /org/freedesktop/portal/desktop org.freedesktop.portal.Settings.Read \
-        string:net.kovidgoyal.kitty string:status
+        string:net.kovidgoyal.alatty string:status
 
 If this returns a reply then the kitten is being used, as expected. If it
 returns a not found error, then some other backend is being used for settings.

@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/cli"
 
 	"golang.org/x/sys/unix"
 )

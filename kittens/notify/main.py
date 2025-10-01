@@ -5,7 +5,7 @@ import sys
 
 
 def OPTIONS() -> str:
-    from kitty.constants import standard_icon_names
+    from alatty.constants import standard_icon_names
     return  f'''
 --icon -n
 type=list

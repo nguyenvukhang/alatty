@@ -10,12 +10,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
 
-type kitty_font_backend_type struct {
+type alatty_font_backend_type struct {
 	from                    io.ReadCloser
 	to                      io.WriteCloser
 	json_decoder            *json.Decoder
@@ -29,13 +29,13 @@ type kitty_font_backend_type struct {
 	timeout                 time.Duration
 }
 
-func (k *kitty_font_backend_type) start() (err error) {
-	exe := utils.KittyExe()
+func (k *alatty_font_backend_type) start() (err error) {
+	exe := utils.AlattyExe()
 	if exe == "" {
-		exe = utils.Which("kitty")
+		exe = utils.Which("alatty")
 	}
 	if exe == "" {
-		return fmt.Errorf("Failed to find the kitty executable, this kitten requires the kitty executable to be present. You can use the environment variable KITTY_PATH_TO_KITTY_EXE to specify the path to the kitty executable")
+		return fmt.Errorf("Failed to find the alatty executable, this kitten requires the alatty executable to be present. You can use the environment variable ALATTY_PATH_TO_ALATTY_EXE to specify the path to the alatty executable")
 	}
 
 	k.cmd = exec.Command(exe, "+runpy", "from kittens.choose_fonts.backend import main; main()")
@@ -62,24 +62,24 @@ func (k *kitty_font_backend_type) start() (err error) {
 	return
 }
 
-var kitty_font_backend kitty_font_backend_type
+var alatty_font_backend alatty_font_backend_type
 
-func (k *kitty_font_backend_type) send(v any) error {
+func (k *alatty_font_backend_type) send(v any) error {
 	if k.to == nil {
 		return fmt.Errorf("Trying to send data when to pipe is nil")
 	}
 	data, err := json.Marshal(v)
 	if err != nil {
-		return fmt.Errorf("Could not encode message to kitty with error: %w", err)
+		return fmt.Errorf("Could not encode message to alatty with error: %w", err)
 	}
 	c := make(chan error)
 	go func() {
 		if _, err = k.to.Write(data); err != nil {
-			c <- fmt.Errorf("Failed to send message to kitty with I/O error: %w", err)
+			c <- fmt.Errorf("Failed to send message to alatty with I/O error: %w", err)
 			return
 		}
 		if _, err = k.to.Write([]byte{'\n'}); err != nil {
-			c <- fmt.Errorf("Failed to send message to kitty with I/O error: %w", err)
+			c <- fmt.Errorf("Failed to send message to alatty with I/O error: %w", err)
 			return
 		}
 		c <- nil
@@ -88,11 +88,11 @@ func (k *kitty_font_backend_type) send(v any) error {
 	case err := <-c:
 		return err
 	case <-time.After(k.timeout):
-		return fmt.Errorf("Timed out waiting to write to kitty font backend after %v", k.timeout)
+		return fmt.Errorf("Timed out waiting to write to alatty font backend after %v", k.timeout)
 	case err := <-k.wait_for_exit:
 		k.exited = true
 		if err == nil {
-			err = fmt.Errorf("kitty font backend exited with no error while waiting for a response from it")
+			err = fmt.Errorf("alatty font backend exited with no error while waiting for a response from it")
 		} else {
 			k.failed = true
 		}
@@ -100,7 +100,7 @@ func (k *kitty_font_backend_type) send(v any) error {
 	}
 }
 
-func (k *kitty_font_backend_type) query(action string, cmd map[string]any, result any) error {
+func (k *alatty_font_backend_type) query(action string, cmd map[string]any, result any) error {
 	k.lock.Lock()
 	defer k.lock.Unlock()
 	if cmd == nil {
@@ -113,7 +113,7 @@ func (k *kitty_font_backend_type) query(action string, cmd map[string]any, resul
 	c := make(chan error)
 	go func() {
 		if err := k.json_decoder.Decode(result); err != nil {
-			c <- fmt.Errorf("Failed to decode JSON from kitty with error: %w", err)
+			c <- fmt.Errorf("Failed to decode JSON from alatty with error: %w", err)
 		}
 		c <- nil
 	}()
@@ -121,11 +121,11 @@ func (k *kitty_font_backend_type) query(action string, cmd map[string]any, resul
 	case err := <-c:
 		return err
 	case <-time.After(k.timeout):
-		return fmt.Errorf("Timed out waiting for response from kitty font backend after %v", k.timeout)
+		return fmt.Errorf("Timed out waiting for response from alatty font backend after %v", k.timeout)
 	case err := <-k.wait_for_exit:
 		k.exited = true
 		if err == nil {
-			err = fmt.Errorf("kitty font backed exited with no error while waiting for a response from it")
+			err = fmt.Errorf("alatty font backed exited with no error while waiting for a response from it")
 		} else {
 			k.failed = true
 		}
@@ -133,7 +133,7 @@ func (k *kitty_font_backend_type) query(action string, cmd map[string]any, resul
 	}
 }
 
-func (k *kitty_font_backend_type) release() (err error) {
+func (k *alatty_font_backend_type) release() (err error) {
 	if k.r != nil {
 		k.r.Close()
 		k.r = nil
@@ -160,7 +160,7 @@ func (k *kitty_font_backend_type) release() (err error) {
 			}
 		case <-time.After(timeout):
 			k.failed = true
-			err = fmt.Errorf("Timed out waiting for kitty font backend to exit for %v", timeout)
+			err = fmt.Errorf("Timed out waiting for alatty font backend to exit for %v", timeout)
 		}
 	}
 	os.Stderr.WriteString(k.stderr.String())

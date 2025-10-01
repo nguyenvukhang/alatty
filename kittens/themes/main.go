@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/themes"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/themes"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -68,7 +68,7 @@ func main(_ *cli.Command, opts *Options, args []string) (rc int, err error) {
 	defer cv.Save()
 	lp.OnInitialize = func() (string, error) {
 		lp.AllowLineWrapping(false)
-		lp.SetWindowTitle(`Choose a theme for kitty`)
+		lp.SetWindowTitle(`Choose a theme for alatty`)
 		h.initialize()
 		return "", nil
 	}

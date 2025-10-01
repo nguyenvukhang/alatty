@@ -6,17 +6,17 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/kovidgoyal/kitty/kittens/panel"
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/config"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/kittens/panel"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/config"
+	"github.com/kovidgoyal/alatty/tools/utils"
 
 	"golang.org/x/sys/unix"
 )
 
 var _ = fmt.Print
 
-var complete_kitty_listen_on = panel.CompleteKittyListenOn
+var complete_alatty_listen_on = panel.CompleteAlattyListenOn
 
 func load_config(opts *Options) (ans *Config, err error) {
 	ans = NewConfig()
@@ -33,11 +33,11 @@ func main(cmd *cli.Command, opts *Options, args []string) (rc int, err error) {
 	if err != nil {
 		return 1, err
 	}
-	kitty_exe, err := panel.GetQuickAccessKittyExe()
+	alatty_exe, err := panel.GetQuickAccessAlattyExe()
 	if err != nil {
 		return 1, err
 	}
-	argv := []string{kitty_exe, "+kitten", "panel", "--toggle-visibility", "--exclusive-zone=0", "--override-exclusive-zone", "--layer=overlay", "--single-instance", "--move-to-active-monitor"}
+	argv := []string{alatty_exe, "+kitten", "panel", "--toggle-visibility", "--exclusive-zone=0", "--override-exclusive-zone", "--layer=overlay", "--single-instance", "--move-to-active-monitor"}
 	argv = append(argv, fmt.Sprintf("--lines=%s", conf.Lines))
 	argv = append(argv, fmt.Sprintf("--columns=%s", conf.Columns))
 	argv = append(argv, fmt.Sprintf("--edge=%s", conf.Edge))
@@ -53,17 +53,17 @@ func main(cmd *cli.Command, opts *Options, args []string) (rc int, err error) {
 	if conf.Margin_right != 0 {
 		argv = append(argv, fmt.Sprintf("--margin-right=%d", conf.Margin_right))
 	}
-	if len(conf.Kitty_conf) > 0 {
+	if len(conf.Alatty_conf) > 0 {
 		cdir := utils.ConfigDir()
-		for _, c := range conf.Kitty_conf {
+		for _, c := range conf.Alatty_conf {
 			if !filepath.IsAbs(c) {
 				c = filepath.Join(cdir, c)
 			}
 			argv = append(argv, fmt.Sprintf("--config=%s", c))
 		}
 	}
-	if len(conf.Kitty_override) > 0 {
-		for _, c := range conf.Kitty_override {
+	if len(conf.Alatty_override) > 0 {
+		for _, c := range conf.Alatty_override {
 			argv = append(argv, fmt.Sprintf("--override=%s", c))
 		}
 	}
@@ -106,7 +106,7 @@ func main(cmd *cli.Command, opts *Options, args []string) (rc int, err error) {
 	}
 
 	argv = append(argv, args...)
-	err = unix.Exec(kitty_exe, argv, os.Environ())
+	err = unix.Exec(alatty_exe, argv, os.Environ())
 	rc = 1
 	return
 }

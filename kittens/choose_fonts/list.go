@@ -5,11 +5,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/tui/readline"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/tui/readline"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print
@@ -29,7 +29,7 @@ type FontList struct {
 	family_list                    FamilyList
 	fonts                          map[string][]ListedFont
 	family_list_updated            bool
-	resolved_faces_from_kitty_conf ResolvedFaces
+	resolved_faces_from_alatty_conf ResolvedFaces
 	handler                        *handler
 	variable_data_requested_for    *utils.Set[string]
 	preview_cache                  map[preview_cache_key]preview_cache_value
@@ -153,7 +153,7 @@ func (self *FontList) draw_preview(x, y int, sz loop.ScreenSize) (err error) {
 		self.preview_cache[key] = preview_cache_value{path: "requested"}
 		go func() {
 			var r map[string]RenderedSampleTransmit
-			self.handler.set_worker_error(kitty_font_backend.query("render_family_samples", map[string]any{
+			self.handler.set_worker_error(alatty_font_backend.query("render_family_samples", map[string]any{
 				"text_style": self.handler.text_style, "font_family": key.family, "width": key.width, "height": key.height,
 				"output_dir": self.handler.temp_dir,
 			}, &r))
@@ -174,7 +174,7 @@ func (self *FontList) on_wakeup() error {
 	if !self.family_list_updated {
 		self.family_list_updated = true
 		self.family_list.UpdateFamilies(utils.StableSortWithKey(utils.Keys(self.fonts), strings.ToLower))
-		self.family_list.SelectFamily(self.resolved_faces_from_kitty_conf.Font_family.Family)
+		self.family_list.SelectFamily(self.resolved_faces_from_alatty_conf.Font_family.Family)
 	}
 	return self.handler.draw_screen()
 }

@@ -14,11 +14,11 @@ import tarfile
 import time
 from urllib.request import Request
 
-BUNDLE_URL = 'https://download.calibre-ebook.com/ci/kitty/{}-64.tar.xz'
+BUNDLE_URL = 'https://download.calibre-ebook.com/ci/alatty/{}-64.tar.xz'
 FONTS_URL = 'https://download.calibre-ebook.com/ci/fonts.tar.xz'
 NERD_URL = 'https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.tar.xz'
-is_bundle = os.environ.get('KITTY_BUNDLE') == '1'
-is_codeql = os.environ.get('KITTY_CODEQL') == '1'
+is_bundle = os.environ.get('ALATTY_BUNDLE') == '1'
+is_codeql = os.environ.get('ALATTY_CODEQL') == '1'
 is_macos = 'darwin' in sys.platform.lower()
 SW = ''
 
@@ -29,7 +29,7 @@ def do_print_crash_reports() -> None:
         end_time = time.monotonic() + 90
         while time.monotonic() < end_time:
             time.sleep(1)
-            items = glob.glob(os.path.join(os.path.expanduser('~/Library/Logs/DiagnosticReports'), 'kitty-*.ips'))
+            items = glob.glob(os.path.join(os.path.expanduser('~/Library/Logs/DiagnosticReports'), 'alatty-*.ips'))
             if items:
                 break
         if items:
@@ -97,7 +97,7 @@ def install_fonts() -> None:
 
 
 def install_deps() -> None:
-    print('Installing kitty dependencies...')
+    print('Installing alatty dependencies...')
     sys.stdout.flush()
     if is_macos:
         if not is_codeql:  # for some reason brew fails on CodeQL we dont need it anyway
@@ -127,29 +127,29 @@ def install_deps() -> None:
     install_fonts()
 
 
-def build_kitty() -> None:
+def build_alatty() -> None:
     python = shutil.which('python3') if is_bundle else sys.executable
     cmd = f'{python} setup.py build --verbose'
     if is_macos:
         cmd += ' --debug'  # for better crash report to debug SIGILL issue
-    if os.environ.get('KITTY_SANITIZE') == '1':
+    if os.environ.get('ALATTY_SANITIZE') == '1':
         cmd += ' --debug --sanitize'
     run(cmd)
 
 
-def test_kitty() -> None:
+def test_alatty() -> None:
     if is_macos:
         run('ulimit -c unlimited')
         run('sudo chmod -R 777 /cores')
     run('./test.py', print_crash_reports=True)
 
 
-def package_kitty() -> None:
+def package_alatty() -> None:
     python = 'python3' if is_macos else 'python'
     run(f'{python} setup.py linux-package --update-check-interval=0 --verbose')
     if is_macos:
-        run('python3 setup.py kitty.app --update-check-interval=0 --verbose')
-        run('kitty.app/Contents/MacOS/kitty +runpy "from kitty.constants import *; print(kitty_exe())"')
+        run('python3 setup.py alatty.app --update-check-interval=0 --verbose')
+        run('alatty.app/Contents/MacOS/alatty +runpy "from alatty.constants import *; print(alatty_exe())"')
 
 
 def replace_in_file(path: str, src: str, dest: str) -> None:
@@ -161,7 +161,7 @@ def replace_in_file(path: str, src: str, dest: str) -> None:
 
 def setup_bundle_env() -> None:
     global SW
-    os.environ['SW'] = SW = '/Users/Shared/kitty-build/sw/sw' if is_macos else os.path.join(os.environ['GITHUB_WORKSPACE'], 'sw')
+    os.environ['SW'] = SW = '/Users/Shared/alatty-build/sw/sw' if is_macos else os.path.join(os.environ['GITHUB_WORKSPACE'], 'sw')
     os.environ['PKG_CONFIG_PATH'] = os.path.join(SW, 'lib', 'pkgconfig')
     if is_macos:
         os.environ['PATH'] = '{}:{}'.format('/usr/local/opt/sphinx-doc/bin', os.environ['PATH'])
@@ -261,16 +261,16 @@ def main() -> None:
     if action in ('build', 'package'):
         install_deps()
     if action == 'build':
-        build_kitty()
+        build_alatty()
     elif action == 'package':
-        package_kitty()
+        package_alatty()
     elif action == 'test':
-        test_kitty()
+        test_alatty()
     elif action == 'test':
-        test_kitty()
+        test_alatty()
     elif action == 'govulncheck':
         subprocess.check_call(['go', 'install', 'golang.org/x/vuln/cmd/govulncheck@latest'])
-        subprocess.check_call(['govulncheck', '-mode=binary', 'kitty/launcher/kitten'])
+        subprocess.check_call(['govulncheck', '-mode=binary', 'alatty/launcher/kitten'])
         subprocess.check_call(['govulncheck', './...'])
     elif action == 'gofmt':
         q = subprocess.check_output('gofmt -s -l tools kittens'.split()).decode()

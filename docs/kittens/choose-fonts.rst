@@ -1,4 +1,4 @@
-Changing kitty fonts
+Changing alatty fonts
 ========================
 
 .. only:: man
@@ -7,7 +7,7 @@ Changing kitty fonts
     --------------
 
 Terminal aficionados spend all day staring at text, as such, getting text
-rendering just right is very important. kitty has extremely powerful facilities
+rendering just right is very important. alatty has extremely powerful facilities
 for fine-tuning text rendering. It supports `OpenType features
 <https://en.wikipedia.org/wiki/List_of_typographic_features>`__ to select
 alternate glyph shapes, and `Variable fonts
@@ -17,8 +17,8 @@ render particular unicode codepoints <symbol_map>` and you can :opt:`modify
 font metrics <modify_font>` and even :opt:`adjust the gamma curves
 <text_composition_strategy>` used for rendering text onto the background color.
 
-The first step is to select the font faces kitty will use for rendering
-regular, bold and italic text. kitty comes with a convenient UI for choosing fonts,
+The first step is to select the font faces alatty will use for rendering
+regular, bold and italic text. alatty comes with a convenient UI for choosing fonts,
 in the form of the *choose-fonts* kitten. Simply run::
 
     kitten choose-fonts
@@ -55,7 +55,7 @@ The font specification syntax
 --------------------------------
 
 If you don't like the choose fonts kitten or simply want to understand and
-write font selection options into :file:`kitty.conf` yourself, read on.
+write font selection options into :file:`alatty.conf` yourself, read on.
 
 There are four font face selection keys: `font_family`, `bold_font`,
 `italic_font` and `bold_italic_font`. Each of these supports the syntax
@@ -63,8 +63,8 @@ described below. Their values can be of three types, either a
 font family name, the keyword ``auto`` or an extended ``key=value`` syntax
 for specifying font selection precisely.
 
-If a font family name is specified kitty will use Operating System APIs to
-search for a matching font. The keyword ``auto`` means kitty will choose a font
+If a font family name is specified alatty will use Operating System APIs to
+search for a matching font. The keyword ``auto`` means alatty will choose a font
 completely automatically, typically this is used for automatically selecting
 bold/italic variants once the :opt:`font_family` is set. The bold and italic
 variants will then automatically use the same set of features as the main face.

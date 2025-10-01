@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/kovidgoyal/kitty/tools/ignorefiles"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/ignorefiles"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -359,13 +359,13 @@ func run_scoring(b *testing.B, depth, breadth int, query string) {
 }
 
 // To run this benchmark with profiling use:
-// go test -bench=FileNameScoringWithoutQuery -benchmem -cpuprofile=/tmp/cpu.prof -memprofile=/tmp/mem.prof github.com/kovidgoyal/kitty/kittens/choose_files -o /tmp/cfexe
+// go test -bench=FileNameScoringWithoutQuery -benchmem -cpuprofile=/tmp/cpu.prof -memprofile=/tmp/mem.prof github.com/kovidgoyal/alatty/kittens/choose_files -o /tmp/cfexe
 func BenchmarkFileNameScoringWithoutQuery(b *testing.B) {
 	run_scoring(b, 5, 20, "")
 }
 
 // To run this benchmark with profiling use:
-// go test -bench=FileNameScoringWithQuery -benchmem -cpuprofile=/tmp/cpu.prof -memprofile=/tmp/mem.prof github.com/kovidgoyal/kitty/kittens/choose_files -o /tmp/cfexe
+// go test -bench=FileNameScoringWithQuery -benchmem -cpuprofile=/tmp/cpu.prof -memprofile=/tmp/mem.prof github.com/kovidgoyal/alatty/kittens/choose_files -o /tmp/cfexe
 func BenchmarkFileNameScoringWithQuery(b *testing.B) {
 	run_scoring(b, 5, 20, "abc")
 }

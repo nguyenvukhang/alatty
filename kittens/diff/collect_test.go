@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils"
 
 	"github.com/google/go-cmp/cmp"
 )

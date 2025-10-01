@@ -4,9 +4,9 @@
 import re
 import sys
 
-from kitty.conf.types import Definition
-from kitty.constants import appname
-from kitty.simple_cli_definitions import CONFIG_HELP, get_option_maps, grab_keyboard_docs, panel_options_spec, parse_option_spec
+from alatty.conf.types import Definition
+from alatty.constants import appname
+from alatty.simple_cli_definitions import CONFIG_HELP, get_option_maps, grab_keyboard_docs, panel_options_spec, parse_option_spec
 
 help_text = 'A quick access terminal window that you can bring up instantly with a keypress or a command.'
 
@@ -41,7 +41,7 @@ opt('columns', '80', long_text=panel_opts['columns'].help)
 opt('edge', 'top', choices=panel_opts['edge'].choices, long_text=help_of('edge'))
 
 opt('background_opacity', '0.85', option_type='unit_float', long_text='''
-The background opacity of the window. This works the same as the kitty
+The background opacity of the window. This works the same as the alatty
 option of the same name, it is present here as it has a different
 default value for the quick access terminal.
 ''')
@@ -61,13 +61,13 @@ opt('margin_top', '0', option_type='int', long_text=help_of('margin_top'))
 
 opt('margin_bottom', '0', option_type='int', long_text=help_of('margin_bottom'))
 
-opt('+kitty_conf', '',
-    long_text='Path to config file to use for kitty when drawing the window. Can be specified multiple times. By default, the'
-    ' normal kitty.conf is used. Relative paths are resolved with respect to the kitty config directory.'
+opt('+alatty_conf', '',
+    long_text='Path to config file to use for alatty when drawing the window. Can be specified multiple times. By default, the'
+    ' normal alatty.conf is used. Relative paths are resolved with respect to the alatty config directory.'
 )
 
-opt('+kitty_override', '', long_text='Override individual kitty configuration options, can be specified multiple times.'
-    ' Syntax: :italic:`kitty_override name=value`. For example: :code:`kitty_override font_size=20`.'
+opt('+alatty_override', '', long_text='Override individual alatty configuration options, can be specified multiple times.'
+    ' Syntax: :italic:`alatty_override name=value`. For example: :code:`alatty_override font_size=20`.'
 )
 
 opt('app_id', f'{appname}-quick-access',

@@ -401,7 +401,7 @@ def gen_rowcolumn_diacritics() -> None:
             codes.append(code)
 
     go_file = 'tools/utils/images/rowcolumn_diacritics.go'
-    with create_header('kitty/rowcolumn-diacritics.c') as p, create_header(go_file, include_data_types=False) as g:
+    with create_header('alatty/rowcolumn-diacritics.c') as p, create_header(go_file, include_data_types=False) as g:
         p('int diacritic_to_num(char_type code) {')
         p('\tswitch (code) {')
         g('package images')
@@ -437,7 +437,7 @@ def gen_rowcolumn_diacritics() -> None:
 
 
 def gen_test_data() -> None:
-    with open('kitty_tests/GraphemeBreakTest.json', 'wb') as f:
+    with open('alatty_tests/GraphemeBreakTest.json', 'wb') as f:
         f.write(json.dumps(grapheme_segmentation_tests, indent=2, ensure_ascii=False).encode())
 
 
@@ -1175,7 +1175,7 @@ def gen_char_props() -> None:
     from .bitfields import make_bitfield
     buf = StringIO()
     cen = partial(print, file=buf)
-    with create_header('kitty/char-props-data.h', include_data_types=False) as c, open('tools/wcswidth/char-props-data.go', 'w') as gof:
+    with create_header('alatty/char-props-data.h', include_data_types=False) as c, open('tools/wcswidth/char-props-data.go', 'w') as gof:
         gp = partial(print, file=gof)
         gp('package wcswidth')
         gp('import "unsafe"')
@@ -1197,7 +1197,7 @@ def gen_char_props() -> None:
         c(GraphemeSegmentationState.c_declaration())
         gp(GraphemeSegmentationKey.code_to_convert_to_int(for_go=True))
     gofmt(gof.name)
-    with open('kitty/char-props.h', 'r+') as f:
+    with open('alatty/char-props.h', 'r+') as f:
         raw = f.read()
         nraw = re.sub(r'\d+/\*=width_shift\*/', f'{width_shift}/*=width_shift*/', raw)
         nraw = patch_declaration('CharProps', CharProps.c_declaration(), nraw)

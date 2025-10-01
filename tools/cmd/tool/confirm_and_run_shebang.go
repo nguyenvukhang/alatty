@@ -13,11 +13,11 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"github.com/kovidgoyal/kitty/kittens/ask"
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/cli/markup"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/kittens/ask"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/cli/markup"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/utils"
 )
 
 var _ = fmt.Print
@@ -116,7 +116,7 @@ func confirm_and_run_shebang(args []string, confirm_policy ConfirmPolicy) (rc in
 			if err != nil {
 				return 1, err
 			}
-			editor := exec.Command(exe, "edit-in-kitty", script_path)
+			editor := exec.Command(exe, "edit-in-alatty", script_path)
 			editor.Stdin = os.Stdin
 			editor.Stdout = os.Stdout
 			editor.Stderr = os.Stderr

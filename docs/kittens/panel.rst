@@ -55,7 +55,7 @@ panels and desktop components:
 
 .. _panel_projects:
 
-    * `kitty panel <https://github.com/5hubham5ingh/kitty-panel>`__
+    * `alatty panel <https://github.com/5hubham5ingh/alatty-panel>`__
     * `pawbar <https://github.com/codelif/pawbar>`__
 
 
@@ -64,7 +64,7 @@ panels and desktop components:
 Controlling panels via remote control
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can control panels via the kitty :doc:`remote control </remote-control>` facility. Create a panel
+You can control panels via the alatty :doc:`remote control </remote-control>` facility. Create a panel
 with remote control enabled::
 
     kitten panel -o allow_remote_control=socket-only --lines=2 \
@@ -100,13 +100,13 @@ The system statistics in the background were created using::
 
     kitten panel --edge=background -o background_opacity=0.2 -o background=black btop
 
-This creates a kitty background window and inside it runs the `btop
+This creates a alatty background window and inside it runs the `btop
 <https://github.com/aristocratos/btop>`__ program to display the statistics.
 
 The floating quick access window was created by running::
 
     kitten quick-access-terminal kitten run-shell \
-       zsh -c 'printf "\e]66;s=4;Quick access kitty in Hyprland\a\n\n\n\nAlso uses kitty to draw desktop background\n"'
+       zsh -c 'printf "\e]66;s=4;Quick access alatty in Hyprland\a\n\n\n\nAlso uses alatty to draw desktop background\n"'
 
 This starts the quick access window and inside it runs ``kitten run-shell``, which
 in turn first runs ``zsh`` to print out the message and then starts the users login
@@ -116,11 +116,11 @@ The Linux dock panel was::
 
     wm bar
 
-This is a custom program I wrote for my personal use. It uses kitty's kitten
+This is a custom program I wrote for my personal use. It uses alatty's kitten
 infrastructure to implement the bar in a `few hundred lines of code
 <https://github.com/kovidgoyal/wm/blob/master/bar/main.go>`__.
 This was designed for my personal use only, but, there are :ref:`public projects implementing
-general purpose panels using kitty <panel_projects>`.
+general purpose panels using alatty <panel_projects>`.
 
 
 .. _panel_compat:

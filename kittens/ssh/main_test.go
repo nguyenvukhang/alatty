@@ -6,8 +6,8 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/tools/utils/shm"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/tools/utils/shm"
 	"io/fs"
 	"os"
 	"os/exec"
@@ -134,18 +134,18 @@ func TestSSHTarfile(t *testing.T) {
 	if !seen["data.sh"] {
 		t.Fatalf("data.sh missing")
 	}
-	for _, x := range []string{".terminfo/kitty.terminfo", ".terminfo/x/" + kitty.DefaultTermName} {
+	for _, x := range []string{".terminfo/alatty.terminfo", ".terminfo/x/" + alatty.DefaultTermName} {
 		if !seen["home/"+x] {
 			t.Fatalf("%s missing", x)
 		}
 	}
-	for _, x := range []string{"shell-integration/bash/kitty.bash", "shell-integration/fish/vendor_completions.d/kitty.fish"} {
+	for _, x := range []string{"shell-integration/bash/alatty.bash", "shell-integration/fish/vendor_completions.d/alatty.fish"} {
 		if !seen[path.Join("home", cd.host_opts.Remote_dir, x)] {
 			t.Fatalf("%s missing", x)
 		}
 	}
-	for _, x := range []string{"kitty", "kitten"} {
-		p := filepath.Join(tdir, "home", cd.host_opts.Remote_dir, "kitty", "bin", x)
+	for _, x := range []string{"alatty", "kitten"} {
+		p := filepath.Join(tdir, "home", cd.host_opts.Remote_dir, "alatty", "bin", x)
 		if err = unix.Access(p, unix.X_OK); err != nil {
 			t.Fatalf("Cannot execute %s with error: %s", x, err)
 		}

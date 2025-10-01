@@ -45,7 +45,7 @@ Selecting multiple files
 -----------------------------
 
 When you wish to select multiple files, start the kitten with :option:`--mode
-<kitty +kitten choose_files --mode>`:code:`=files`. Then instead of pressing
+<alatty +kitten choose_files --mode>`:code:`=files`. Then instead of pressing
 :kbd:`Enter`, press :kbd:`Shift+Enter` instead and the file will be added to the list
 of selections. You can also hold the :kbd:`Ctrl` key and click on files to add
 them to the selections. Similarly, you can hold the :kbd:`Alt` key and click to
@@ -76,7 +76,7 @@ Selecting non-existent files (save file names)
 -------------------------------------------------
 
 This kitten can also be used to select non-existent files, that is a new file
-for a :guilabel:`Save file` type of dialog using :option:`--mode <kitty +kitten
+for a :guilabel:`Save file` type of dialog using :option:`--mode <alatty +kitten
 choose_files --mode>`:code:`=save-file`. Once you have changed to the directory
 you want the file to be in (using the :kbd:`Tab` key),
 press :kbd:`Ctrl+Enter` and you will be able to type in the file name.
@@ -86,7 +86,7 @@ Selecting directories
 ---------------------------
 
 This kitten can also be used to select directories,
-for an :guilabel:`Open directory` type of dialog using :option:`--mode <kitty +kitten
+for an :guilabel:`Open directory` type of dialog using :option:`--mode <alatty +kitten
 choose_files --mode>`:code:`=dir`. Once you have changed to the directory
 you want, press :kbd:`Ctrl+Enter` to accept it. Or if you are in a parent
 directory you can select a descendant directory by pressing :kbd:`Enter`, the
@@ -97,7 +97,7 @@ Configuration
 ------------------------
 
 You can configure various aspects of the kitten's operation by creating a
-:file:`choose-files.conf` in your :ref:`kitty config folder <confloc>`.
+:file:`choose-files.conf` in your :ref:`alatty config folder <confloc>`.
 See below for the supported configuration directives.
 
 

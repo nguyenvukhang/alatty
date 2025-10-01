@@ -4,7 +4,7 @@
 
 import sys
 
-from kitty.simple_cli_definitions import CompletionSpec
+from alatty.simple_cli_definitions import CompletionSpec
 
 OPTIONS = '''
 --role

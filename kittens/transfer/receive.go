@@ -16,16 +16,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/kittens/unicode_input"
-	"github.com/kovidgoyal/kitty/tools/cli/markup"
-	"github.com/kovidgoyal/kitty/tools/rsync"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/humanize"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/kittens/unicode_input"
+	"github.com/kovidgoyal/alatty/tools/cli/markup"
+	"github.com/kovidgoyal/alatty/tools/rsync"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/humanize"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 
 	"golang.org/x/sys/unix"
 )
@@ -1090,7 +1090,7 @@ func receive_loop(opts *Options, spec []string, dest string) (err error, rc int)
 	for i := range spec {
 		handler.manager.spec_counts[i] = 0
 	}
-	handler.manager.prefix = fmt.Sprintf("\x1b]%d;id=%s;", kitty.FileTransferCode, handler.manager.request_id)
+	handler.manager.prefix = fmt.Sprintf("\x1b]%d;id=%s;", alatty.FileTransferCode, handler.manager.request_id)
 	if handler.manager.bypass != `` {
 		if handler.manager.bypass, err = encode_bypass(handler.manager.request_id, handler.manager.bypass); err != nil {
 			return err, 1
@@ -1121,7 +1121,7 @@ func receive_loop(opts *Options, spec []string, dest string) (err error, rc int)
 		return nil
 	}
 
-	ftc_code := strconv.Itoa(kitty.FileTransferCode)
+	ftc_code := strconv.Itoa(alatty.FileTransferCode)
 	lp.OnEscapeCode = func(et loop.EscapeCodeType, payload []byte) error {
 		if et == loop.OSC {
 			if idx := bytes.IndexByte(payload, ';'); idx > 0 {

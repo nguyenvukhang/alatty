@@ -9,12 +9,12 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/kovidgoyal/kitty/tools/icons"
-	"github.com/kovidgoyal/kitty/tools/tui"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty/tools/icons"
+	"github.com/kovidgoyal/alatty/tools/tui"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print
@@ -171,7 +171,7 @@ func (h *Handler) draw_column_of_matches(matches ResultsType, current_idx int, x
 				return nil
 			}
 			ctrl_mod := utils.IfElse(runtime.GOOS == "darwin", loop.SUPER, loop.CTRL)
-			mods := ev.Mods & (ctrl_mod | loop.ALT) // shift alone and ctrl+shift are used for kitty bindings
+			mods := ev.Mods & (ctrl_mod | loop.ALT) // shift alone and ctrl+shift are used for alatty bindings
 			matches, _ := h.get_results()
 			num_before := h.state.last_render.num_of_slots*data.colnum + data.i
 			idx, did_wrap := matches.IncrementIndexWithWrapAroundAndCheck(h.state.last_render.first_idx, num_before)

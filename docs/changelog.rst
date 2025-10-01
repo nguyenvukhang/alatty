@@ -1,8 +1,8 @@
 Changelog
 ==============
 
-|kitty| is a feature-rich, cross-platform, *fast*, GPU based terminal.
-To update |kitty|, :doc:`follow the instructions <binary>`.
+|alatty| is a feature-rich, cross-platform, *fast*, GPU based terminal.
+To update |alatty|, :doc:`follow the instructions <binary>`.
 
 .. recent major features {{{
 
@@ -12,38 +12,38 @@ Recent major new features
 Sessions [0.43]
 ~~~~~~~~~~~~~~~~
 
-kitty has long had support for :doc:`sessions`, aka simple text files where you
-can define what tabs, windows and programs you wish to run in kitty. Now in
-addition to that kitty has the ability to :ref:`create and switch between
+alatty has long had support for :doc:`sessions`, aka simple text files where you
+can define what tabs, windows and programs you wish to run in alatty. Now in
+addition to that alatty has the ability to :ref:`create and switch between
 sessions <goto_session>` with a single keypress and also to manually setup some
-tabs/windows in kitty and :ref:`save it as a session file <complex_sessions>`,
+tabs/windows in alatty and :ref:`save it as a session file <complex_sessions>`,
 for seamless and intuitive session file creation.
 
-A scrollbar for the kitty scrollback [0.43]
+A scrollbar for the alatty scrollback [0.43]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A long requested feature, kitty has finally :pull:`gotten a scrollbar <8945>`
+A long requested feature, alatty has finally :pull:`gotten a scrollbar <8945>`
 that can be used with the mouse for browsing its scrollback. The bar appear
 automatically when you start scrolling backwards and is :opt:`extensively
-configurable <scrollbar>` in kitty.conf. Note that the old ``scrollback_indicator_opacity``
+configurable <scrollbar>` in alatty.conf. Note that the old ``scrollback_indicator_opacity``
 option is deprecated.
 
 Multiple cursors [0.43]
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-kitty has pioneered a new :doc:`escape code protocol
+alatty has pioneered a new :doc:`escape code protocol
 <multiple-cursors-protocol>` that allows terminal applications to use multiple
 cursors, rendered natively. These are typically used in editors to make the
 same edit at multiple locations. Now terminal based editors can use properly
 rendered native cursors, just like their GUI cousins, at last.
 
-Access kitty with a single keypress [0.42]
+Access alatty with a single keypress [0.42]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. include:: quake-screenshots.rst
 
-kitty now has a Quake like floating, translucent terminal window, so you can access
-all that kitty goodness instantly with a single keypress.
+alatty now has a Quake like floating, translucent terminal window, so you can access
+all that alatty goodness instantly with a single keypress.
 
 See the screenshots on the side and head over to the :doc:`kitten page for details
 on how to set it up </kittens/quick-access-terminal>`.
@@ -52,8 +52,8 @@ on how to set it up </kittens/quick-access-terminal>`.
 Multiple sized text [0.40]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-kitty is the first major terminal to introduce the concept of multiple sized
-text. Terminal programs running in kitty can now opt-in to use and display text
+alatty is the first major terminal to introduce the concept of multiple sized
+text. Terminal programs running in alatty can now opt-in to use and display text
 in multiple font sizes both larger and smaller than the base font size. This is
 done in a backwards compatible, opt-in way that does not affect how traditional
 terminal programs work at all. For details on the new feature and how to use
@@ -64,30 +64,30 @@ Cursor trails [0.37]
 
 Show an animated trail when the text cursor makes large jumps making it easy
 to follow cursor movements. Inspired by the similar feature in neovide, but
-works with terminal multiplexers and kitty windows as well. See :pull:`the pull
+works with terminal multiplexers and alatty windows as well. See :pull:`the pull
 request <7970>` for a demonstration video. This feature is optional and must be
-turned on by the :opt:`cursor_trail` option in :file:`kitty.conf`.
+turned on by the :opt:`cursor_trail` option in :file:`alatty.conf`.
 
 
 Variable font support [0.36]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Terminal aficionados spend all day staring at text, so getting text
-rendering just right is very important. In that spirit, kitty now supports
+rendering just right is very important. In that spirit, alatty now supports
 `OpenType Variable fonts <https://en.wikipedia.org/wiki/Variable_font>`__.
 These allow precise customisation of font characteristics, such as weight and
-spacing. Not only that, kitty now has a new :doc:`choose-fonts
+spacing. Not only that, alatty now has a new :doc:`choose-fonts
 <kittens/choose-fonts>` kitten that provides a UI for choosing fonts with
 support for font features, variable fonts and previews of how the font will
 look. This is in addition to its existing best-in-class font customization
 abilities, such as: :opt:`symbol_map`, :opt:`text_composition_strategy`,
-:opt:`font_features` and :opt:`modify_font`. kitty knows text rendering is
+:opt:`font_features` and :opt:`modify_font`. alatty knows text rendering is
 important, and goes the extra mile for it.
 
 Desktop notifications [0.36]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|kitty| now has a :doc:`notify </kittens/notify>` kitten that can be used to
+|alatty| now has a :doc:`notify </kittens/notify>` kitten that can be used to
 display desktop notifications from the command line, even over SSH. It has
 support for icons, buttons, updating notifications, waiting till
 the notification is closed, etc. The underlying :doc:`desktop-notifications`
@@ -96,7 +96,7 @@ protocol has been expanded to support all these features.
 Wayland goodies [0.34]
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Wayland users should rejoice as kitty now comes with major Wayland
+Wayland users should rejoice as alatty now comes with major Wayland
 quality-of-life improvements:
 
 * Draw GPU accelerated :doc:`desktop panels and background </kittens/panel>`
@@ -106,26 +106,26 @@ quality-of-life improvements:
 * Background blur for transparent windows is now supported under KDE
   using a custom KDE specific protocol
 
-* The kitty window decorations in GNOME are now fully functional with buttons
+* The alatty window decorations in GNOME are now fully functional with buttons
   and they follow system dark/light mode automatically
 
-* kitty now supports fractional scaling in Wayland which means pixel perfect
+* alatty now supports fractional scaling in Wayland which means pixel perfect
   rendering when you use a fractional scale with no wasted performance on
   resizing an overdrawn pixmap in the compositor
 
-With this release kitty's Wayland support is now on par with X11, provided
+With this release alatty's Wayland support is now on par with X11, provided
 you use a decent Wayland compositor.
 
 Cheetah speed 🐆 [0.33]
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-kitty has grown up and become a cheetah. It now parses data it receives in
+alatty has grown up and become a cheetah. It now parses data it receives in
 parallel :iss:`using SIMD vector CPU instructions <7005>` for a 2x speedup in
 benchmarks and a 10%-50% real world speedup depending on workload. There is a
 new benchmarking kitten ``kitten __benchmark__`` that can be used to measure
-terminal throughput. There is also :ref:`a table <throughput>` showing kitty is
+terminal throughput. There is also :ref:`a table <throughput>` showing alatty is
 much faster than other terminal emulators based on the benchmark kitten. While
-kitty was already so fast that its performance was never a bottleneck, this
+alatty was already so fast that its performance was never a bottleneck, this
 improvement makes it even faster and more importantly reduces the energy
 consumption to do the same tasks.
 
@@ -175,7 +175,7 @@ Detailed list of changes
 - New support for creating and switching to :doc:`sessions` easily, allowing
   users to define and use sessions/projects efficiently (:iss:`8911`)
 
-- Add a configurable :opt:`scrollbar` for the kitty scrollback (:pull:`8945`)
+- Add a configurable :opt:`scrollbar` for the alatty scrollback (:pull:`8945`)
 
 - A new protocol for :doc:`multiple cursors <multiple-cursors-protocol>` in the terminal (:iss:`8927`)
 
@@ -218,7 +218,7 @@ Detailed list of changes
   the minimized window to be un-minimized (:iss:`8913`)
 
 - Allow using backspace to move the cursor onto the previous line in cooked
-  mode. This is indicated by the `bw` property in kitty's terminfo
+  mode. This is indicated by the `bw` property in alatty's terminfo
   (:iss:`8841`)
 
 - Watchers: A new event for global watchers corresponding to the tab bar being changed (:disc:`8842`)
@@ -241,7 +241,7 @@ Detailed list of changes
   terminal when no text is selected (:pull:`8946`)
 
 - macOS: Workaround for bug in macOS Tahoe that caused OS Windows that are
-  fullscreen on a monitor that is disconnected while macOS is asleep to crash kitty (:iss:`8983`)
+  fullscreen on a monitor that is disconnected while macOS is asleep to crash alatty (:iss:`8983`)
 
 
 0.42.2 [2025-07-16]
@@ -259,9 +259,9 @@ Detailed list of changes
 
 - Fix :opt:`remember_window_position` not working because of a stupid typo (:iss:`8646`)
 
-- A new :option:`kitty --grab-keyboard` that can be used to grab the keyboard so that global shortcuts are sent to kitty instead
+- A new :option:`alatty --grab-keyboard` that can be used to grab the keyboard so that global shortcuts are sent to alatty instead
 
-- Remote control: Fix holding a remote control socket open causing the kitty I/O thread to go into a loop and not respond on other remote control sockets (:disc:`8670`)
+- Remote control: Fix holding a remote control socket open causing the alatty I/O thread to go into a loop and not respond on other remote control sockets (:disc:`8670`)
 
 - hints kitten: Preserve line breaks when the hint is over a line break (:iss:`8674`)
 
@@ -295,15 +295,15 @@ Detailed list of changes
 
 - Wayland: Fix an abort if the terminal program sets a window title longer than 2KB that contains CSI escape sequences and multibyte UTF-8 (:iss:`8619`)
 
-- Quick access terminal: Allow toggling the window to full screen using the standard kitty :sc:`toggle_fullscreen` shortcut (:iss:`8626`)
+- Quick access terminal: Allow toggling the window to full screen using the standard alatty :sc:`toggle_fullscreen` shortcut (:iss:`8626`)
 
 - Quick access terminal: Allow configuring the monitor to display the panel on in Wayland/X11 (:iss:`8630`)
 
-- A new setting :opt:`remember_window_position` to optionally use the position of the last closed kitty OS Window as the position of the first kitty OS Window when running a new kitty instance (:pull:`8601`)
+- A new setting :opt:`remember_window_position` to optionally use the position of the last closed alatty OS Window as the position of the first alatty OS Window when running a new alatty instance (:pull:`8601`)
 
-- Panel kitten: A new ``center-sized`` value for :option:`--edge <kitty +kitten panel --edge>` to allow easily creating sized and centered panels
+- Panel kitten: A new ``center-sized`` value for :option:`--edge <alatty +kitten panel --edge>` to allow easily creating sized and centered panels
 
-- Wayland: The `kitty --name` flag now sets the XDG *window tag* on compositors
+- Wayland: The `alatty --name` flag now sets the XDG *window tag* on compositors
   that support the `xdg-toplevel-tag <https://wayland.app/protocols/xdg-toplevel-tag-v1>`__ protocol.
 
 
@@ -314,12 +314,12 @@ Detailed list of changes
 
 - The :doc:`panel kitten </kittens/panel>` works on macOS and X11 as well as Wayland (:iss:`2590`)
 
-- **Behavior change**: Now kitty does full grapheme segmentation following the
+- **Behavior change**: Now alatty does full grapheme segmentation following the
   Unicode 16 spec when splitting text into cells (:iss:`8533`)
 
 - **Behavior change**: The :ref:`automatic color switching functionality <auto_color_scheme>` now also controls background image settings (:iss:`8603`)
 
-- panel kitten: Allow using :option:`kitty +kitten panel --single-instance` to create multiple panels in one process (:iss:`8549`)
+- panel kitten: Allow using :option:`alatty +kitten panel --single-instance` to create multiple panels in one process (:iss:`8549`)
 
 - launch: Allow creating desktop panels such as those created by the :doc:`panel kitten </kittens/panel>` (:iss:`8549`)
 
@@ -327,10 +327,10 @@ Detailed list of changes
   using the ``kitten @ resize-os-window`` command (:iss:`8550`)
 
 - Remote control launch: Allow waiting for a program launched in a new window
-  to exit and get the exit code via the `kitty +launch
+  to exit and get the exit code via the `alatty +launch
   --wait-for-child-to-exit` command line flag (:disc:`8573`)
 
-- Allow starting kitty with the OS window hidden via :option:`kitty --start-as=hidden <kitty --start-as>`, useful for single instance mode (:iss:`3466`)
+- Allow starting alatty with the OS window hidden via :option:`alatty --start-as=hidden <alatty --start-as>`, useful for single instance mode (:iss:`3466`)
 
 - Allow configuring the mouse unhide behavior when using :opt:`mouse_hide_wait` (:pull:`8508`)
 
@@ -390,7 +390,7 @@ Detailed list of changes
 - A 15% improvement in throughput when processing text thanks to using a
   multi-stage table for Unicode property lookups
 
-- :ref:`kitty +open <launch_actions>`: Ask for confirmation by default when running executables
+- :ref:`alatty +open <launch_actions>`: Ask for confirmation by default when running executables
   to work around some badly designed programs that try to open links in
   documents that point to executable files. Can be overridden by specifying
   your own :file:`launch-actions.conf`.
@@ -408,7 +408,7 @@ Detailed list of changes
 
 - Wayland: Fix a regression in the previous release that caused crashes on
   compositors that don't support the xdg-toplevel-icon protocol and the user has
-  set a custom kitty icon (:iss:`8471`)
+  set a custom alatty icon (:iss:`8471`)
 
 0.40.1 [2025-03-18]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -422,9 +422,9 @@ Detailed list of changes
 - Fix flickering of hyperlink underline when client program continuously
   redraws on mouse movement (:iss:`8414`)
 
-- Wayland: Allow overriding the kitty OS Window icon on compositors that implement the xdg-toplevel-icon protocol
+- Wayland: Allow overriding the alatty OS Window icon on compositors that implement the xdg-toplevel-icon protocol
 
-- macOS: When the program running in kitty reports progress information for a task, show a progress bar on the kitty dock icon
+- macOS: When the program running in alatty reports progress information for a task, show a progress bar on the alatty dock icon
 
 - macOS: Fix a regression causing a crash when using :opt:`focus_follows_mouse` (:iss:`8437`)
 
@@ -502,9 +502,9 @@ Detailed list of changes
 
 - :doc:`diff kitten <kittens/diff>`: Automatically use dark/light color scheme based on the color scheme of the parent terminal. Can be controlled via the new :opt:`kitten-diff.color_scheme` option. Note that this is a **default behavior change** (:iss:`8170`)
 
-- Allow dynamically generating configuration by running an arbitrary program using the new :code:`geninclude` directive in :file:`kitty.conf`
+- Allow dynamically generating configuration by running an arbitrary program using the new :code:`geninclude` directive in :file:`alatty.conf`
 
-- When a program running in kitty reports progress of a task display it as a percentage in the tab title. Controlled by the :opt:`tab_title_template` option
+- When a program running in alatty reports progress of a task display it as a percentage in the tab title. Controlled by the :opt:`tab_title_template` option
 
 - When mapping a custom kitten allow using shell escaping for the kitten path (:iss:`8178`)
 
@@ -512,7 +512,7 @@ Detailed list of changes
 
 - ssh kitten: Fix kitten not being on PATH when SSHing into Debian systems (:iss:`7160`)
 
-- diff kitten: Abort when run inside a terminal that does not support the kitty keyboard protocol (:iss:`8185`)
+- diff kitten: Abort when run inside a terminal that does not support the alatty keyboard protocol (:iss:`8185`)
 
 - :doc:`query kitten <kittens/query_terminal>`: Add support for reporting name of the OS the terminal emulator is running on (:iss:`8201`)
 
@@ -541,15 +541,15 @@ Detailed list of changes
 
 - Cursor trails: Fix pure vertical movement sometimes not triggering a trail and holding down a key in nvim causing the trail to be glitchy (:pull:`8152`, :pull:`8153`)
 
-- macOS: Fix mouse cursor shape not always being reset to text cursor when mouse re-enters kitty (:iss:`8155`)
+- macOS: Fix mouse cursor shape not always being reset to text cursor when mouse re-enters alatty (:iss:`8155`)
 
-- clone-in-kitty: Fix :envvar:`KITTY_WINDOW_ID` being cloned and thus having incorrect value (:iss:`8161`)
+- clone-in-alatty: Fix :envvar:`ALATTY_WINDOW_ID` being cloned and thus having incorrect value (:iss:`8161`)
 
 
 0.38.0 [2024-12-15]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Allow :ref:`specifying individual color themes <auto_color_scheme>` to use so that kitty changes colors automatically following the OS dark/light mode
+- Allow :ref:`specifying individual color themes <auto_color_scheme>` to use so that alatty changes colors automatically following the OS dark/light mode
 
 - :opt:`notify_on_cmd_finish`: Automatically remove notifications when the window gains focus or the next notification is shown. Clearing behavior can be configured (:pull:`8100`)
 
@@ -585,7 +585,7 @@ Detailed list of changes
 
 - Custom kittens: Add :ref:`a framework <kitten_main_rc>` for easily and securely using remote control from within a kitten's :code:`main()` function
 
-- kitten icat: Fix the :option:`kitty +kitten icat --no-trailing-newline` not working when using unicode placeholders (:iss:`7948`)
+- kitten icat: Fix the :option:`alatty +kitten icat --no-trailing-newline` not working when using unicode placeholders (:iss:`7948`)
 
 - :opt:`tab_title_template` allow using the 256 terminal colors for formatting (:disc:`7976`)
 
@@ -595,7 +595,7 @@ Detailed list of changes
 
 - Fix background image flashing when closing a tab (:iss:`7999`)
 
-- When running a kitten that modifies the kitty config file if no config file exists create a commented out default config file and then modify it (:iss:`7991`)
+- When running a kitten that modifies the alatty config file if no config file exists create a commented out default config file and then modify it (:iss:`7991`)
 
 0.36.4 [2024-09-27]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -622,7 +622,7 @@ Detailed list of changes
 
 - Fix a regression that broke writing to the clipboard using the OSC 5522 protocol (:iss:`7858`)
 
-- macOS: Fix a regression in the previous release that caused kitty to fail to run after an unclean shutdown/crash when using --single-instance (:iss:`7846`)
+- macOS: Fix a regression in the previous release that caused alatty to fail to run after an unclean shutdown/crash when using --single-instance (:iss:`7846`)
 
 - kitten @ ls: Fix the ``--self`` flag not working (:iss:`7864`)
 
@@ -637,7 +637,7 @@ Detailed list of changes
 
 - :ac:`goto_tab`: Allow numbers less than ``-1`` to go to the Nth previously active tab
 
-- Wayland: Fix for upcoming explicit sync changes in Wayland compositors breaking kitty (:iss:`7767`)
+- Wayland: Fix for upcoming explicit sync changes in Wayland compositors breaking alatty (:iss:`7767`)
 
 - Remote control: When listening on a UNIX domain socket only allow connections from processes having the same user id (:pull:`7777`)
 
@@ -656,7 +656,7 @@ Detailed list of changes
 
 - OSC 52: Fix a regression in the previous release that broke handling of invalid base64 encoded data in OSC 52 requests (:iss:`7757`)
 
-- macOS: Fix a regression in the previous release that caused :option:`kitty --single-instance` to not work when using :file:`macos-launch-services-cmdline`
+- macOS: Fix a regression in the previous release that caused :option:`alatty --single-instance` to not work when using :file:`macos-launch-services-cmdline`
 
 0.36.0 [2024-08-17]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -667,7 +667,7 @@ Detailed list of changes
 
 - Allow animating the blinking of the cursor. See :opt:`cursor_blink_interval` for how to configure it
 
-- Add NERD fonts builtin so that users don't have to install them to use NERD symbols in kitty. The builtin font is used only if the symbols are not available in some system font
+- Add NERD fonts builtin so that users don't have to install them to use NERD symbols in alatty. The builtin font is used only if the symbols are not available in some system font
 
 - launch command: A new :option:`launch --bias` option to adjust the size of newly created windows declaratively (:iss:`7634`)
 
@@ -690,9 +690,9 @@ Detailed list of changes
 
 - Wayland: Fix specifying the output name for the panel kitten not working (:iss:`7573`)
 
-- icat kitten: Add an option :option:`kitty +kitten icat --no-trailing-newline` to leave the cursor to the right of the image (:iss:`7574`)
+- icat kitten: Add an option :option:`alatty +kitten icat --no-trailing-newline` to leave the cursor to the right of the image (:iss:`7574`)
 
-- Speed up ``kitty --version`` and ``kitty --single-instance`` (for all subsequent instances). They are now the fastest of all terminal emulators with similar functionality
+- Speed up ``alatty --version`` and ``alatty --single-instance`` (for all subsequent instances). They are now the fastest of all terminal emulators with similar functionality
 
 - macOS: Fix rendering of the unicode hyphen (U+2010) character when using a font that does not include a glyph for it (:iss:`7525`)
 
@@ -718,7 +718,7 @@ Detailed list of changes
 
 - Wayland GNOME: Fix a small rendering artifact when docking a window at a screen edge or maximizing it (:iss:`7701`)
 
-- When :opt:`shell` is set to ``.`` respect the SHELL environment variable in the environment in which kitty is launched (:pull:`7714`)
+- When :opt:`shell` is set to ``.`` respect the SHELL environment variable in the environment in which alatty is launched (:pull:`7714`)
 
 - macOS: Bump the minimum required macOS version to Catalina released five years ago.
 
@@ -736,7 +736,7 @@ Detailed list of changes
 
 - Wayland: Fix regression in 0.34.0 causing flickering on window resize on NVIDIA drivers (:iss:`7493`)
 
-- Wayland labwc: Fix kitty timing out waiting for compositor to quit fucking around with scales on labwc (:iss:`7540`)
+- Wayland labwc: Fix alatty timing out waiting for compositor to quit fucking around with scales on labwc (:iss:`7540`)
 
 - Fix ``scrollback_indicator_opacity`` not actually controlling the opacity (:iss:`7557`)
 
@@ -757,13 +757,13 @@ Detailed list of changes
 0.35.0 [2024-05-25]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- kitten @ run: A new remote control command to run a process on the machine kitty is running on and get its output (:iss:`7429`)
+- kitten @ run: A new remote control command to run a process on the machine alatty is running on and get its output (:iss:`7429`)
 
 - :opt:`notify_on_cmd_finish`: Show the actual command that was finished (:iss:`7420`)
 
 - hints kitten: Allow clicking on matched text to select it in addition to typing the hint
 
-- Shell integration: Make the currently executing cmdline available as a window variable in kitty
+- Shell integration: Make the currently executing cmdline available as a window variable in alatty
 
 - :opt:`paste_actions`: Fix ``replace-newline`` not working with ``confirm`` (:iss:`7374`)
 
@@ -778,7 +778,7 @@ Detailed list of changes
 
 - Improve rendering of Unicode shade character to avoid Moire patterns (:pull:`7401`)
 
-- kitten @ send-key: Fix some keys being sent in kitty keyboard protocol encoding when not using socket for remote control
+- kitten @ send-key: Fix some keys being sent in alatty keyboard protocol encoding when not using socket for remote control
 
 - Dont clear selections on erase in screen commands unless the erased region intersects a selection (:iss:`7408`)
 
@@ -788,7 +788,7 @@ Detailed list of changes
 
 - Add some more box-drawing characters from the "Geometric shapes" Unicode block (:iss:`7433`)
 
-- Linux: Run all child processes in their own systemd scope to prevent the OOM killer from harvesting kitty when a child process misbehaves (:iss:`7427`)
+- Linux: Run all child processes in their own systemd scope to prevent the OOM killer from harvesting alatty when a child process misbehaves (:iss:`7427`)
 
 - Mouse reporting: Fix horizontal scroll events inverted (:iss:`7439`)
 
@@ -918,14 +918,14 @@ Detailed list of changes
 
 - Keyboard protocol: Do not deliver a fake key release events on OS window focus out for engaged modifiers (:iss:`7196`)
 
-- Ignore :opt:`startup_session` when kitty is invoked with command line options specifying a command to run (:pull:`7198`)
+- Ignore :opt:`startup_session` when alatty is invoked with command line options specifying a command to run (:pull:`7198`)
 
 - Box drawing: Specialize rendering for the Fira Code progress bar/spinner glyphs
 
 0.32.2 [2024-02-12]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- kitten @ load-config: Allow (re)loading kitty.conf via remote control
+- kitten @ load-config: Allow (re)loading alatty.conf via remote control
 
 - Remote control: Allow running mappable actions via remote control (`kitten @ action`)
 
@@ -944,7 +944,7 @@ Detailed list of changes
 - When matching URLs use the definition of legal characters in URLs from the
   `WHATWG spec <https://url.spec.whatwg.org/#url-code-points>`__ rather than older standards (:iss:`7095`)
 
-- hints kitten: Respect the kitty :opt:`url_excluded_characters` option
+- hints kitten: Respect the alatty :opt:`url_excluded_characters` option
   (:iss:`7075`)
 
 - macOS: Fix an abort when changing OS window chrome for a full screen window via remote control or the themes kitten (:iss:`7106`)
@@ -966,7 +966,7 @@ Detailed list of changes
 
 - Fix a regression in the previous release that caused overriding of existing multi-key mappings to fail (:iss:`7044`, :iss:`7058`)
 
-- Wayland+NVIDIA: Do not request an sRGB output buffer as a bug in Wayland causes kitty to not start (:iss:`7021`)
+- Wayland+NVIDIA: Do not request an sRGB output buffer as a bug in Wayland causes alatty to not start (:iss:`7021`)
 
 0.32.0 [2024-01-19]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -992,9 +992,9 @@ Detailed list of changes
 
 - Font fallback: Fix the font used to render a character sometimes dependent on the order in which characters appear on screen (:iss:`6865`)
 
-- panel kitten: Fix rendering with non-zero margin/padding in kitty.conf (:iss:`6923`)
+- panel kitten: Fix rendering with non-zero margin/padding in alatty.conf (:iss:`6923`)
 
-- kitty keyboard protocol: Specify the behavior of the modifier bits during modifier key events (:iss:`6913`)
+- alatty keyboard protocol: Specify the behavior of the modifier bits during modifier key events (:iss:`6913`)
 
 - Wayland: Enable support for the new cursor-shape protocol so that the mouse cursor is always rendered at the correct size in compositors that support this protocol (:iss:`6914`)
 
@@ -1063,7 +1063,7 @@ Detailed list of changes
 0.30.1 [2023-10-05]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Shell integration: Automatically alias sudo to make the kitty terminfo files available in the sudo environment. Can be turned off via :opt:`shell_integration`
+- Shell integration: Automatically alias sudo to make the alatty terminfo files available in the sudo environment. Can be turned off via :opt:`shell_integration`
 
 - ssh kitten: Fix a regression in 0.28.0 that caused using ``--kitten`` to
   override :file:`ssh.conf` not inheriting settings from :file:`ssh.conf`
@@ -1083,9 +1083,9 @@ Detailed list of changes
 
 - A new :doc:`transfer kitten </kittens/transfer>` that can be used to transfer files efficiently over the TTY device
 
-- ssh kitten: A new configuration directive :opt:`to automatically forward the kitty remote control socket <kitten-ssh.forward_remote_control>`
+- ssh kitten: A new configuration directive :opt:`to automatically forward the alatty remote control socket <kitten-ssh.forward_remote_control>`
 
-- Allow :doc:`easily building kitty from source </build>` needing the installation of only C and Go compilers.
+- Allow :doc:`easily building alatty from source </build>` needing the installation of only C and Go compilers.
   All other dependencies are automatically vendored
 
 - kitten @ set-user-vars: New remote control command to set user variables on a
@@ -1097,7 +1097,7 @@ Detailed list of changes
 
 - kitten icat: Fix image being displayed one cell to the right when using both ``--place`` and ``--unicode-placeholder`` (:iss:`6556`)
 
-- kitten run-shell: Make kitty terminfo database available if needed before starting the shell
+- kitten run-shell: Make alatty terminfo database available if needed before starting the shell
 
 - macOS: Fix keyboard shortcuts in the Apple global menubar not being changed when reloading the config
 
@@ -1109,11 +1109,11 @@ Detailed list of changes
 
 - X11: Print an error to :file:`STDERR` instead of refusing to start when the user sets a custom window icon larger than 128x128 (:iss:`6507`)
 
-- Remote control: Allow matching by neighbor of active window. Useful for navigation plugins like vim-kitty-navigator
+- Remote control: Allow matching by neighbor of active window. Useful for navigation plugins like vim-alatty-navigator
 
 - Fix a regression that caused changing :opt:`text_fg_override_threshold` or :opt:`text_composition_strategy` via config reload causing incorrect rendering (:iss:`6559`)
 
-- When running a shell for ``--hold`` set the env variable ``KITTY_HOLD=1`` to allow users to customize what happens (:disc:`6587`)
+- When running a shell for ``--hold`` set the env variable ``ALATTY_HOLD=1`` to allow users to customize what happens (:disc:`6587`)
 
 - When multiple confirmable close requests are made focus the existing close confirmation window instead of opening a new one for each request (:iss:`6601`)
 
@@ -1152,7 +1152,7 @@ Detailed list of changes
 
 - macOS: Fix a regression causing *burn-in* of text when resizing semi-transparent OS windows (:iss:`6439`)
 
-- macOS: Add a new value ``titlebar-and-corners`` for :opt:`hide_window_decorations` that emulates the behavior of ``hide_window_decorations yes`` in older versions of kitty
+- macOS: Add a new value ``titlebar-and-corners`` for :opt:`hide_window_decorations` that emulates the behavior of ``hide_window_decorations yes`` in older versions of alatty
 
 - macOS: Fix a regression in the previous release that caused :opt:`hide_window_decorations` = ``yes`` to prevent window from being resizable (:iss:`6436`)
 
@@ -1189,7 +1189,7 @@ Detailed list of changes
 
 - Fix regression in 0.28.0 causing color fringing when rendering in transparent windows on light backgrounds (:iss:`6209`)
 
-- show_key kitten: In kitty mode show the actual bytes sent by the terminal rather than a re-encoding of the parsed key event
+- show_key kitten: In alatty mode show the actual bytes sent by the terminal rather than a re-encoding of the parsed key event
 
 - hints kitten: Fix a regression in 0.28.0 that broke using sub-groups in regexp captures (:iss:`6228`)
 
@@ -1199,10 +1199,10 @@ Detailed list of changes
 
 - Fix re-using the image id of an animated image for a still image causing a crash (:iss:`6244`)
 
-- kitty +open: Ask for permission before executing script files that are not marked as executable. This prevents accidental execution
+- alatty +open: Ask for permission before executing script files that are not marked as executable. This prevents accidental execution
   of script files via MIME type association from programs that unconditionally "open" attachments/downloaded files
 
-- edit-in-kitty: Fix running edit-in-kitty with elevated privileges to edit a restricted file not working (:disc:`6245`)
+- edit-in-alatty: Fix running edit-in-alatty with elevated privileges to edit a restricted file not working (:disc:`6245`)
 
 - ssh kitten: Fix a regression in 0.28.0 that caused interrupt during setup to not be handled gracefully (:iss:`6254`)
 
@@ -1244,7 +1244,7 @@ Detailed list of changes
 
 - diff kitten: Add support for selecting multi-line text with the mouse
 
-- Fix a regression in 0.27.0 that broke ``kitty @ set-font-size 0`` (:iss:`5992`)
+- Fix a regression in 0.27.0 that broke ``alatty @ set-font-size 0`` (:iss:`5992`)
 
 - launch: When using ``--cwd=current`` for a remote system support running non shell commands as well (:disc:`5987`)
 
@@ -1286,7 +1286,7 @@ Detailed list of changes
 
 - Linux Wayland: Fix animated images not being animated continuously (:iss:`6126`)
 
-- Keyboard input: Fix text not being reported as unicode codepoints for multi-byte characters in the kitty keyboard protocol (:iss:`6167`)
+- Keyboard input: Fix text not being reported as unicode codepoints for multi-byte characters in the alatty keyboard protocol (:iss:`6167`)
 
 
 0.27.1 [2023-02-07]
@@ -1294,7 +1294,7 @@ Detailed list of changes
 
 - Fix :opt:`modify_font` not working for strikethrough position (:iss:`5946`)
 
-- Fix a regression causing the ``edit-in-kitty`` command not working if :file:`kitten` is not added
+- Fix a regression causing the ``edit-in-alatty`` command not working if :file:`kitten` is not added
   to PATH (:iss:`5956`)
 
 - icat kitten: Fix a regression that broke display of animated GIFs over SSH (:iss:`5958`)
@@ -1303,9 +1303,9 @@ Detailed list of changes
 
 - Fix regression in previous release that caused incorrect entries in terminfo for modifier+F3 key combinations (:pull:`5970`)
 
-- Bring back the deprecated and removed ``kitty +complete`` and delegate it to :program:`kitten` for backward compatibility (:pull:`5977`)
+- Bring back the deprecated and removed ``alatty +complete`` and delegate it to :program:`kitten` for backward compatibility (:pull:`5977`)
 
-- Bump the version of Go needed to build kitty to ``1.20`` so we can use the Go stdlib ecdh package for crypto.
+- Bump the version of Go needed to build alatty to ``1.20`` so we can use the Go stdlib ecdh package for crypto.
 
 
 0.27.0 [2023-01-31]
@@ -1317,7 +1317,7 @@ Detailed list of changes
 
 - :doc:`clipboard kitten </kittens/clipboard>`: Allow copying arbitrary data types to/from the clipboard, not just plain text
 
-- Speed up the ``kitty @`` executable by ~10x reducing the time for typical
+- Speed up the ``alatty @`` executable by ~10x reducing the time for typical
   remote control commands from ~50ms to ~5ms
 
 - icat kitten: Speed up by using POSIX shared memory when possible to transfer
@@ -1334,23 +1334,23 @@ Detailed list of changes
 
 - Pass key events mapped to scroll actions to the program running in the terminal when the terminal is in alternate screen mode (:iss:`5839`)
 
-- Implement :ref:`edit-in-kitty <edit_file>` using the new ``kitten`` static executable (:iss:`5546`, :iss:`5630`)
+- Implement :ref:`edit-in-alatty <edit_file>` using the new ``kitten`` static executable (:iss:`5546`, :iss:`5630`)
 
 - Add an option :opt:`background_tint_gaps` to control background image tinting for window gaps (:iss:`5596`)
 
 - A new option :opt:`undercurl_style` to control the rendering of undercurls (:pull:`5883`)
 
-- Bash integration: Fix ``clone-in-kitty`` not working on bash >= 5.2 if environment variable values contain newlines or other special characters (:iss:`5629`)
+- Bash integration: Fix ``clone-in-alatty`` not working on bash >= 5.2 if environment variable values contain newlines or other special characters (:iss:`5629`)
 
-- A new :ac:`sleep` action useful in combine based mappings to make kitty sleep before executing the next action
+- A new :ac:`sleep` action useful in combine based mappings to make alatty sleep before executing the next action
 
-- Wayland GNOME: Workaround for latest mutter release breaking full screen for semi-transparent kitty windows (:iss:`5677`)
+- Wayland GNOME: Workaround for latest mutter release breaking full screen for semi-transparent alatty windows (:iss:`5677`)
 
 - A new option :opt:`tab_title_max_length` to limit the length of tab (:iss:`5718`)
 
 - When drawing the tab bar have the default left and right margins drawn in a color matching the neighboring tab (:iss:`5719`)
 
-- When using the :code:`include` directive in :file:`kitty.conf` make the environment variable :envvar:`KITTY_OS` available for OS specific config
+- When using the :code:`include` directive in :file:`alatty.conf` make the environment variable :envvar:`ALATTY_OS` available for OS specific config
 
 - Wayland: Fix signal handling not working with some GPU drivers (:iss:`4636`)
 
@@ -1370,7 +1370,7 @@ Detailed list of changes
 
 - Fix ssh kitten not working on FreeBSD (:iss:`5928`)
 
-- macOS: Export kitty selected text to the system for use with services that accept it (patch by Sertaç Ö. Yıldız)
+- macOS: Export alatty selected text to the system for use with services that accept it (patch by Sertaç Ö. Yıldız)
 
 
 0.26.5 [2022-11-07]
@@ -1398,7 +1398,7 @@ Detailed list of changes
 0.26.4 [2022-10-17]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- macOS: Allow changing the kitty icon by placing a custom icon in the kitty config folder (:pull:`5464`)
+- macOS: Allow changing the alatty icon by placing a custom icon in the alatty config folder (:pull:`5464`)
 
 - Allow centering the :opt:`background_image` (:iss:`5525`)
 
@@ -1424,20 +1424,20 @@ Detailed list of changes
 
 - Allow passing null bytes through the system clipboard (:iss:`5483`)
 
-- ssh kitten: Fix :envvar:`KITTY_PUBLIC_KEY` not being encoded properly when transmitting (:iss:`5496`)
+- ssh kitten: Fix :envvar:`ALATTY_PUBLIC_KEY` not being encoded properly when transmitting (:iss:`5496`)
 
 - Sessions: Allow controlling which OS Window is active via the ``focus_os_window`` directive
 
 - Wayland: Fix for bug in NVIDIA drivers that prevents transparency working (:iss:`5479`)
 
-- Wayland: Fix for a bug that could cause kitty to become non-responsive when
+- Wayland: Fix for a bug that could cause alatty to become non-responsive when
   using multiple OS windows in a single instance on some compositors (:iss:`5495`)
 
-- Wayland: Fix for a bug preventing kitty from starting on Hyprland when using a non-unit scale (:iss:`5467`)
+- Wayland: Fix for a bug preventing alatty from starting on Hyprland when using a non-unit scale (:iss:`5467`)
 
 - Wayland: Generate a XDG_ACTIVATION_TOKEN when opening URLs or running programs in the background via the launch action
 
-- Fix a regression that caused kitty not to restore SIGPIPE after python nukes it when launching children. Affects bash which does not sanitize its signal mask. (:iss:`5500`)
+- Fix a regression that caused alatty not to restore SIGPIPE after python nukes it when launching children. Affects bash which does not sanitize its signal mask. (:iss:`5500`)
 
 - Fix a use-after-free when handling fake mouse clicks and the action causes windows to be removed/re-allocated (:iss:`5506`)
 
@@ -1447,11 +1447,11 @@ Detailed list of changes
 
 - Allow creating :code:`overlay-main` windows, which are treated as the active window unlike normal overlays (:iss:`5392`)
 
-- hints kitten: Allow using :doc:`launch` as the program to run, to open the result in a new kitty tab/window/etc. (:iss:`5462`)
+- hints kitten: Allow using :doc:`launch` as the program to run, to open the result in a new alatty tab/window/etc. (:iss:`5462`)
 
 - hyperlinked_grep kitten: Allow control over which parts of ``rg`` output are hyperlinked (:pull:`5428`)
 
-- Fix regression in 0.26.0 that caused launching kitty without working STDIO handles to result in high CPU usage and prewarming failing (:iss:`5444`)
+- Fix regression in 0.26.0 that caused launching alatty without working STDIO handles to result in high CPU usage and prewarming failing (:iss:`5444`)
 
 - :doc:`/launch`: Allow setting the margin and padding for newly created windows (:iss:`5463`)
 
@@ -1471,9 +1471,9 @@ Detailed list of changes
 0.26.1 [2022-08-30]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- ssh kitten: Fix executable permission missing from kitty bootstrap script (:iss:`5438`)
+- ssh kitten: Fix executable permission missing from alatty bootstrap script (:iss:`5438`)
 
-- Fix a regression in 0.26.0 that caused kitty to no longer set the ``LANG`` environment variable on macOS (:iss:`5439`)
+- Fix a regression in 0.26.0 that caused alatty to no longer set the ``LANG`` environment variable on macOS (:iss:`5439`)
 
 - Allow specifying a title when using the :ac:`set_tab_title` action (:iss:`5441`)
 
@@ -1483,11 +1483,11 @@ Detailed list of changes
 
 - A new option :opt:`remote_control_password` to use fine grained permissions for what can be remote controlled (:disc:`5320`)
 
-- Reduce startup latency by ~30 milliseconds when running kittens via key bindings inside kitty (:iss:`5159`)
+- Reduce startup latency by ~30 milliseconds when running kittens via key bindings inside alatty (:iss:`5159`)
 
 - A new option :opt:`modify_font` to adjust various font metrics like underlines, cell sizes etc. (:pull:`5265`)
 
-- A new shortcut :sc:`show_kitty_doc` to display the kitty docs in a browser
+- A new shortcut :sc:`show_alatty_doc` to display the alatty docs in a browser
 
 - Graphics protocol: Only delete temp files if they have the string
   :code:`tty-graphics-protocol` in their file paths. This prevents deletion of arbitrary files in :file:`/tmp`.
@@ -1505,7 +1505,7 @@ Detailed list of changes
 
 - macOS: Fix unable to open new tab or new window when there is no OS window (:iss:`5276`)
 
-- kitty @ set-colors: Fix changing inactive_tab_foreground not working (:iss:`5214`)
+- alatty @ set-colors: Fix changing inactive_tab_foreground not working (:iss:`5214`)
 
 - macOS: Fix a regression that caused switching keyboard input using Eisu and
   Kana keys not working (:iss:`5232`)
@@ -1522,7 +1522,7 @@ Detailed list of changes
   changes (:iss:`5241`)
 
 - ssh kitten: Allow ssh kitten to work from inside tmux, provided the tmux
-  session inherits the correct KITTY env vars (:iss:`5227`)
+  session inherits the correct ALATTY env vars (:iss:`5227`)
 
 - ssh kitten: A new option :code:`--symlink-strategy` to control how symlinks
   are copied to the remote machine (:iss:`5249`)
@@ -1534,7 +1534,7 @@ Detailed list of changes
 
 - Bash integration: Fix the inherit_errexit option being set by shell integration (:iss:`5349`)
 
-- :command:`kitty @ scroll-window` allow scrolling by fractions of a screen
+- :command:`alatty @ scroll-window` allow scrolling by fractions of a screen
   (:iss:`5294`)
 
 - remote files kitten: Fix working with files whose names have characters that
@@ -1558,7 +1558,7 @@ Detailed list of changes
 0.25.2 [2022-06-07]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- A new command :command:`edit-in-kitty` to :ref:`edit_file`
+- A new command :command:`edit-in-alatty` to :ref:`edit_file`
 
 - Allow getting the last non-empty command output easily via an action or
   remote control (:pull:`4973`)
@@ -1567,12 +1567,12 @@ Detailed list of changes
 
 - diff kitten: A new option :opt:`kitten-diff.ignore_name` to exclude files and directories from being scanned (:pull:`5171`)
 
-- ssh kitten: Fix bash not being executed as a login shell since kitty 0.25.0 (:iss:`5130`)
+- ssh kitten: Fix bash not being executed as a login shell since alatty 0.25.0 (:iss:`5130`)
 
 - macOS: When pasting text and the clipboard has a filesystem path, paste the
   full path instead of the text, which is sometimes just the file name (:pull:`5142`)
 
-- macOS: Allow opening executables without a file extension with kitty as well
+- macOS: Allow opening executables without a file extension with alatty as well
   (:iss:`5160`)
 
 - Themes kitten: Add a tab to show user defined custom color themes separately
@@ -1585,8 +1585,8 @@ Detailed list of changes
   window resize (:iss:`5162`)
 
 - Remote control: Fix commands with large or asynchronous payloads like
-  :command:`kitty @ set-backround-image`, :command:`kitty @ set-window-logo`
-  and :command:`kitty @ select-window` not working correctly
+  :command:`alatty @ set-backround-image`, :command:`alatty @ set-window-logo`
+  and :command:`alatty @ select-window` not working correctly
   when using a socket (:iss:`5165`)
 
 - hints kitten: Fix surrounding quotes/brackets and embedded carriage returns
@@ -1620,11 +1620,11 @@ Detailed list of changes
   which characters are considered part of a word to the right when double clicking to select
   words (:pull:`5103`)
 
-- macOS: Make the global menu shortcut to open kitty website configurable (:pull:`5004`)
+- macOS: Make the global menu shortcut to open alatty website configurable (:pull:`5004`)
 
 - macOS: Add the :opt:`macos_colorspace` option to control what color space colors are rendered in (:iss:`4686`)
 
-- Fix reloading of config not working when :file:`kitty.conf` does not exist when kitty is launched (:iss:`5071`)
+- Fix reloading of config not working when :file:`alatty.conf` does not exist when alatty is launched (:iss:`5071`)
 
 - Fix deleting images by row not calculating image bounds correctly (:iss:`5081`)
 
@@ -1655,7 +1655,7 @@ Detailed list of changes
 
 - diff kitten: Fix incorrect rendering in rare circumstances when scrolling after changing the context size (:iss:`4831`)
 
-- icat kitten: Fix a regression that broke :option:`kitty +kitten icat --print-window-size` (:pull:`4818`)
+- icat kitten: Fix a regression that broke :option:`alatty +kitten icat --print-window-size` (:pull:`4818`)
 
 - Wayland: Fix :opt:`hide_window_decorations` causing docked windows to be resized on blur (:iss:`4797`)
 
@@ -1665,7 +1665,7 @@ Detailed list of changes
 
 - Fix continued lines not having their continued status reset on line feed (:iss:`4837`)
 
-- macOS: Allow the New kitty Tab/Window Here services to open multiple selected folders.  (:pull:`4848`)
+- macOS: Allow the New alatty Tab/Window Here services to open multiple selected folders.  (:pull:`4848`)
 
 - Wayland: Fix a regression that broke IME when changing windows/tabs (:iss:`4853`)
 
@@ -1707,10 +1707,10 @@ Detailed list of changes
 - Bash integration: No longer modify :file:`~/.bashrc` to load :ref:`shell integration <shell_integration>`.
   It is recommended to remove the lines used to load the shell integration from :file:`~/.bashrc` as they are no-ops.
 
-- macOS: Allow kitty to handle various URL types. Can be configured via
+- macOS: Allow alatty to handle various URL types. Can be configured via
   :ref:`launch_actions` (:pull:`4618`)
 
-- macOS: Add a new service ``Open with kitty`` to open file types that are not
+- macOS: Add a new service ``Open with alatty`` to open file types that are not
   recognized by the system (:pull:`4641`)
 
 - Splits layout: A new value for :option:`launch --location` to auto-select the split axis when splitting existing windows.
@@ -1723,7 +1723,7 @@ Detailed list of changes
 - Fix :ac:`show_last_command_output` not working when the output is stored
   partially in the scrollback pager history buffer (:iss:`4435`)
 
-- When dropping URLs/files onto kitty at a shell prompt insert them appropriately quoted and space
+- When dropping URLs/files onto alatty at a shell prompt insert them appropriately quoted and space
   separated (:iss:`4734`)
 
 - Improve CWD detection when there are multiple foreground processes in the TTY process group
@@ -1795,10 +1795,10 @@ Detailed list of changes
 0.24.2 [2022-02-03]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- macOS: Allow opening text files, images and directories with kitty when
+- macOS: Allow opening text files, images and directories with alatty when
   launched using "Open with" in Finder (:iss:`4460`)
 
-- Allow including config files matching glob patterns in :file:`kitty.conf`
+- Allow including config files matching glob patterns in :file:`alatty.conf`
   (:iss:`4533`)
 
 - Shell integration: Fix bash integration not working when ``PROMPT_COMMAND``
@@ -1859,7 +1859,7 @@ Detailed list of changes
 - Fix clicking in a window to focus it and typing immediately sometimes having
   unexpected effects if at a shell prompt (:iss:`4128`)
 
-- themes kitten: Allow writing to a different file than :file:`kitty.conf`.
+- themes kitten: Allow writing to a different file than :file:`alatty.conf`.
 
 
 0.24.1 [2022-01-06]
@@ -1872,7 +1872,7 @@ Detailed list of changes
 
 - Fix using ``--shell-integration`` with :file:`setup.py` broken (:iss:`4434`)
 
-- Fix showing debug information not working if kitty's :file:`STDIN` is not a tty
+- Fix showing debug information not working if alatty's :file:`STDIN` is not a tty
   (:iss:`4424`)
 
 - Linux: Fix a regression that broke rendering of emoji with variation selectors
@@ -1882,7 +1882,7 @@ Detailed list of changes
 0.24.0 [2022-01-04]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Integrate kitty closely with common shells such as zsh, fish and bash.
+- Integrate alatty closely with common shells such as zsh, fish and bash.
   This allows lots of niceties such as jumping to previous prompts, opening the
   output of the last command in a new window, etc. See :ref:`shell_integration`
   for details. Packagers please read :ref:`packagers`.
@@ -1892,7 +1892,7 @@ Detailed list of changes
   and you can press the number to focus the corresponding window (:iss:`4110`)
 
 - A new facility :opt:`window_logo_path` to draw an arbitrary PNG image as
-  logo in the corner of a kitty window (:pull:`4167`)
+  logo in the corner of a alatty window (:pull:`4167`)
 
 - Allow rendering the cursor with a *reverse video* effect. See :opt:`cursor`
   for details (:iss:`126`)
@@ -1906,10 +1906,10 @@ Detailed list of changes
 - Allow the user to supply a custom Python function to draw tab bar. See
   :opt:`tab_bar_style`
 
-- A new remote control command to :program:`change the tab color <kitty @
+- A new remote control command to :program:`change the tab color <alatty @
   set-tab-color>` (:iss:`1287`)
 
-- A new remote control command to :program:`visually select a window <kitty @
+- A new remote control command to :program:`visually select a window <alatty @
   select-window>` (:iss:`4165`)
 
 - Add support for reporting mouse events with pixel coordinates using the
@@ -1921,13 +1921,13 @@ Detailed list of changes
 
 - A new mappable action ``swap_with_window`` to swap the current window with another window in the tab, visually
 
-- A new :program:`remote control command <kitty @ set-enabled-layouts>` to change
+- A new :program:`remote control command <alatty @ set-enabled-layouts>` to change
   the enabled layouts in a tab (:iss:`4129`)
 
 - A new option :opt:`bell_path` to specify the path to a sound file
   to use as the bell sound
 
-- A new option :opt:`exe_search_path` to modify the locations kitty searches
+- A new option :opt:`exe_search_path` to modify the locations alatty searches
   for executables to run (:iss:`4324`)
 
 - broadcast kitten: Show a "fake" cursor in all windows being broadcast too
@@ -1936,13 +1936,13 @@ Detailed list of changes
 - Allow defining :opt:`aliases <action_alias>` for more general actions, not just kittens
   (:pull:`4260`)
 
-- Fix a regression that caused :option:`kitty --title` to not work when
-  opening new OS windows using :option:`kitty --single-instance` (:iss:`3893`)
+- Fix a regression that caused :option:`alatty --title` to not work when
+  opening new OS windows using :option:`alatty --single-instance` (:iss:`3893`)
 
 - icat kitten: Fix display of JPEG images that are rotated via EXIF data and
   larger than available screen size (:iss:`3949`)
 
-- macOS: Fix SIGUSR1 quitting kitty instead of reloading the config file (:iss:`3952`)
+- macOS: Fix SIGUSR1 quitting alatty instead of reloading the config file (:iss:`3952`)
 
 - Launch command: Allow specifying the OS window title
 
@@ -1977,11 +1977,11 @@ Detailed list of changes
 - Allow middle clicking on a tab to close it (:iss:`4151`)
 
 - The command line option ``--watcher`` has been deprecated in favor of the
-  :opt:`watcher` option in :file:`kitty.conf`. It has the advantage of
+  :opt:`watcher` option in :file:`alatty.conf`. It has the advantage of
   applying to all windows, not just the initially created ones. Note that
   ``--watcher`` now also applies to all windows, not just initially created ones.
 
-- **Backward incompatibility**: No longer turn on the kitty extended keyboard
+- **Backward incompatibility**: No longer turn on the alatty extended keyboard
   protocol's disambiguate mode when the client sends the XTMODKEYS escape code.
   Applications must use the dedicated escape code to turn on the protocol.
   (:iss:`4075`)
@@ -1995,10 +1995,10 @@ Detailed list of changes
 - macOS: Fix :opt:`resize_in_steps` not working correctly on high DPI screens
   (:iss:`4114`)
 
-- Fix the :program:`resize OS Windows <kitty @ resize-os-window>` setting a
+- Fix the :program:`resize OS Windows <alatty @ resize-os-window>` setting a
   slightly incorrect size on high DPI screens (:iss:`4114`)
 
-- :program:`kitty @ launch` - when creating tabs with the ``--match`` option create
+- :program:`alatty @ launch` - when creating tabs with the ``--match`` option create
   the tab in the OS Window containing the result of the match rather than
   the active OS Window (:iss:`4126`)
 
@@ -2029,11 +2029,11 @@ Detailed list of changes
 - A new mappable action ``nth_os_window`` to focus the specified nth OS
   window. (:pull:`4316`)
 
-- macOS: The kitty window can be scrolled by the mouse wheel when OS window not
+- macOS: The alatty window can be scrolled by the mouse wheel when OS window not
   in focus. (:pull:`4371`)
 
 - macOS: Light or dark system appearance can be specified in
-  :opt:`macos_titlebar_color` and used in kitty themes. (:pull:`4378`)
+  :opt:`macos_titlebar_color` and used in alatty themes. (:pull:`4378`)
 
 
 0.23.1 [2021-08-17]
@@ -2043,7 +2043,7 @@ Detailed list of changes
   root certificates (:iss:`3936`)
 
 - A new option :opt:`clipboard_max_size` to control the maximum size
-  of data that kitty will transmit to the system clipboard on behalf of
+  of data that alatty will transmit to the system clipboard on behalf of
   programs running inside it (:iss:`3937`)
 
 - When matching windows/tabs in kittens or using remote control, allow matching
@@ -2057,9 +2057,9 @@ Detailed list of changes
 0.23.0 [2021-08-16]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- A new :doc:`themes kitten </kittens/themes>` to easily change kitty themes.
-  Choose from almost two hundred themes in the `kitty themes repository
-  <https://github.com/kovidgoyal/kitty-themes>`_
+- A new :doc:`themes kitten </kittens/themes>` to easily change alatty themes.
+  Choose from almost two hundred themes in the `alatty themes repository
+  <https://github.com/kovidgoyal/alatty-themes>`_
 
 - A new style for the tab bar that makes tabs looks like the tabs in a physical
   tabbed file, see :opt:`tab_bar_style`
@@ -2067,7 +2067,7 @@ Detailed list of changes
 - Make the visual bell flash more gentle, especially on dark themes
   (:pull:`2937`)
 
-- Fix :option:`kitty --title` not overriding the OS Window title when multiple
+- Fix :option:`alatty --title` not overriding the OS Window title when multiple
   tabs are present. Also this option is no longer used as the default title for
   windows, allowing individual tabs/windows to have their own titles, even when
   the OS Window has a fixed overall title (:iss:`3893`)
@@ -2095,15 +2095,15 @@ Detailed list of changes
 - When dragging word or line selections, ensure the initially selected item is
   never deselected. This matches behavior in most other programs (:iss:`3930`)
 
-- hints kitten: Make copy/paste with the :option:`kitty +kitten hints
+- hints kitten: Make copy/paste with the :option:`alatty +kitten hints
   --program` option work when using the ``self``
-  :option:`kitty +kitten hints --linenum-action` (:iss:`3931`)
+  :option:`alatty +kitten hints --linenum-action` (:iss:`3931`)
 
 
 0.22.2 [2021-08-02]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- macOS: Fix a long standing bug that could cause kitty windows to stop
+- macOS: Fix a long standing bug that could cause alatty windows to stop
   updating, that got worse in the previous release (:iss:`3890` and
   :iss:`2016`)
 
@@ -2114,7 +2114,7 @@ Detailed list of changes
 0.22.1 [2021-07-31]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Fix a regression in the previous release that broke ``kitty --help`` (:iss:`3869`)
+- Fix a regression in the previous release that broke ``alatty --help`` (:iss:`3869`)
 
 - Graphics protocol: Fix composing onto currently displayed frame not updating the frame on the GPU (:iss:`3874`)
 
@@ -2147,7 +2147,7 @@ Detailed list of changes
   (:pull:`3836`)
 
 - When using the OSC 52 escape code to copy to clipboard allow large
-  copies (up to 8MB) without needing a kitty specific chunking protocol.
+  copies (up to 8MB) without needing a alatty specific chunking protocol.
   Note that if you used the chunking protocol in the past, it will no longer
   work and you should switch to using the unmodified protocol which has the
   advantage of working with all terminal emulators.
@@ -2156,7 +2156,7 @@ Detailed list of changes
   could cause incorrect parsing if either the pending buffer capacity or the
   pending timeout were exceeded (:iss:`3779`)
 
-- A new remote control command to :program:`resize the OS Window <kitty @
+- A new remote control command to :program:`resize the OS Window <alatty @
   resize-os-window>`
 
 - Graphics protocol: Add support for composing rectangles from one animation
@@ -2179,7 +2179,7 @@ Detailed list of changes
 - Wayland: Fix :opt:`initial_window_width/height <remember_window_size>` specified
   in cells not working on High DPI screens (:iss:`3834`)
 
-- A new theme for the kitty website with support for dark mode.
+- A new theme for the alatty website with support for dark mode.
 
 - Render ┄ ┅ ┆ ┇ ┈ ┉ ┊ ┋ with spaces at the edges. Matches rendering in
   most other programs and allows long chains of them to look better
@@ -2201,7 +2201,7 @@ Detailed list of changes
   (:iss:`3861`)
 
 - clipboard kitten: fix copies to clipboard not working without the
-  :option:`kitty +kitten clipboard --wait-for-completion` option
+  :option:`alatty +kitten clipboard --wait-for-completion` option
 
 
 0.21.2 [2021-06-28]
@@ -2263,28 +2263,28 @@ Detailed list of changes
 0.21.0 [2021-06-12]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Allow reloading the :file:`kitty.conf` config file by pressing
+- Allow reloading the :file:`alatty.conf` config file by pressing
   :sc:`reload_config_file`. (:iss:`1292`)
 
 - Allow clicking URLs to open them without needing to also hold
   :kbd:`ctrl+shift`
 
 - Allow remapping all mouse button press/release events to perform arbitrary
-  actions. :ref:`See details <conf-kitty-mouse.mousemap>` (:iss:`1033`)
+  actions. :ref:`See details <conf-alatty-mouse.mousemap>` (:iss:`1033`)
 
 - Support infinite length ligatures (:iss:`3504`)
 
 - **Backward incompatibility**: The options to control which modifiers keys to
   press for various mouse actions have been removed, if you used these options,
   you will need to replace them with configuration using the new
-  :ref:`mouse actions framework <conf-kitty-mouse.mousemap>` as they will be
+  :ref:`mouse actions framework <conf-alatty-mouse.mousemap>` as they will be
   ignored. The options were: ``terminal_select_modifiers``,
   ``rectangle_select_modifiers`` and ``open_url_modifiers``.
 
 - Add a configurable mouse action (:kbd:`ctrl+alt+triplepress` to select from the
   clicked point to the end of the line. (:iss:`3585`)
 
-- Add the ability to un-scroll the screen to the ``kitty @ scroll-window``
+- Add the ability to un-scroll the screen to the ``alatty @ scroll-window``
   remote control command (:iss:`3604`)
 
 - A new option, :opt:`tab_bar_margin_height` to add margins around the
@@ -2309,7 +2309,7 @@ Detailed list of changes
   applications for some fonts (:iss:`2022`)
 
 - Add a few more special commandline arguments for the launch command. Now all
-  ``KITTY_PIPE_DATA`` is also available via command line argument substitution
+  ``ALATTY_PIPE_DATA`` is also available via command line argument substitution
   (:iss:`3593`)
 
 - Fix dynamically changing the background color in a window causing rendering
@@ -2384,13 +2384,13 @@ Detailed list of changes
 - A new remote control command :ref:`at-env` to change the default
   environment passed to newly created windows (:iss:`3529`)
 
-- Linux: Fix binary kitty builds not able to load fonts in WOFF2 format
+- Linux: Fix binary alatty builds not able to load fonts in WOFF2 format
   (:iss:`3506`)
 
 - macOS: Prevent :kbd:`option` based shortcuts for being used for global menu
   actions (:iss:`3515`)
 
-- Fix ``kitty @ close-tab`` not working with pipe based remote control
+- Fix ``alatty @ close-tab`` not working with pipe based remote control
   (:iss:`3510`)
 
 - Fix removal of inactive tab that is before the currently active tab causing
@@ -2403,15 +2403,15 @@ Detailed list of changes
   decorations are hidden (:iss:`3507`)
 
 - GNOME: Add a new :opt:`wayland_titlebar_color` option to control the color of the
-  kitty window title bar
+  alatty window title bar
 
-- Fix reading :option:`kitty --session` from ``STDIN`` not working when the
-  :code:`kitty --detach` option is used (:iss:`3523`)
+- Fix reading :option:`alatty --session` from ``STDIN`` not working when the
+  :code:`alatty --detach` option is used (:iss:`3523`)
 
 - Special case rendering of the few remaining Powerline box drawing chars
   (:iss:`3535`)
 
-- Fix ``kitty @ set-colors`` not working for the :opt:`active_tab_foreground`.
+- Fix ``alatty @ set-colors`` not working for the :opt:`active_tab_foreground`.
 
 
 0.20.1 [2021-04-19]
@@ -2430,8 +2430,8 @@ Detailed list of changes
 0.20.0 [2021-04-19]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Support display of animated images ``kitty +kitten icat animation.gif``. See
-  :ref:`animation_protocol` for details on animation support in the kitty
+- Support display of animated images ``alatty +kitten icat animation.gif``. See
+  :ref:`animation_protocol` for details on animation support in the alatty
   graphics protocol.
 
 - A new keyboard reporting protocol with various advanced features that can be
@@ -2469,11 +2469,11 @@ Detailed list of changes
 
 - Double clicking on empty tab bar area now opens a new tab (:iss:`3201`)
 
-- kitty @ ls: Show only environment variables that are different for each
+- alatty @ ls: Show only environment variables that are different for each
   window, by default.
 
 - When passing a directory or a non-executable file as the program to run to
-  kitty opens it with the shell or by parsing the shebang, instead of just failing.
+  alatty opens it with the shell or by parsing the shebang, instead of just failing.
 
 - Linux: Fix rendering of emoji followed by the graphics variation selector not
   being colored with some fonts (:iss:`3211`)
@@ -2495,7 +2495,7 @@ Detailed list of changes
 
 - macOS: Add menu items to close the OS window and the current tab (:pull:`3240`, :iss:`3246`)
 
-- macOS: Allow opening script and command files with kitty (:iss:`3366`)
+- macOS: Allow opening script and command files with alatty (:iss:`3366`)
 
 - Also detect ``gemini://`` URLs when hovering with the mouse (:iss:`3370`)
 
@@ -2554,9 +2554,9 @@ Detailed list of changes
 0.19.3 [2020-12-19]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Happy holidays to all kitty users!
+- Happy holidays to all alatty users!
 
-- A new :doc:`broadcast <kittens/broadcast>` kitten to type in all kitty windows
+- A new :doc:`broadcast <kittens/broadcast>` kitten to type in all alatty windows
   simultaneously (:iss:`1569`)
 
 - Add a new mappable `select_tab` action to choose a tab to switch to even
@@ -2586,7 +2586,7 @@ Detailed list of changes
 - Wayland: Fix key repeat being stopped by the release of an unrelated key
   (:iss:`2191`)
 
-- Add an option, :opt:`detect_urls` to control whether kitty will detect URLs
+- Add an option, :opt:`detect_urls` to control whether alatty will detect URLs
   when the mouse moves over them (:pull:`3118`)
 
 - Graphics protocol: Dont return filename in the error message when opening file
@@ -2616,7 +2616,7 @@ Detailed list of changes
 0.19.2 [2020-11-13]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- A new :doc:`kittens/query_terminal` kitten to easily query the running kitty
+- A new :doc:`kittens/query_terminal` kitten to easily query the running alatty
   via escape codes to detect its version, and the values of
   configuration options that enable or disable terminal features.
 
@@ -2639,11 +2639,11 @@ Detailed list of changes
 - Fix selections created by dragging upwards not being auto-cleared when
   screen contents change (:pull:`3028`)
 
-- macOS: Fix kitty not being added to PATH automatically when using pre-built
+- macOS: Fix alatty not being added to PATH automatically when using pre-built
   binaries (:iss:`3063`)
 
-- Allow adding MIME definitions to kitty by placing a ``mime.types`` file in
-  the kitty config directory (:iss:`3056`)
+- Allow adding MIME definitions to alatty by placing a ``mime.types`` file in
+  the alatty config directory (:iss:`3056`)
 
 - Dont ignore :option:`--title` when using a session file that defines no
   windows (:iss:`3055`)
@@ -2681,7 +2681,7 @@ Detailed list of changes
 - A new :doc:`kittens/hyperlinked_grep` kitten to easily search files and open
   the results at the matched line by clicking on them.
 
-- Allow customizing the :doc:`actions kitty takes <open_actions>` when clicking on URLs
+- Allow customizing the :doc:`actions alatty takes <open_actions>` when clicking on URLs
 
 - Improve rendering of borders when using minimal borders. Use less space and
   do not display a box around active windows
@@ -2701,7 +2701,7 @@ Detailed list of changes
 - Add support for displaying correct colors with non-sRGB PNG files (Adds a
   dependency on liblcms2)
 
-- hints kitten: Add a new :option:`kitty +kitten hints --type` of ``hyperlink`` useful
+- hints kitten: Add a new :option:`alatty +kitten hints --type` of ``hyperlink`` useful
   for activating hyperlinks using just the keyboard
 
 - Allow tracking focus change events in watchers (:iss:`2918`)
@@ -2716,7 +2716,7 @@ Detailed list of changes
 - macOS: Switch to using the User Notifications framework for notifications.
   The current notifications framework has been deprecated in Big Sur. The new
   framework only allows notifications from signed and notarized applications,
-  so people using kitty from homebrew/source are out of luck. Complain to
+  so people using alatty from homebrew/source are out of luck. Complain to
   Apple.
 
 - When in the main screen and a program grabs the mouse, do not use the scroll
@@ -2772,7 +2772,7 @@ Detailed list of changes
 - Improve anti-aliasing of triangular box drawing characters, noticeable on
   low-resolution screens (:iss:`2844`)
 
-- Fix ``kitty @ send-text`` not working reliably when using a socket for remote
+- Fix ``alatty @ send-text`` not working reliably when using a socket for remote
   control (:iss:`2852`)
 
 - Implement support for box drawing rounded-corners characters (:iss:`2240`)
@@ -2795,7 +2795,7 @@ Detailed list of changes
 - Fix pre-edit text not always being cleared with ibus input (:iss:`2862`)
 
 - Allow setting the :opt:`background_opacity` of new OS windows created via
-  :option:`kitty --single-instance` using the :option:`kitty --override` command line
+  :option:`alatty --single-instance` using the :option:`alatty --override` command line
   argument (:iss:`2806`)
 
 - Fix the CSI J (Erase in display ED) escape code not removing line continued
@@ -2838,7 +2838,7 @@ Detailed list of changes
 - Allow multiple overlay windows per normal window
 
 - Add an option :opt:`confirm_os_window_close` to ask for confirmation
-  when closing an OS window with multiple kitty windows.
+  when closing an OS window with multiple alatty windows.
 
 - Tall and Fat layouts: Add a ``mirrored`` option to put the full size window
   on the opposite edge of the screen (:iss:`2654`)
@@ -2847,7 +2847,7 @@ Detailed list of changes
   of full size windows (:iss:`2688`)
 
 - Allow sending arbitrary signals to the current foreground process in a window
-  using either a mapping in kitty.conf or via remote control (:iss:`2778`)
+  using either a mapping in alatty.conf or via remote control (:iss:`2778`)
 
 - Allow sending the back and forward mouse buttons to terminal applications
   (:pull:`2742`)
@@ -2856,14 +2856,14 @@ Detailed list of changes
   for the ``send_mouse_event`` function that can be used in kittens have
   been changed (see :ref:`send_mouse_event`).
 
-- Add a new mappable ``quit`` action to quit kitty completely.
+- Add a new mappable ``quit`` action to quit alatty completely.
 
 - Fix marks using different colors with regexes using only a single color
   (:pull:`2663`)
 
 - Linux: Workaround for broken Nvidia drivers for old cards (:iss:`456`)
 
-- Wayland: Fix kitty being killed on some Wayland compositors if a hidden window
+- Wayland: Fix alatty being killed on some Wayland compositors if a hidden window
   has a lot of output (:iss:`2329`)
 
 - BSD: Fix controlling terminal not being established (:pull:`2686`)
@@ -2877,9 +2877,9 @@ Detailed list of changes
 - X11: Reduce startup time by ~25% by only querying GLX for framebuffer
   configurations once (:iss:`2754`)
 
-- macOS: Notarize the kitty application bundle (:iss:`2040`)
+- macOS: Notarize the alatty application bundle (:iss:`2040`)
 
-- Fix the kitty shell launched via a mapping needlessly requiring
+- Fix the alatty shell launched via a mapping needlessly requiring
   :opt:`allow_remote_control` to be turned on.
 
 
@@ -2902,8 +2902,8 @@ Detailed list of changes
 
 - Report modifier key state when sending wheel events to the terminal program
 
-- Fix kitty @ send-text not working with text larger than 1024 bytes when using
-  :option:`kitty --listen-on` (:iss:`2607`)
+- Fix alatty @ send-text not working with text larger than 1024 bytes when using
+  :option:`alatty --listen-on` (:iss:`2607`)
 
 - Wayland: Fix OS window title not updating for hidden windows (:iss:`2629`)
 
@@ -2921,7 +2921,7 @@ Detailed list of changes
   background image (:iss:`2419`)
 
 - Allow mapping arbitrary remote control commands to key presses in
-  :file:`kitty.conf`
+  :file:`alatty.conf`
 
 - X11: Fix crash when doing drag and drop from some applications (:iss:`2505`)
 
@@ -2950,7 +2950,7 @@ Detailed list of changes
 - Marks: Fix marks not handling wide characters and tab characters correctly
   (:iss:`2534`)
 
-- Add a new :opt:`listen_on` option in kitty.conf to set :option:`kitty --listen-on`
+- Add a new :opt:`listen_on` option in alatty.conf to set :option:`alatty --listen-on`
   globally. Also allow using environment variables in this option (:iss:`2569`).
 
 - Allow sending mouse events in kittens (:pull:`2538`)
@@ -2989,7 +2989,7 @@ Detailed list of changes
 - Fix regression causing incorrect rendering of separators in tab bar when
   defining a tab bar background color (:pull:`2480`)
 
-- Fix a regression in 0.17 that broke the kitty @ launch remote command and
+- Fix a regression in 0.17 that broke the alatty @ launch remote command and
   also broke the --tab-title option when creating a new tab. (:iss:`2488`)
 
 - Linux: Fix selection of fonts with multiple width variants not preferring
@@ -3007,7 +3007,7 @@ Detailed list of changes
 - macOS: Fix a regression in 0.17 that caused incorrect variants to be
   automatically selected for some fonts (:iss:`2462`)
 
-- Fix a regression in 0.17 that caused kitty @ set-colors to require setting
+- Fix a regression in 0.17 that caused alatty @ set-colors to require setting
   cursor_text_color (:iss:`2470`)
 
 
@@ -3038,7 +3038,7 @@ Detailed list of changes
 - X11: Fix arrow mouse cursor using right pointing instead of the default left
   pointing arrow (:iss:`2341`)
 
-- Allow passing the currently active kitty window id in the launch command
+- Allow passing the currently active alatty window id in the launch command
   (:iss:`2391`)
 
 - unicode input kitten: Allow pressing :kbd:`ctrl+tab` to change the input mode
@@ -3093,7 +3093,7 @@ Detailed list of changes
 
 - Drop support for python 3.5
 
-- Wayland: Fix a crash when drag and dropping into kitty (:iss:`2432`)
+- Wayland: Fix a crash when drag and dropping into alatty (:iss:`2432`)
 
 - diff kitten: Fix images lingering as blank rectangles after the kitten quits
   (:iss:`2449`)
@@ -3156,7 +3156,7 @@ Detailed list of changes
 - Fix a crash/incorrect rendering when detaching a window in some circumstances
   (:iss:`2173`)
 
-- hints kitten: Add an option :option:`kitty +kitten hints --ascending` to
+- hints kitten: Add an option :option:`alatty +kitten hints --ascending` to
   control if the hints numbers increase or decrease from top to bottom
 
 - Fix :opt:`background_opacity` incorrectly applying to selected text and
@@ -3182,11 +3182,11 @@ Detailed list of changes
   window into a different tab (:iss:`1310`)
 
 - Add a new action :doc:`launch <launch>` that unifies launching of processes
-  in new kitty windows/tabs.
+  in new alatty windows/tabs.
 
 - Add a new style ``powerline`` for tab bar rendering, see :opt:`tab_bar_style` (:pull:`2021`)
 
-- Allow changing colors by mapping a keyboard shortcut to read a kitty config
+- Allow changing colors by mapping a keyboard shortcut to read a alatty config
   file with color definitions. See the :doc:`FAQ <faq>` for details
   (:iss:`2083`)
 
@@ -3201,7 +3201,7 @@ Detailed list of changes
 
 - diff kitten: Allow diffing remote files easily via ssh (:iss:`727`)
 
-- unicode input kitten: Add an option :option:`kitty +kitten unicode_input
+- unicode input kitten: Add an option :option:`alatty +kitten unicode_input
   --emoji-variation` to control the presentation variant of selected emojis
   (:iss:`2139`)
 
@@ -3209,7 +3209,7 @@ Detailed list of changes
   (:pull:`2074` and :pull:`2021`)
 
 - Add a new socket only mode for :opt:`allow_remote_control`. This makes
-  it possible for programs running on the local machine to control kitty
+  it possible for programs running on the local machine to control alatty
   but not programs running over ssh.
 
 - hints kitten: Allow using named groups in the regular expression. The named
@@ -3231,7 +3231,7 @@ Detailed list of changes
 - macOS: Fix a regression in the previous release that caused a crash when
   pressing a unprintable key, such as the POWER key (:iss:`1997`)
 
-- Fix a regression in the previous release that caused kitty to not always
+- Fix a regression in the previous release that caused alatty to not always
   respond to DPI changes (:pull:`1999`)
 
 
@@ -3262,10 +3262,10 @@ Detailed list of changes
 0.14.4 [2019-08-31]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- hints kitten: Add a :option:`kitty +kitten hints --alphabet` option to
+- hints kitten: Add a :option:`alatty +kitten hints --alphabet` option to
   control what alphabets are used for hints (:iss:`1879`)
 
-- hints kitten: Allow specifying :option:`kitty +kitten hints --program`
+- hints kitten: Allow specifying :option:`alatty +kitten hints --program`
   multiple times to run multiple programs  (:iss:`1879`)
 
 - Add a :opt:`kitten_alias` option that can be used to alias kitten invocation
@@ -3274,7 +3274,7 @@ Detailed list of changes
 - macOS: Add an option :opt:`macos_show_window_title_in` to control
   showing the window title in the menubar/titlebar (:pull:`1837`)
 
-- macOS: Allow drag and drop of text from other applications into kitty
+- macOS: Allow drag and drop of text from other applications into alatty
   (:pull:`1921`)
 
 - When running kittens, use the colorscheme of the current window
@@ -3301,12 +3301,12 @@ Detailed list of changes
 0.14.3 [2019-07-29]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Remote control: Add a command `kitty @ scroll-window` to scroll windows
+- Remote control: Add a command `alatty @ scroll-window` to scroll windows
 
 - Allow passing a ``!neighbor`` argument to the new_window mapping to open a
   new window next to the active window (:iss:`1746`)
 
-- Document the kitty remote control protocol (:iss:`1646`)
+- Document the alatty remote control protocol (:iss:`1646`)
 
 - Add a new option :opt:`pointer_shape_when_grabbed` that allows you to control
   the mouse pointer shape when the terminal programs grabs the pointer
@@ -3340,7 +3340,7 @@ Detailed list of changes
 - Linux: Use the system "bell" sound for the terminal bell. Adds libcanberra
   as a new dependency to play the system sound.
 
-- macOS: Fix a rare deadlock causing kitty to hang (:iss:`1779`)
+- macOS: Fix a rare deadlock causing alatty to hang (:iss:`1779`)
 
 - Linux: Fix a regression in 0.14.0 that caused the event loop to tick
   continuously, wasting CPU even when idle (:iss:`1782`)
@@ -3360,7 +3360,7 @@ Detailed list of changes
   aligned inside the window when the window size is not an exact multiple
   of the cell size (:pull:`1670`)
 
-- hints kitten: Add a :option:`kitty +kitten hints --multiple-joiner` option to
+- hints kitten: Add a :option:`alatty +kitten hints --multiple-joiner` option to
   control how multiple selections are serialized when copying to clipboard
   or inserting into the terminal. You can have them on separate lines,
   separated by arbitrary characters, or even serialized as JSON (:iss:`1665`)
@@ -3374,7 +3374,7 @@ Detailed list of changes
 - icat kitten: Fix a regression that broke passing directories to icat
   (:iss:`1683`)
 
-- clipboard kitten: Add a :option:`kitty +kitten clipboard --wait-for-completion`
+- clipboard kitten: Add a :option:`alatty +kitten clipboard --wait-for-completion`
   option to have the kitten wait till copying to clipboard is complete
   (:iss:`1693`)
 
@@ -3386,7 +3386,7 @@ Detailed list of changes
   :opt:`linux_display_server`.
 
 - Add an option to control the default :opt:`update_check_interval` when
-  building kitty packages
+  building alatty packages
 
 - Wayland: Fix resizing the window on a compositor that does not provide
   server side window decorations, such a GNOME or Weston not working
@@ -3412,7 +3412,7 @@ Detailed list of changes
 - Fix colors not being preserved when using the pipe command with
   the pager history buffer (:pull:`1657`)
 
-- macOS: Fix a regression that could cause rendering of a kitty window
+- macOS: Fix a regression that could cause rendering of a alatty window
   to occasionally freeze in certain situations, such as moving it between
   monitors or transitioning from/to fullscreen (:iss:`1641`)
 
@@ -3443,7 +3443,7 @@ Detailed list of changes
 - Allow using the new private internal clipboard buffers with the
   :opt:`copy_on_select` option (:iss:`1390`)
 
-- macOS: Allow opening new kitty tabs/top-level windows from Finder
+- macOS: Allow opening new alatty tabs/top-level windows from Finder
   (:pull:`1350`)
 
 - Add an option :opt:`disable_ligatures` to disable
@@ -3458,7 +3458,7 @@ Detailed list of changes
   tab becomes active when the current tab is closed (:pull:`1524`)
 
 - Allow specifying a value of ``none`` for the :opt:`selection_foreground`
-  which will cause kitty to not change text color in selections (:iss:`1358`)
+  which will cause alatty to not change text color in selections (:iss:`1358`)
 
 - Make live resizing of OS windows smoother and add an option
   ``resize_draw_strategy`` to control what is drawn while a
@@ -3510,7 +3510,7 @@ Detailed list of changes
 - Fix scrollback pager history not being cleared when clearing the
   main scrollback buffer (:iss:`1387`)
 
-- macOS: When closing a top-level window only switch focus to the previous kitty
+- macOS: When closing a top-level window only switch focus to the previous alatty
   window if it is on the same workspace (:iss:`1379`)
 
 - macOS: Fix :opt:`sync_to_monitor` not working on Mojave.
@@ -3518,12 +3518,12 @@ Detailed list of changes
 - macOS: Use the system cursor blink interval by default
   :opt:`cursor_blink_interval`.
 
-- Wayland: Use the kitty Wayland backend by default. Can be switched back
+- Wayland: Use the alatty Wayland backend by default. Can be switched back
   to using XWayland by setting the environment variable:
-  ``KITTY_DISABLE_WAYLAND=1``
+  ``ALATTY_DISABLE_WAYLAND=1``
 
 - Add a ``no-append`` setting to :opt:`clipboard_control` to disable
-  the kitty copy concatenation protocol extension for OSC 52.
+  the alatty copy concatenation protocol extension for OSC 52.
 
 - Update to using the Unicode 12 standard
 
@@ -3546,7 +3546,7 @@ Detailed list of changes
 - Use negative values for :opt:`mouse_hide_wait` to hide the mouse cursor
   immediately when pressing a key (:iss:`1534`)
 
-- When encountering errors in :file:`kitty.conf` report them to the user
+- When encountering errors in :file:`alatty.conf` report them to the user
   instead of failing to start.
 
 - Allow the user to control the resize debounce time via
@@ -3578,11 +3578,11 @@ Detailed list of changes
 - Fix a regression in the previous release that broke using ``background`` for
   :opt:`cursor_text_color` (:iss:`1288`)
 
-- macOS: Fix dragging kitty window tabs in traditional full screen mode causing
+- macOS: Fix dragging alatty window tabs in traditional full screen mode causing
   crashes (:iss:`1296`)
 
-- macOS: Ensure that when running from a bundle, the bundle kitty exe is
-  preferred over any kitty in PATH (:iss:`1280`)
+- macOS: Ensure that when running from a bundle, the bundle alatty exe is
+  preferred over any alatty in PATH (:iss:`1280`)
 
 - macOS: Fix a regression that broke mapping of :kbd:`ctrl+tab` (:iss:`1304`)
 
@@ -3595,7 +3595,7 @@ Detailed list of changes
 - Fix :opt:`background_opacity` not working with pure white backgrounds
   (:iss:`1285`)
 
-- macOS: Fix "New OS Window" dock action not working when kitty is not focused
+- macOS: Fix "New OS Window" dock action not working when alatty is not focused
   (:iss:`1312`)
 
 - macOS: Add aliases for close window and new tab actions that conform to common
@@ -3612,7 +3612,7 @@ Detailed list of changes
   the tab number next to the title (:iss:`1223`)
 
 - Report the current foreground processes as well as the original child process,
-  when using `kitty @ ls`
+  when using `alatty @ ls`
 
 - Use the current working directory of the foreground process for the
   `*_with_cwd` actions that open a new window with the current working
@@ -3636,7 +3636,7 @@ Detailed list of changes
 - Fix changing :opt:`cursor_text_color` via remote control not working
   (:iss:`1229`)
 
-- Add an action to resize windows that can be mapped to shortcuts in :file:`kitty.conf`
+- Add an action to resize windows that can be mapped to shortcuts in :file:`alatty.conf`
   (:pull:`1245`)
 
 - Fix using the ``new_tab !neighbor`` action changing the order of the
@@ -3663,13 +3663,13 @@ Detailed list of changes
 0.13.0 [2018-12-05]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Add an option :opt:`scrollback_pager_history_size` to tell kitty to store
+- Add an option :opt:`scrollback_pager_history_size` to tell alatty to store
   extended scrollback to use when viewing the scrollback buffer in a pager
   (:iss:`970`)
 
 - Modify the kittens sub-system to allow creating custom kittens without any
   user interface. This is useful for creating more complex actions that can
-  be bound to key presses in :file:`kitty.conf`. See
+  be bound to key presses in :file:`alatty.conf`. See
   doc:`kittens/custom`. (:iss:`870`)
 
 - Add a new ``nth_window`` action that can be used to go to the nth window and
@@ -3721,7 +3721,7 @@ Detailed list of changes
 - Linux: Fix a crash when using the GNU Unifont as a fallback font
   (:iss:`1087`)
 
-- Wayland: Fix copying from hidden kitty windows hanging (:iss:`1051`)
+- Wayland: Fix copying from hidden alatty windows hanging (:iss:`1051`)
 
 - Wayland: Add support for the primary selection protocol
   implemented by some compositors (:pull:`1095`)
@@ -3761,7 +3761,7 @@ Detailed list of changes
 0.12.3 [2018-09-29]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- macOS: Fix kitty window not being rendered on macOS Mojave until the window is
+- macOS: Fix alatty window not being rendered on macOS Mojave until the window is
   moved or resized at least once (:iss:`887`)
 
 - Unicode input: Fix an error when searching for the string 'fir' (:iss:`1035`)
@@ -3781,7 +3781,7 @@ Detailed list of changes
   and scrollback buffer to any desired program running in a new window, tab or
   overlay window. (:iss:`933`)
 
-- Add a new :option:`kitty --start-as` command line flag to start kitty
+- Add a new :option:`alatty --start-as` command line flag to start alatty
   full-screen/maximized/minimized. This replaces the ``--start-in-fullscreen``
   flag introduced in the previous release (:iss:`935`)
 
@@ -3793,7 +3793,7 @@ Detailed list of changes
   sub-pixel antialiasing (:pull:`950`)
 
 - macOS: Add an option :opt:`macos_traditional_fullscreen` to make
-  full-screening of kitty windows much faster, but less pretty. (:iss:`911`)
+  full-screening of alatty windows much faster, but less pretty. (:iss:`911`)
 
 - Fix a bug causing incorrect line ordering when viewing the scrollback buffer
   if the scrollback buffer is full (:iss:`960`)
@@ -3804,19 +3804,19 @@ Detailed list of changes
 - Workaround for broken editors like nano that cannot handle newlines in pasted text
   (:iss:`994`)
 
-- Linux: Ensure that the python embedded in the kitty binary build uses
+- Linux: Ensure that the python embedded in the alatty binary build uses
   UTF-8 mode to process command-line arguments (:iss:`924`)
 
 - Linux: Handle fonts that contain monochrome bitmaps (such as the Terminus TTF
   font) (:pull:`934`)
 
-- Have the :option:`kitty --title` flag apply to all windows created
-  using :option:`kitty --session` (:iss:`921`)
+- Have the :option:`alatty --title` flag apply to all windows created
+  using :option:`alatty --session` (:iss:`921`)
 
 - Revert change for backspacing of wide characters in the previous release,
   as it breaks backspacing in some wide character aware programs (:iss:`875`)
 
-- Fix kitty @set-colors not working for tab backgrounds when using the `fade` tabbar style
+- Fix alatty @set-colors not working for tab backgrounds when using the `fade` tabbar style
   (:iss:`937`)
 
 - macOS: Fix resizing semi-transparent windows causing the windows to be
@@ -3829,17 +3829,17 @@ Detailed list of changes
   (:iss:`359`)
 
 - Remote control: Fix the ``focus_window`` command not focusing the
-  top-level OS window of the specified kitty window (:iss:`1003`)
+  top-level OS window of the specified alatty window (:iss:`1003`)
 
 - Fix using :opt:`focus_follows_mouse` causing text selection with the
-  mouse to malfunction when using multiple kitty windows (:iss:`1002`)
+  mouse to malfunction when using multiple alatty windows (:iss:`1002`)
 
 
 0.12.1 [2018-09-08]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Add a new ``--start-in-fullscreen`` command line flag to start
-  kitty in full screen mode (:iss:`856`)
+  alatty in full screen mode (:iss:`856`)
 
 - macOS: Fix a character that cannot be rendered in any font causing
   font fallback for all subsequent characters that cannot be rendered in the
@@ -3859,16 +3859,16 @@ Detailed list of changes
 
 - Allow mapping of individual key-presses without modifiers as shortcuts
 
-- Fix legacy invocation of icat as `kitty icat` not working (:iss:`850`)
+- Fix legacy invocation of icat as `alatty icat` not working (:iss:`850`)
 
 - Improve rendering of wavy underline at small font sizes (:iss:`853`)
 
 - Fix a regression in 0.12.0 that broke dynamic resizing of layouts (:iss:`860`)
 
-- Wayland: Allow using the :code:`kitty --class` command line flag
+- Wayland: Allow using the :code:`alatty --class` command line flag
   to set the app id (:iss:`862`)
 
-- Add completion of the kitty command for the fish shell (:pull:`829`)
+- Add completion of the alatty command for the fish shell (:pull:`829`)
 
 - Linux: Fix XCompose rules with no defined symbol not working (:iss:`880`)
 
@@ -3890,14 +3890,14 @@ Detailed list of changes
   using standard keyboards) via `IBus
   <https://github.com/ibus/ibus/wiki/ReadMe>`_ (:iss:`469`)
 
-- Implement completion for the kitty command in bash and zsh. See
+- Implement completion for the alatty command in bash and zsh. See
   :ref:`shell_integration`.
 
 - Render the text under the cursor in a fixed color, configurable via
   the option :opt:`cursor_text_color` (:iss:`126`)
 
 - Add an option :opt:`env` to set environment variables in child processes
-  from kitty.conf
+  from alatty.conf
 
 - Add an action to the ``clear_terminal`` function to scroll the screen
   contents into the scrollback buffer (:iss:`1113`)
@@ -3916,7 +3916,7 @@ Detailed list of changes
 
 - Allow running kittens via the remote control system (:iss:`738`)
 
-- Allow enabling remote control in only some kitty windows
+- Allow enabling remote control in only some alatty windows
 
 - Add a keyboard shortcut to reset the terminal (:sc:`reset_terminal`). It
   takes parameters so you can define your own shortcuts to clear the
@@ -3928,10 +3928,10 @@ Detailed list of changes
 - diff kitten: Fix error when right hand side file is binary and left hand side
   file is text (:pull:`752`)
 
-- kitty @ new-window: Add a new option :option:`kitten @ new-window --window-type`
+- alatty @ new-window: Add a new option :option:`kitten @ new-window --window-type`
   to create top-level OS windows (:iss:`770`)
 
-- macOS: The :opt:`focus_follows_mouse` option now also works across top-level kitty OS windows
+- macOS: The :opt:`focus_follows_mouse` option now also works across top-level alatty OS windows
   (:iss:`754`)
 
 - Fix detection of URLs in HTML source code (URLs inside quotes) (:iss:`785`)
@@ -3940,7 +3940,7 @@ Detailed list of changes
 
 - Round-trip the zwj unicode character. Rendering of sequences containing zwj
   is still not implemented, since it can cause the collapse of an unbounded
-  number of characters into a single cell. However, kitty at least preserves
+  number of characters into a single cell. However, alatty at least preserves
   the zwj by storing it as a combining character.
 
 - macOS: Disable the custom mouse cursor. Using a custom cursor fails on dual
@@ -3950,7 +3950,7 @@ Detailed list of changes
 - macOS: Fix control+tab key combination not working (:iss:`801`)
 
 - Linux: Fix slow startup on some systems caused by GLFW searching for
-  joysticks. Since kitty does not use joysticks, disable joystick support.
+  joysticks. Since alatty does not use joysticks, disable joystick support.
   (:iss:`830`)
 
 
@@ -3961,9 +3961,9 @@ Detailed list of changes
   that separate the inactive window from a neighbor. Note that setting
   a non-zero window margin overrides this and causes all borders to be drawn.
   The old behavior of drawing all borders can be restored via the
-  :opt:`draw_minimal_borders` setting in kitty.conf. (:iss:`699`)
+  :opt:`draw_minimal_borders` setting in alatty.conf. (:iss:`699`)
 
-- macOS: Add an option :opt:`macos_window_resizable` to control if kitty
+- macOS: Add an option :opt:`macos_window_resizable` to control if alatty
   top-level windows are resizable using the mouse or not (:iss:`698`)
 
 - macOS: Use a custom mouse cursor that shows up well on both light and dark backgrounds
@@ -3993,13 +3993,13 @@ Detailed list of changes
 
 - Linux: Allow using XKB key names to bind shortcuts to keys not supported by GLFW (:pull:`665`)
 
-- kitty shell: Ignore failure to read readline history file. Happens if the
-  user migrates their kitty cache directory between systems with incompatible
+- alatty shell: Ignore failure to read readline history file. Happens if the
+  user migrates their alatty cache directory between systems with incompatible
   readline implementations.
 
 - macOS: Fix an error in remote control when using --listen-on (:iss:`679`)
 
-- hints kitten: Add a :option:`kitty +kitten hints --multiple` option to select
+- hints kitten: Add a :option:`alatty +kitten hints --multiple` option to select
   multiple items (:iss:`687`)
 
 - Fix pasting large amounts of text very slow (:iss:`682`)
@@ -4007,13 +4007,13 @@ Detailed list of changes
 - Add an option :opt:`single_window_margin_width` to allow different margins
   when only a single window is visible in the layout (:iss:`688`)
 
-- Add a :option:`kitty --hold` command line option to stay open after the child process exits (:iss:`667`)
+- Add a :option:`alatty --hold` command line option to stay open after the child process exits (:iss:`667`)
 
 - diff kitten: When triggering a search scroll to the first match automatically
 
-- :option:`kitty --debug-font-fallback` also prints out what basic fonts were matched
+- :option:`alatty --debug-font-fallback` also prints out what basic fonts were matched
 
-- When closing a kitty window reset the mouse cursor to its default shape and ensure it is visible (:iss:`655`).
+- When closing a alatty window reset the mouse cursor to its default shape and ensure it is visible (:iss:`655`).
 
 - Remote control: Speed-up reading of command responses
 
@@ -4030,11 +4030,11 @@ Detailed list of changes
 
 - diff kitten: Implement searching for text in the diff (:iss:`574`)
 
-- Add an option :opt:`startup_session` to :file:`kitty.conf` to specify a
+- Add an option :opt:`startup_session` to :file:`alatty.conf` to specify a
   default startup session (:iss:`641`)
 
-- Add a command line option :option:`kitty --wait-for-single-instance-window-close`
-  to make :option:`kitty --single-instance` wait for the closing of the newly opened
+- Add a command line option :option:`alatty --wait-for-single-instance-window-close`
+  to make :option:`alatty --single-instance` wait for the closing of the newly opened
   window before quitting (:iss:`630`)
 
 - diff kitten: Allow theming the selection background/foreground as well
@@ -4071,14 +4071,14 @@ Detailed list of changes
 - Implement changing the font size for individual top level (OS) windows
   (:iss:`408`)
 
-- When viewing the scrollback in less using :sc:`show_scrollback` and kitty
-  is currently scrolled, position the scrollback in less to match kitty's
+- When viewing the scrollback in less using :sc:`show_scrollback` and alatty
+  is currently scrolled, position the scrollback in less to match alatty's
   scroll position. (:iss:`148`)
 
 - ssh kitten: Support all SSH options. It can now be aliased directly to ssh
   for convenience. (:pull:`591`)
 
-- icat kitten: Add :option:`kitty +kitten icat --print-window-size` to easily
+- icat kitten: Add :option:`alatty +kitten icat --print-window-size` to easily
   detect the window size in pixels from scripting languages (:iss:`581`)
 
 - hints kitten: Allow selecting hashes from the terminal with
@@ -4093,15 +4093,15 @@ Detailed list of changes
 - When closing a tab switch to the last active tab instead of the right-most
   tab (:iss:`585`)
 
-- Wayland: Fix kitty not starting when using wl_roots based compositors
+- Wayland: Fix alatty not starting when using wl_roots based compositors
   (:iss:`157`)
 
 - Wayland: Fix mouse wheel/touchpad scrolling in opposite direction to other apps (:iss:`594`)
 
 - macOS: Fix the new OS window keyboard shortcut (:sc:`new_os_window`) not
-  working if no kitty window currently has focus. (:iss:`524`)
+  working if no alatty window currently has focus. (:iss:`524`)
 
-- macOS: Keep kitty running even when the last window is closed. This is in
+- macOS: Keep alatty running even when the last window is closed. This is in
   line with how applications are supposed to behave on macOS (:iss:`543`).
   There is a new option (:opt:`macos_quit_when_last_window_closed`) to control
   this.
@@ -4109,7 +4109,7 @@ Detailed list of changes
 - macOS: Add macOS standard shortcuts for copy, paste and new OS window
   (⌘+C, ⌘+V, ⌘+N)
 
-- Add a config option (:opt:`editor`) to set the EDITOR kitty uses (:iss:`580`)
+- Add a config option (:opt:`editor`) to set the EDITOR alatty uses (:iss:`580`)
 
 - Add a config option (``x11_hide_window_decorations``) to hide window
   decorations under X11/Wayland (:iss:`607`)
@@ -4134,10 +4134,10 @@ Detailed list of changes
 
 - Linux: Include a man page and the HTML docs when building the linux-package
 
-- Remote control: Fix kitty @ sometimes failing to read the response from
-  kitty. (:iss:`614`)
+- Remote control: Fix alatty @ sometimes failing to read the response from
+  alatty. (:iss:`614`)
 
-- Fix `kitty @ set-colors` not working with the window border colors.
+- Fix `alatty @ set-colors` not working with the window border colors.
   (:iss:`623`)
 
 - Fix a regression in 0.10 that caused incorrect rendering of the status bar in
@@ -4148,13 +4148,13 @@ Detailed list of changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Add a kitten to easily ssh into servers that automatically copies the
-  terminfo files over. ``kitty +kitten ssh myserver``.
+  terminfo files over. ``alatty +kitten ssh myserver``.
 
 - diff kitten: Make the keyboard shortcuts configurable (:iss:`563`)
 
 - Allow controlling *background_opacity* via either keyboard shortcuts or
   remote control. Note that you must set *dynamic_background_opacity yes* in
-  kitty.conf first. (:iss:`569`)
+  alatty.conf first. (:iss:`569`)
 
 - diff kitten: Add keybindings to scroll by page
 
@@ -4162,7 +4162,7 @@ Detailed list of changes
   yaml
 
 - macOS: Fix regression that caused the *macos_option_as_alt* setting to always
-  be disabled for all OS windows in a kitty instance after the first window
+  be disabled for all OS windows in a alatty instance after the first window
   (:iss:`571`)
 
 - Fix Ctrl+Alt+Space not working in normal and application keyboard modes
@@ -4175,7 +4175,7 @@ Detailed list of changes
 - A diff kitten to show side-by-side diffs with syntax highlighting and support
   for images. See :doc:`diff kitten <kittens/diff>`.
 
-- Make windows in the various kitty layouts manually resizable. See
+- Make windows in the various alatty layouts manually resizable. See
   :ref:`layouts` for details.
 
 - Implement support for the SGR *faint* escape code to make text blend
@@ -4185,15 +4185,15 @@ Detailed list of changes
   so that URLs that stretch over multiple lines are detected. Also improve
   detection of surrounding brackets/quotes.
 
-- Make the kitty window id available as the environment variable
-  ``KITTY_WINDOW_ID`` (:iss:`532`).
+- Make the alatty window id available as the environment variable
+  ``ALATTY_WINDOW_ID`` (:iss:`532`).
 
 - Add a "fat" layout that is similar to the "tall" layout but vertically
   oriented.
 
 - Expand environment variables in config file include directives
 
-- Allow programs running in kitty to read/write from the clipboard (:commit:`889ca77`).
+- Allow programs running in alatty to read/write from the clipboard (:commit:`889ca77`).
   By default only writing is allowed. This feature is supported in many
   terminals, search for `OSC 52 clipboard` to find out more about using it.
 
@@ -4242,7 +4242,7 @@ Detailed list of changes
 
 - Remote control: Allow matching windows by number (visible position).
 
-- macOS: Fix changing tab title and kitty shell not working
+- macOS: Fix changing tab title and alatty shell not working
 
 - When triple-clicking select all wrapped lines belonging to a single logical line.
 
@@ -4251,16 +4251,16 @@ Detailed list of changes
 - When calling pass_selection_to_program use the current directory of the child
   process as the cwd of the program.
 
-- Add macos_hide_from_tasks option to hide kitty from the macOS task switcher
+- Add macos_hide_from_tasks option to hide alatty from the macOS task switcher
 
 - macOS: When the macos_titlebar_color is set to background change the titlebar
-  colors to match the current background color of the active kitty window
+  colors to match the current background color of the active alatty window
 
 - Add a setting to clear all shortcuts defined up to that point in the config
   file(s)
 
-- Add a setting (kitty_mod) to change the modifier used by all the default
-  kitty shortcuts, globally
+- Add a setting (alatty_mod) to change the modifier used by all the default
+  alatty shortcuts, globally
 
 - Fix Shift+function key not working
 
@@ -4275,7 +4275,7 @@ Detailed list of changes
   colors for the two cells.
 
 - Fix passing @text to other programs such as when viewing the scrollback
-  buffer not working correctly if kitty is itself scrolled up.
+  buffer not working correctly if alatty is itself scrolled up.
 
 - Fix window focus gained/lost events not being reported to child programs when
   switching windows/tabs using the various keyboard shortcuts.
@@ -4290,7 +4290,7 @@ Detailed list of changes
 0.9.0 [2018-04-15]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- A new kitty command shell to allow controlling kitty via commands. Press
+- A new alatty command shell to allow controlling alatty via commands. Press
   `ctrl+shift+escape` to run the shell.
 
 - The hints kitten has become much more powerful. Now in addition to URLs you
@@ -4298,7 +4298,7 @@ Detailed list of changes
   These can be inserted into the terminal, copied to clipboard or sent to
   external programs.
 
-- Linux: Switch to libxkbcommon for keyboard handling. It allows kitty to
+- Linux: Switch to libxkbcommon for keyboard handling. It allows alatty to
   support XCompose and dead keys and also react to keyboard remapping/layout
   change without needing a restart.
 
@@ -4317,12 +4317,12 @@ Detailed list of changes
 
 - Allow setting all 256 terminal colors in the config file
 
-- Fix using `kitty --single-instance` to open a new window in a running kitty
+- Fix using `alatty --single-instance` to open a new window in a running alatty
   instance, not respecting the `--directory` flag
 
 - URL hints: Exclude trailing punctuation from URLs
 
-- URL hints: Launch the browser from the kitty parent process rather than the
+- URL hints: Launch the browser from the alatty parent process rather than the
   hints kitten. Fixes launching on some systems where xdg-open doesn't like
   being run from a kitten.
 
@@ -4335,7 +4335,7 @@ Detailed list of changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Fix presence of XDG_CONFIG_DIRS and absence of XDG_CONFIG_HOME preventing
-  kitty from starting
+  alatty from starting
 
 - Revert change in last release to cell width calculation. Instead just clip
   the right edges of characters that overflow the cell by at most two pixels
@@ -4358,10 +4358,10 @@ Detailed list of changes
   now calculated by actually rendering bitmaps, which is slower but more
   accurate)
 
-- Allow specifying a system wide kitty config file, for all users
+- Allow specifying a system wide alatty config file, for all users
 
 - Add a --debug-config command line flag to output data about the system and
-  kitty configuration.
+  alatty configuration.
 
 - Wayland: Fix auto-repeat of keys not working
 
@@ -4373,15 +4373,15 @@ Detailed list of changes
 
 - Add a configurable keyboard shortcut and remote command to set the font size to a specific value
 
-- Add an option to have kitty close the window when the main processes running in it exits, even if there are still background processes writing to that terminal
+- Add an option to have alatty close the window when the main processes running in it exits, even if there are still background processes writing to that terminal
 
 - Add configurable keyboard shortcuts to switch to a specific layout
 
-- Add a keyboard shortcut to edit the kitty config file easily
+- Add a keyboard shortcut to edit the alatty config file easily
 
 - macOS: Fix restoring of window size not correct on Retina screens
 
-- macOS: Add a facility to specify command line arguments when running kitty from the GUI
+- macOS: Add a facility to specify command line arguments when running alatty from the GUI
 
 - Add a focus-tab remote command
 
@@ -4393,8 +4393,8 @@ Detailed list of changes
 0.8.1 [2018-03-09]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Extend kitty's remote control feature to work over both UNIX and TCP sockets,
-  so now you can control kitty from across the internet, if you want to.
+- Extend alatty's remote control feature to work over both UNIX and TCP sockets,
+  so now you can control alatty from across the internet, if you want to.
 
 - Render private use unicode characters that are followed by a space as a two
   character ligature. This fixes rendering for applications that misuse
@@ -4426,19 +4426,19 @@ Detailed list of changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - A framework for kittens, that is, small terminal programs designed to run
-  inside kitty and extend its capabilities. Examples include unicode input and
+  inside alatty and extend its capabilities. Examples include unicode input and
   selecting URLs with the keyboard.
 
 - Input arbitrary unicode characters by pressing Ctrl+Shift+u. You can choose
   characters by name, by hex code, by recently used, etc. There is even and
   editable Favorites list.
 
-- Open URLs using only the keyboard. kitty has a new "hints mode". Press
+- Open URLs using only the keyboard. alatty has a new "hints mode". Press
   Ctrl+Shift+e and all detected URLs on the screen are highlighted with a key
   to press to open them. The facility is customizable so you can change
   what is detected as a URL and which program is used to open it.
 
-- Add an option to change the titlebar color of kitty windows on macOS
+- Add an option to change the titlebar color of alatty windows on macOS
 
 - Only consider Emoji characters with default Emoji presentation to be two
   cells wide. This matches the standard. Also add support for the Unicode Emoji
@@ -4483,7 +4483,7 @@ Detailed list of changes
 0.7.0 [2018-01-24]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Allow controlling kitty from the shell prompt/scripts. You can
+- Allow controlling alatty from the shell prompt/scripts. You can
   open/close/rename windows and tabs and even send input to specific windows.
   See the README for details.
 
@@ -4510,7 +4510,7 @@ Detailed list of changes
 - macOS: Fix alt+arrow keys not working when disabling the macos_option_as_alt
   config option.
 
-- kitty icat: Workaround for bug in ImageMagick that would cause some images
+- alatty icat: Workaround for bug in ImageMagick that would cause some images
   to fail to display at certain sizes.
 
 - Fix rendering of text with ligature fonts that do not use dummy glyphs
@@ -4533,7 +4533,7 @@ Detailed list of changes
 - Add new actions to open windows/tabs/etc. with the working directory set to
   the working directory of the current window.
 
-- Automatically adjust cell size when DPI changes, for example when kitty is
+- Automatically adjust cell size when DPI changes, for example when alatty is
   moved from one monitor to another with a different DPI
 
 - Ensure underlines are rendered even for fonts with very poor metrics
@@ -4557,7 +4557,7 @@ Detailed list of changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Support background transparency via the background_opacity option. Provided
-  that your OS/window manager supports transparency, you can now have kitty
+  that your OS/window manager supports transparency, you can now have alatty
   render pixels that have only the default background color as
   semi-transparent.
 
@@ -4566,7 +4566,7 @@ Detailed list of changes
   the shortcut `ctrl+shift+n` to open a new top-level window.
 
 - Add support for a *daemon* mode using the `--single-instance` command line
-  option. With this option you can have only a single kitty instance running.
+  option. With this option you can have only a single alatty instance running.
   All future invocations simply open new top-level windows in the existing
   instance.
 
@@ -4578,7 +4578,7 @@ Detailed list of changes
 
 - Add a new "grid" window layout
 
-- Drop the dependency on glfw (kitty now uses a modified, bundled copy of glfw)
+- Drop the dependency on glfw (alatty now uses a modified, bundled copy of glfw)
 
 - Add an option to control the audio bell volume on X11 systems
 
@@ -4590,7 +4590,7 @@ Detailed list of changes
 - Add more options to customize the tab-bar's appearance (font styles and
   separator)
 
-- Allow drag and drop of files into kitty. On drop kitty will paste the
+- Allow drag and drop of files into alatty. On drop alatty will paste the
   file path to the running program.
 
 - Add an option to control the underline style for URL highlighting on hover
@@ -4624,12 +4624,12 @@ Detailed list of changes
 0.5.0 [2017-11-19]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Add support for ligature fonts such as Fira Code, Hasklig, etc. kitty now
+- Add support for ligature fonts such as Fira Code, Hasklig, etc. alatty now
   uses harfbuzz for text shaping which allow it to support advanced OpenType
   features such as contextual alternates/ligatures/combining glyphs/etc.
 
 - Make it easy to select fonts by allowing listing of monospace fonts using:
-  kitty list-fonts
+  alatty list-fonts
 
 - Add an option to have window focus follow mouse
 
@@ -4638,7 +4638,7 @@ Detailed list of changes
 - macOS: Fix handling of option key. It now behaves just like the alt key on
   Linux. There is an option to make it type unicode characters instead.
 
-- Linux: Add support for startup notification on X11 desktops. kitty will
+- Linux: Add support for startup notification on X11 desktops. alatty will
   now inform the window manager when its startup is complete.
 
 - Fix shell prompt being duplicated when window is resized
@@ -4646,7 +4646,7 @@ Detailed list of changes
 - Fix crash when displaying more than 64 images in the same session
 
 - Add support for colons in SGR color codes. These are generated by some
-  applications such as neovim when they mistakenly identify kitty as a libvte
+  applications such as neovim when they mistakenly identify alatty as a libvte
   based terminal.
 
 - Fix mouse interaction not working in apps using obsolete mouse interaction
@@ -4662,7 +4662,7 @@ Detailed list of changes
 
 - Fix a regression in 0.4.0 that broke support for non-QWERTY keyboard layouts
 
-- Avoid using threads to reap zombie child processes. Also prevent kitty from
+- Avoid using threads to reap zombie child processes. Also prevent alatty from
   hanging if the open program hangs when clicking on a URL.
 
 
@@ -4670,17 +4670,17 @@ Detailed list of changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Support for drawing arbitrary raster graphics (images) in the terminal via a
-  new graphics protocol. kitty can draw images with full 32-bit color using both
+  new graphics protocol. alatty can draw images with full 32-bit color using both
   ssh connections and files/shared memory (when available) for better
   performance. The drawing primitives support alpha blending and z-index.
   Images can be drawn both above and below text. See :doc:`graphics-protocol`.
   for details.
 
-- Refactor kitty's internals to make it even faster and more efficient. The CPU
-  usage of kitty + X server while doing intensive tasks such as scrolling a
+- Refactor alatty's internals to make it even faster and more efficient. The CPU
+  usage of alatty + X server while doing intensive tasks such as scrolling a
   file continuously in less has been reduced by 50%. There are now two
   configuration options ``repaint_delay`` and ``input_delay`` you can use to
-  fine tune kitty's performance vs CPU usage profile. The CPU usage of kitty +
+  fine tune alatty's performance vs CPU usage profile. The CPU usage of alatty +
   X when scrolling in less is now significantly better than most (all?) other
   terminals. See :doc:`performance`.
 

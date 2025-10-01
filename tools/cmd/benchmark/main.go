@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/tui/graphics"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/tui/graphics"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
 
 	"golang.org/x/sys/unix"
 )
@@ -210,7 +210,7 @@ func images() (r result, err error) {
 
 func long_escape_codes() (r result, err error) {
 	data := random_string_of_bytes(8024, ascii_printable)
-	// OSC 6 is document reporting or XTerm special color which kitty ignores after parsing
+	// OSC 6 is document reporting or XTerm special color which alatty ignores after parsing
 	data = strings.Repeat("\x1b]6;"+data+"\x07", 1024)
 	const desc = "Long escape codes"
 	duration, data_sz, reps, err := benchmark_data(desc, data, opts)

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kovidgoyal/kitty/tools/utils/shlex"
+	"github.com/kovidgoyal/alatty/tools/utils/shlex"
 
 	"github.com/google/go-cmp/cmp"
 )

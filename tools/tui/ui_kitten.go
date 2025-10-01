@@ -8,9 +8,9 @@ import (
 	"os"
 	"sync"
 
-	"github.com/kovidgoyal/kitty/tools/cli"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/base85"
+	"github.com/kovidgoyal/alatty/tools/cli"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/base85"
 )
 
 var _ = fmt.Print
@@ -42,9 +42,9 @@ type BasicColors struct {
 }
 
 func ReadBasicColors() (ans BasicColors, err error) {
-	q := os.Getenv("KITTY_BASIC_COLORS")
+	q := os.Getenv("ALATTY_BASIC_COLORS")
 	if q == "" {
-		err = fmt.Errorf("No KITTY_BASIC_COLORS env var")
+		err = fmt.Errorf("No ALATTY_BASIC_COLORS env var")
 	} else {
 		err = json.Unmarshal(utils.UnsafeStringToBytes(q), &ans)
 	}

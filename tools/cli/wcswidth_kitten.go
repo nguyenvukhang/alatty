@@ -9,12 +9,12 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/kovidgoyal/kitty"
-	"github.com/kovidgoyal/kitty/tools/tty"
-	"github.com/kovidgoyal/kitty/tools/tui/loop"
-	"github.com/kovidgoyal/kitty/tools/utils"
-	"github.com/kovidgoyal/kitty/tools/utils/style"
-	"github.com/kovidgoyal/kitty/tools/wcswidth"
+	"github.com/kovidgoyal/alatty"
+	"github.com/kovidgoyal/alatty/tools/tty"
+	"github.com/kovidgoyal/alatty/tools/tui/loop"
+	"github.com/kovidgoyal/alatty/tools/utils"
+	"github.com/kovidgoyal/alatty/tools/utils/style"
+	"github.com/kovidgoyal/alatty/tools/wcswidth"
 )
 
 var _ = fmt.Print
@@ -187,7 +187,7 @@ func has_control_chars(text string) bool {
 	return false
 }
 
-func create_tests(gb_tests []kitty.GraphemeBreakTest, width_in_cells int) (tests []*test_struct) {
+func create_tests(gb_tests []alatty.GraphemeBreakTest, width_in_cells int) (tests []*test_struct) {
 	for _, t := range gb_tests {
 		text := strings.Join(t.Data, "")
 		rt, _ := json.Marshal(text)
@@ -226,7 +226,7 @@ func main(allowed_tests *utils.Set[int]) (rc int, err error) {
 		return 1, fmt.Errorf("Could not get size of controlling terminal with error: %w", err)
 	}
 	width_in_cells := int(sz.Col)
-	if gb_tests, err := kitty.LoadGraphemeBreakTests(); err == nil {
+	if gb_tests, err := alatty.LoadGraphemeBreakTests(); err == nil {
 		tests := create_tests(gb_tests, width_in_cells)
 		if allowed_tests.Len() > 0 {
 			temp := make([]*test_struct, 0, len(tests))
@@ -250,7 +250,7 @@ func WcswidthKittenEntryPoint(root *Command) {
 	root.AddSubCommand(&Command{
 		Name:            "__width_test__",
 		Usage:           "[test number to run...]",
-		HelpText:        "Test the terminal for compliance with the kitty text-sizing specification's splitting of text into cells. You can optionally specify specific test numbers to run.",
+		HelpText:        "Test the terminal for compliance with the alatty text-sizing specification's splitting of text into cells. You can optionally specify specific test numbers to run.",
 		Hidden:          true,
 		OnlyArgsAllowed: true,
 		Run: func(cmd *Command, args []string) (rc int, err error) {
