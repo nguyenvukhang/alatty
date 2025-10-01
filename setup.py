@@ -910,47 +910,6 @@ def parallel_run(items: List[Command]) -> None:
         run_tool(list(failed.cmd))
 
 
-def add_builtin_fonts(args: Options) -> None:
-    fonts_dir = os.path.join(src_base, 'fonts')
-    os.makedirs(fonts_dir, exist_ok=True)
-
-    for psname, (filename, human_name) in {
-        'SymbolsNFM': ('SymbolsNerdFontMono-Regular.ttf', 'Symbols NERD Font Mono')
-    }.items():
-        dest = os.path.join(fonts_dir, filename)
-        if os.path.exists(dest):
-            continue
-        font_file = ''
-        if is_macos:
-            for candidate in (os.path.expanduser('~/Library/Fonts'), '/Library/Fonts', '/System/Library/Fonts', '/Network/Library/Fonts'):
-                q = os.path.join(candidate, filename)
-                if os.path.exists(q):
-                    font_file = q
-                    break
-        elif is_windows:
-            for candidate in (
-                    os.path.expandvars(r'%userprofile%\AppData\Local\Microsoft\Windows\Fonts'),
-                    os.path.expandvars(r'%windir%\Fonts'),
-            ):
-                q = os.path.join(candidate, filename)
-                if os.path.exists(q):
-                    font_file = q
-                    break
-        else:
-            lines = subprocess.check_output([
-                'fc-match', '--format', '%{file}\n%{postscriptname}', f'term:postscriptname={psname}', 'file', 'postscriptname']).decode().splitlines()
-            if len(lines) != 2:
-                raise SystemExit(f'fc-match returned unexpected output: {lines}')
-            if lines[1] != psname:
-                raise SystemExit(f'The font {human_name!r} was not found on your system, please install it')
-            font_file = lines[0]
-        if not font_file:
-            raise SystemExit(f'The font {human_name!r} was not found on your system, please install it')
-        print(f'Copying {human_name!r} from {font_file}')
-        shutil.copy(font_file, dest)
-        os.chmod(dest, 0o644)
-
-
 def compile_c_extension(
     kenv: Env,
     module: str,
@@ -1206,7 +1165,6 @@ def build(args: Options, native_optimizations: bool = True, call_init: bool = Tr
     )
     compile_glfw(args.compilation_database, args.build_dsym)
     compile_kittens(args)
-    add_builtin_fonts(args)
 
 
 def safe_makedirs(path: str) -> None:
@@ -1875,7 +1833,6 @@ def package(args: Options, bundle_type: str, do_build_all: bool = True) -> None:
     shutil.copy2('logo/beam-cursor.png', os.path.join(libdir, 'logo'))
     shutil.copy2('logo/beam-cursor@2x.png', os.path.join(libdir, 'logo'))
     shutil.copytree('shell-integration', os.path.join(libdir, 'shell-integration'), dirs_exist_ok=True)
-    shutil.copytree('fonts', os.path.join(libdir, 'fonts'), dirs_exist_ok=True)
     allowed_extensions = frozenset('py glsl so'.split())
 
     def src_ignore(parent: str, entries: Iterable[str]) -> List[str]:
