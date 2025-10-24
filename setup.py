@@ -1092,19 +1092,6 @@ def create_linux_bundle_gunk(ddir: str, args: Options) -> None:
     base = Path(ddir)
     in_src_launcher = base / (f'{libdir_name}/alatty/alatty/launcher/alatty')
     launcher = base / 'bin/alatty'
-    if not os.path.exists('docs/_build/html'):
-        kitten_exe = os.path.join(os.path.dirname(str(launcher)), 'kitten')
-        if os.path.exists(kitten_exe):
-            os.environ['KITTEN_EXE_FOR_DOCS'] = kitten_exe
-            make = 'gmake' if is_freebsd else 'make'
-            run_tool([make, 'docs'])
-        else:
-            if args.skip_building_kitten:
-                print('WARNING: You have chosen to skip building kitten.'
-                      ' This means docs could not be generated and will not be included in the linux package.'
-                      ' You should build kitten and then re-run this build.', file=sys.stderr)
-            else:
-                raise SystemExit(f'kitten binary not found at: {kitten_exe}')
     for (icdir, ext) in {'256x256': 'png', 'scalable': 'svg'}.items():
         icdir = os.path.join(ddir, 'share', 'icons', 'hicolor', icdir, 'apps')
         safe_makedirs(icdir)

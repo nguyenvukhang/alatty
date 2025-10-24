@@ -2,6 +2,7 @@ import os, subprocess
 from os import path
 from sys import stderr
 
+IS_MACOS = False
 
 def homebrew_prefix():
     p = os.environ.get("HOMEBREW_PREFIX", None)
@@ -9,17 +10,23 @@ def homebrew_prefix():
         return subprocess.check_output(["brew", "--prefix"], encoding='utf8').strip()
     return p
 
+if IS_MACOS:
+    HOMEBREW_PREFIX = homebrew_prefix()
+    PYTHON3 = path.join(HOMEBREW_PREFIX, "opt/python/libexec/bin/python")
+    cellar = lambda x: path.join(HOMEBREW_PREFIX, "Cellar", x)
+else:
+    PYTHON3 = "python3"
 
-HOMEBREW_PREFIX = homebrew_prefix()
-PYTHON3 = path.join(HOMEBREW_PREFIX, "opt/python/libexec/bin/python")
-cellar = lambda x: path.join(HOMEBREW_PREFIX, "Cellar", x)
 BUILD_ARGS = [PYTHON3, "setup.py"]
 
 log = lambda *x: print("[build.py]", *x, file=stderr)
 
 
 def build():
-    BUILD_ARGS.append("alatty.app")
+    if IS_MACOS:
+        BUILD_ARGS.append("alatty.app")
+    else:
+        BUILD_ARGS.append("linux-package")
     env = os.environ
     env["LDFLAGS"] = "-L/opt/homebrew/lib"
     env["CPATH"] = "/opt/homebrew/include/"
