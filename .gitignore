@@ -8,6 +8,7 @@
 *_generated_test.go
 *_generated_test.s
 *_generated.h
+*.tar.gz
 /.dmypy.json
 /dependencies
 /tags
