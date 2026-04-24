@@ -5,7 +5,7 @@ RG += '[^a-z0-9_]5[^a-z0-9]'
 
 INSTALL_LOC = /usr/local
 
-current: clean_kittens build tar
+current: build tar
 
 clean_kittens:
 	rm -rf build/kittens
@@ -17,6 +17,7 @@ install-tar:
 	tar -xvf alatty.tar.gz --strip-components=1 -C $(INSTALL_LOC)
 
 build:
+	rm -rf linux-package
 	python3 build.py
 
 c:
