@@ -567,6 +567,8 @@ xdgToplevelHandleConfigure(void* data,
             C(TOPLEVEL_STATE_SUSPENDED);
 #endif
 #undef C
+            default:
+            break;
         }
     }
     debug("\n");
