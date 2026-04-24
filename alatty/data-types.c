@@ -481,7 +481,6 @@ PyInit_fast_data_types(void) {
     PyModule_AddIntMacro(m, IRM);
     PyModule_AddIntMacro(m, CSI);
     PyModule_AddIntMacro(m, DCS);
-    PyModule_AddIntMacro(m, APC);
     PyModule_AddIntMacro(m, OSC);
 #ifdef __APPLE__
     // Apple says its SHM_NAME_MAX but SHM_NAME_MAX is not actually declared in typical CrApple style.

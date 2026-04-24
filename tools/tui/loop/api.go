@@ -31,7 +31,6 @@ const (
 	CSI EscapeCodeType = iota
 	DCS
 	OSC
-	APC
 	SOS
 	PM
 )

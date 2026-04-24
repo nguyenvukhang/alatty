@@ -28,7 +28,6 @@ func new_loop() *Loop {
 	l.escape_code_parser.HandleCSI = l.handle_csi
 	l.escape_code_parser.HandleOSC = l.handle_osc
 	l.escape_code_parser.HandleDCS = l.handle_dcs
-	l.escape_code_parser.HandleAPC = l.handle_apc
 	l.escape_code_parser.HandleSOS = l.handle_sos
 	l.escape_code_parser.HandlePM = l.handle_pm
 	l.escape_code_parser.HandleRune = l.handle_rune
@@ -174,13 +173,6 @@ func (self *Loop) handle_dcs(raw []byte) error {
 	}
 	if self.OnEscapeCode != nil {
 		return self.OnEscapeCode(DCS, raw)
-	}
-	return nil
-}
-
-func (self *Loop) handle_apc(raw []byte) error {
-	if self.OnEscapeCode != nil {
-		return self.OnEscapeCode(APC, raw)
 	}
 	return nil
 }

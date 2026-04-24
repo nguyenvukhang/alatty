@@ -14,10 +14,7 @@ def main(args: List[str]=sys.argv) -> None:
         raise SystemExit('usage: python gen which')
     which = args[1]
     del args[1]
-    if which == 'apc-parsers':
-        from gen.apc_parsers import main
-        main(args)
-    elif which == 'config':
+    if which == 'config':
         from gen.config import main
         main(args)
     elif which == 'srgb-lut':

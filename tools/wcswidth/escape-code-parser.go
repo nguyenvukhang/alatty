@@ -58,7 +58,6 @@ type EscapeCodeParser struct {
 	HandleDCS                 func([]byte) error
 	HandlePM                  func([]byte) error
 	HandleSOS                 func([]byte) error
-	HandleAPC                 func([]byte) error
 }
 
 func (self *EscapeCodeParser) InBracketedPaste() bool { return self.state == bracketed_paste }
@@ -245,9 +244,6 @@ func (self *EscapeCodeParser) dispatch_char(ch utils.UTF8State) error {
 	case 0x9e:
 		self.state = st
 		self.current_callback = self.HandlePM
-	case 0x9f:
-		self.state = st
-		self.current_callback = self.HandleAPC
 	default:
 		return self.dispatch_rune(ch)
 	}
@@ -271,9 +267,6 @@ func (self *EscapeCodeParser) dispatch_byte(ch byte) error {
 		case '^':
 			self.state = st
 			self.current_callback = self.HandlePM
-		case '_':
-			self.state = st
-			self.current_callback = self.HandleAPC
 		case 'D', 'E', 'H', 'M', 'N', 'O', 'Z', '6', '7', '8', '9', '=', '>', 'F', 'c', 'l', 'm', 'n', 'o', '|', '}', '~':
 		default:
 			// we drop this dangling Esc and reparse the byte after the esc

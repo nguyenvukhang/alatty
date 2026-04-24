@@ -104,9 +104,9 @@ static PyObject*
 parse_input_from_terminal(PyObject *self UNUSED, PyObject *args) {
     enum State { NORMAL, ESC, CSI, ST, ESC_ST };
     enum State state = NORMAL;
-    PyObject *uo, *text_callback, *dcs_callback, *csi_callback, *osc_callback, *pm_callback, *apc_callback, *callback;
+    PyObject *uo, *text_callback, *dcs_callback, *csi_callback, *osc_callback, *pm_callback, *callback;
     int inbp = 0;
-    if (!PyArg_ParseTuple(args, "OOOOOOUp", &text_callback, &dcs_callback, &csi_callback, &osc_callback, &pm_callback, &apc_callback, &uo, &inbp)) return NULL;
+    if (!PyArg_ParseTuple(args, "OOOOOUp", &text_callback, &dcs_callback, &csi_callback, &osc_callback, &pm_callback, &uo, &inbp)) return NULL;
     Py_ssize_t sz = PyUnicode_GET_LENGTH(uo), pos = 0, start = 0, count = 0, consumed = 0;
     callback = text_callback;
     int kind = PyUnicode_KIND(uo);
@@ -149,8 +149,6 @@ parse_input_from_terminal(PyObject *self UNUSED, PyObject *args) {
                         state = ST; callback = osc_callback; break;
                     case '^':
                         state = ST; callback = pm_callback; break;
-                    case '_':
-                        state = ST; callback = apc_callback; break;
                     default:
                         state = NORMAL; break;
                 }

@@ -831,9 +831,6 @@ get_prefix_and_suffix_for_escape_code(const Screen *self, unsigned char which, c
         case PM:
             *prefix = self->modes.eight_bit_controls ? "\x9e" : "\033^";
             break;
-        case APC:
-            *prefix = self->modes.eight_bit_controls ? "\x9f" : "\033_";
-            break;
         default:
             fatal("Unknown escape code to write: %u", which);
     }
@@ -910,8 +907,7 @@ screen_dirty_line_graphics(Screen *self, const unsigned int top, const unsigned 
 void
 screen_handle_graphics_command(Screen *self, const GraphicsCommand *cmd, const uint8_t *payload) {
     unsigned int x = self->cursor->x, y = self->cursor->y;
-    const char *response = grman_handle_command(self->grman, cmd, payload, self->cursor, &self->is_dirty, self->cell_size);
-    if (response != NULL) write_escape_code_to_child(self, APC, response);
+    grman_handle_command(self->grman, cmd, payload, self->cursor, &self->is_dirty, self->cell_size);
     if (x != self->cursor->x || y != self->cursor->y) {
         bool in_margins = cursor_within_margins(self);
         if (self->cursor->x >= self->columns) { self->cursor->x = 0; self->cursor->y++; }

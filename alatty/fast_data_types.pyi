@@ -963,7 +963,7 @@ def open_tty(read_with_timeout: bool = False, optional_actions: int = termios.TC
 def parse_input_from_terminal(
     text_callback: Callable[[str], None], dcs_callback: Callable[[str], None],
     csi_callback: Callable[[str], None], osc_callback: Callable[[str], None],
-    pm_callback: Callable[[str], None], apc_callback: Callable[[str], None],
+    pm_callback: Callable[[str], None],
     data: str, in_bracketed_paste: bool
 ) -> str:
     pass
