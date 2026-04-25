@@ -704,44 +704,6 @@ draw_visual_bell_flash(GLfloat intensity, const CellRenderData *crd, Screen *scr
     glDisable(GL_BLEND);
 }
 
-static void
-draw_cells_interleaved(ssize_t vao_idx, Screen *screen, OSWindow *w, const CellRenderData *crd, const WindowLogoRenderData *wl) {
-    glEnable(GL_BLEND);
-    BLEND_ONTO_OPAQUE;
-
-    // draw background for all cells
-    bind_program(CELL_BG_PROGRAM);
-    glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 3);
-    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-
-    if (screen->grman->num_of_below_refs || wl) {
-        if (wl) {
-            draw_window_logo(vao_idx, w, wl, crd);
-            BLEND_ONTO_OPAQUE;
-        }
-        if (screen->grman->num_of_below_refs) draw_graphics(
-                GRAPHICS_PROGRAM, vao_idx, screen->grman->render_data.item, 0, screen->grman->num_of_below_refs, viewport_for_cells(crd));
-        bind_program(CELL_BG_PROGRAM);
-        // draw background for non-default bg cells
-        glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 2);
-        glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-    }
-
-    if (screen->grman->num_of_negative_refs) draw_graphics(GRAPHICS_PROGRAM, vao_idx, screen->grman->render_data.item, screen->grman->num_of_below_refs, screen->grman->num_of_negative_refs, viewport_for_cells(crd));
-
-    bind_program(CELL_SPECIAL_PROGRAM);
-    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-
-    bind_program(CELL_FG_PROGRAM);
-    BLEND_PREMULT;
-    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-    BLEND_ONTO_OPAQUE;
-
-    if (screen->grman->num_of_positive_refs) draw_graphics(GRAPHICS_PROGRAM, vao_idx, screen->grman->render_data.item, screen->grman->num_of_negative_refs + screen->grman->num_of_below_refs, screen->grman->num_of_positive_refs, viewport_for_cells(crd));
-
-    glDisable(GL_BLEND);
-}
-
 void
 blank_canvas(float background_opacity, color_type color) {
     // See https://github.com/glfw/glfw/issues/1538 for why we use pre-multiplied alpha
