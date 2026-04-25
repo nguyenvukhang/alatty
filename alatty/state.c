@@ -1158,54 +1158,6 @@ PYWRAP1(update_tab_bar_edge_colors) {
     Py_RETURN_FALSE;
 }
 
-static PyObject*
-pyset_background_image(PyObject *self UNUSED, PyObject *args) {
-    const char *path;
-    PyObject *layout_name = NULL;
-    PyObject *os_window_ids;
-    int configured = 0;
-    char *png_data = NULL; Py_ssize_t png_data_size = 0;
-    PA("zO!|pOy#", &path, &PyTuple_Type, &os_window_ids, &configured, &layout_name, &png_data, &png_data_size);
-    size_t size;
-    BackgroundImageLayout layout = PyUnicode_Check(layout_name) ? bglayout(layout_name) : OPT(background_image_layout);
-    BackgroundImage *bgimage = NULL;
-    if (path) {
-        bgimage = calloc(1, sizeof(BackgroundImage));
-        if (!bgimage) return PyErr_NoMemory();
-        bool ok;
-        if (png_data && png_data_size) {
-            ok = png_from_data(png_data, png_data_size, path, &bgimage->bitmap, &bgimage->width, &bgimage->height, &size);
-        } else {
-            ok = png_path_to_bitmap(path, &bgimage->bitmap, &bgimage->width, &bgimage->height, &size);
-        }
-        if (!ok) {
-            PyErr_Format(PyExc_ValueError, "Failed to load image from: %s", path);
-            free(bgimage);
-            return NULL;
-        }
-        send_bgimage_to_gpu(layout, bgimage);
-        bgimage->refcnt++;
-    }
-    if (configured) {
-        free_bgimage(&global_state.bgimage, true);
-        global_state.bgimage = bgimage;
-        if (bgimage) bgimage->refcnt++;
-        OPT(background_image_layout) = layout;
-    }
-    for (Py_ssize_t i = 0; i < PyTuple_GET_SIZE(os_window_ids); i++) {
-        id_type os_window_id = PyLong_AsUnsignedLongLong(PyTuple_GET_ITEM(os_window_ids, i));
-        WITH_OS_WINDOW(os_window_id)
-            make_os_window_context_current(os_window);
-            free_bgimage(&os_window->bgimage, true);
-            os_window->bgimage = bgimage;
-            os_window->render_calls = 0;
-            if (bgimage) bgimage->refcnt++;
-        END_WITH_OS_WINDOW
-    }
-    if (bgimage) free_bgimage(&bgimage, true);
-    Py_RETURN_NONE;
-}
-
 PYWRAP0(destroy_global_data) {
     Py_CLEAR(global_state.boss);
     free(global_state.os_windows); global_state.os_windows = NULL;
@@ -1416,7 +1368,6 @@ static PyMethodDef module_methods[] = {
     MW(get_os_window_pos, METH_VARARGS),
     MW(set_os_window_pos, METH_VARARGS),
     MW(global_font_size, METH_VARARGS),
-    MW(set_background_image, METH_VARARGS),
     MW(os_window_font_size, METH_VARARGS),
     MW(set_os_window_size, METH_VARARGS),
     MW(get_os_window_size, METH_VARARGS),
