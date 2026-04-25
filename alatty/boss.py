@@ -13,7 +13,6 @@ from gettext import gettext as _
 from gettext import ngettext
 from time import monotonic, sleep
 from typing import (
-    TYPE_CHECKING,
     Any,
     Callable,
     Container,
@@ -95,12 +94,10 @@ from .fast_data_types import (
     mark_os_window_for_close,
     os_window_focus_counters,
     os_window_font_size,
-    patch_global_colors,
     redirect_mouse_handling,
     ring_bell,
     run_with_activation_token,
     safe_pipe,
-    send_data_to_peer,
     set_application_quit_request,
     set_background_image,
     set_boss,
@@ -121,7 +118,6 @@ from .notify import notification_activated
 from .options.types import Options
 from .options.utils import MINIMUM_FONT_SIZE, KeyboardMode, KeyDefinition
 from .os_window_size import initial_window_size_func
-from .rgb import color_from_int
 from .session import Session, create_sessions, get_os_window_sizing_data
 from .shaders import load_shader_programs
 from .tabs import SpecialWindow, SpecialWindowInstance, Tab, TabDict, TabManager
