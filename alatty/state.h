@@ -220,7 +220,6 @@ typedef struct {
     int viewport_width, viewport_height, window_width, window_height, content_area_width, content_area_height;
     double viewport_x_ratio, viewport_y_ratio;
     Tab *tabs;
-    BackgroundImage *bgimage;
     unsigned int active_tab, num_tabs, capacity, last_active_tab, last_num_tabs, last_active_window_id;
     bool focused_at_last_render, needs_render;
     ScreenRenderData tab_bar_render_data;
@@ -257,7 +256,6 @@ typedef struct {
 
     id_type os_window_id_counter, tab_id_counter, window_id_counter;
     PyObject *boss;
-    BackgroundImage *bgimage;
     OSWindow *os_windows;
     size_t num_os_windows, capacity;
     OSWindow *callback_os_window;

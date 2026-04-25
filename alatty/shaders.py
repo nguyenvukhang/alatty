@@ -196,7 +196,6 @@ class LoadShaderPrograms:
             graphics.apply_to_sources(frag=partial(resolve_graphics_fragment_defines, which))
             graphics.compile(p, allow_recompile)
 
-        program_for('bgimage').compile(BGIMAGE_PROGRAM, allow_recompile)
         program_for('tint').compile(TINT_PROGRAM, allow_recompile)
         init_cell_program()
 

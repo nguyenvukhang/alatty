@@ -163,39 +163,6 @@ window_for_window_id(id_type alatty_window_id) {
     return NULL;
 }
 
-static void
-send_bgimage_to_gpu(BackgroundImageLayout layout, BackgroundImage *bgimage) {
-    RepeatStrategy r = REPEAT_DEFAULT;
-    switch (layout) {
-        case SCALED:
-        case CLAMPED:
-        case CENTER_CLAMPED:
-        case CENTER_SCALED:
-            r = REPEAT_CLAMP; break;
-        case MIRRORED:
-            r = REPEAT_MIRROR; break;
-        case TILING:
-            r = REPEAT_DEFAULT; break;
-    }
-    bgimage->texture_id = 0;
-    send_image_to_gpu(&bgimage->texture_id, bgimage->bitmap, bgimage->width,
-            bgimage->height, false, true, OPT(background_image_linear), r);
-    free(bgimage->bitmap); bgimage->bitmap = NULL;
-}
-
-static void
-free_bgimage(BackgroundImage **bgimage, bool release_texture) {
-    if (*bgimage && (*bgimage)->refcnt) {
-        (*bgimage)->refcnt--;
-        if ((*bgimage)->refcnt == 0) {
-            free((*bgimage)->bitmap); (*bgimage)->bitmap = NULL;
-            if (release_texture) free_texture(&(*bgimage)->texture_id);
-            free(*bgimage);
-        }
-    }
-    bgimage = NULL;
-}
-
 OSWindow*
 add_os_window(void) {
     WITH_OS_WINDOW_REFS
@@ -206,23 +173,6 @@ add_os_window(void) {
     ans->tab_bar_render_data.vao_idx = create_cell_vao();
     ans->background_opacity = OPT(background_opacity);
     ans->created_at = monotonic();
-
-    bool wants_bg = OPT(background_image) && OPT(background_image)[0] != 0;
-    if (wants_bg) {
-        if (!global_state.bgimage) {
-            global_state.bgimage = calloc(1, sizeof(BackgroundImage));
-            if (!global_state.bgimage) fatal("Out of memory allocating the global bg image object");
-            global_state.bgimage->refcnt++;
-            size_t size;
-            if (png_path_to_bitmap(OPT(background_image), &global_state.bgimage->bitmap, &global_state.bgimage->width, &global_state.bgimage->height, &size)) {
-                send_bgimage_to_gpu(OPT(background_image_layout), global_state.bgimage);
-            }
-        }
-        if (global_state.bgimage->texture_id) {
-            ans->bgimage = global_state.bgimage;
-            ans->bgimage->refcnt++;
-        }
-    }
 
     ans->font_sz_in_pts = OPT(font_size);
     END_WITH_OS_WINDOW_REFS
@@ -476,8 +426,6 @@ destroy_os_window_item(OSWindow *w) {
     Py_CLEAR(w->window_title); Py_CLEAR(w->tab_bar_render_data.screen);
     remove_vao(w->tab_bar_render_data.vao_idx);
     free(w->tabs); w->tabs = NULL;
-    free_bgimage(&w->bgimage, true);
-    w->bgimage = NULL;
 }
 
 bool
@@ -821,15 +769,6 @@ end:
     return Py_BuildValue("II", cell_width, cell_height);
 }
 
-
-PYWRAP1(os_window_has_background_image) {
-    id_type os_window_id;
-    PA("K", &os_window_id);
-    WITH_OS_WINDOW(os_window_id)
-        if (os_window->bgimage && os_window->bgimage->texture_id > 0) { Py_RETURN_TRUE; }
-    END_WITH_OS_WINDOW
-    Py_RETURN_FALSE;
-}
 
 PYWRAP1(mark_os_window_for_close) {
     id_type os_window_id;
@@ -1351,7 +1290,6 @@ static PyMethodDef module_methods[] = {
     MW(set_window_padding, METH_VARARGS),
     MW(viewport_for_window, METH_VARARGS),
     MW(cell_size_for_window, METH_VARARGS),
-    MW(os_window_has_background_image, METH_VARARGS),
     MW(mark_os_window_for_close, METH_VARARGS),
     MW(set_application_quit_request, METH_VARARGS),
     MW(current_application_quit_request, METH_NOARGS),
@@ -1397,9 +1335,7 @@ finalize(void) {
     // that freeing the texture will work during shutdown and
     // the GPU driver should take care of it when the OpenGL context is
     // destroyed.
-    free_bgimage(&global_state.bgimage, false);
     free_window_logo_table(&global_state.all_window_logos);
-    global_state.bgimage = NULL;
 
     free_allocs_in_options(&global_state.opts);
 }
