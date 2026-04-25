@@ -492,19 +492,6 @@ draw_cells_simple(ssize_t vao_idx, Screen *screen, const CellRenderData *crd, bo
     }
 }
 
-static void
-draw_tint(bool premult, Screen *screen, const CellRenderData *crd) {
-    if (premult) { BLEND_PREMULT } else { BLEND_ONTO_OPAQUE_WITH_OPAQUE_OUTPUT }
-    bind_program(TINT_PROGRAM);
-    color_type window_bg = colorprofile_to_color(screen->color_profile, screen->color_profile->overridden.default_bg, screen->color_profile->configured.default_bg).rgb;
-#define C(shift) srgb_color((window_bg >> shift) & 0xFF) * premult_factor
-    GLfloat premult_factor = premult ? OPT(background_tint) : 1.0f;
-    glUniform4f(tint_program_layout.uniforms.tint_color, C(16), C(8), C(0), OPT(background_tint));
-#undef C
-    glUniform4f(tint_program_layout.uniforms.edges, crd->gl.xstart, crd->gl.ystart - crd->gl.height, crd->gl.xstart + crd->gl.width, crd->gl.ystart);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-}
-
 static float prev_inactive_text_alpha = -1;
 
 static void
@@ -613,25 +600,6 @@ draw_hyperlink_target(OSWindow *os_window, Screen *screen, const CellRenderData 
 }
 
 static void
-draw_window_logo(ssize_t vao_idx, OSWindow *os_window, const WindowLogoRenderData *wl, const CellRenderData *crd) {
-    if (os_window->live_resize.in_progress) return;
-    BLEND_PREMULT;
-    GLfloat logo_width_gl = gl_size(wl->instance->width, os_window->viewport_width);
-    GLfloat logo_height_gl = gl_size(wl->instance->height, os_window->viewport_height);
-    GLfloat logo_left_gl = clamp_position_to_nearest_pixel(
-            crd->gl.xstart + crd->gl.width * wl->position.canvas_x - logo_width_gl * wl->position.image_x, os_window->viewport_width);
-    GLfloat logo_top_gl = clamp_position_to_nearest_pixel(
-            crd->gl.ystart - crd->gl.height * wl->position.canvas_y + logo_height_gl * wl->position.image_y, os_window->viewport_height);
-    static ImageRenderData ird = {.group_count=1};
-    ird.texture_id = wl->instance->texture_id;
-    gpu_data_for_image(&ird, logo_left_gl, logo_top_gl, logo_left_gl + logo_width_gl, logo_top_gl - logo_height_gl);
-    bind_program(GRAPHICS_PREMULT_PROGRAM);
-    glUniform1f(graphics_program_layouts[GRAPHICS_PREMULT_PROGRAM].uniforms.inactive_text_alpha, prev_inactive_text_alpha * wl->alpha);
-    draw_graphics(GRAPHICS_PREMULT_PROGRAM, vao_idx, &ird, 0, 1, viewport_for_cells(crd));
-    glUniform1f(graphics_program_layouts[GRAPHICS_PREMULT_PROGRAM].uniforms.inactive_text_alpha, prev_inactive_text_alpha);
-}
-
-static void
 draw_window_number(OSWindow *os_window, Screen *screen, const CellRenderData *crd, Window *window) {
     GLfloat left = os_window->viewport_width * (crd->gl.xstart + 1.f) / 2.f;
     GLfloat right = left + os_window->viewport_width * crd->gl.width / 2.f;
@@ -701,90 +669,6 @@ draw_visual_bell_flash(GLfloat intensity, const CellRenderData *crd, Screen *scr
 #undef C
     glUniform4f(tint_program_layout.uniforms.edges, crd->gl.xstart, crd->gl.ystart - crd->gl.height, crd->gl.xstart + crd->gl.width, crd->gl.ystart);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    glDisable(GL_BLEND);
-}
-
-static void
-draw_cells_interleaved(ssize_t vao_idx, Screen *screen, OSWindow *w, const CellRenderData *crd, const WindowLogoRenderData *wl) {
-    glEnable(GL_BLEND);
-    BLEND_ONTO_OPAQUE;
-
-    // draw background for all cells
-    bind_program(CELL_BG_PROGRAM);
-    glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 3);
-    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-
-    if (screen->grman->num_of_below_refs || wl) {
-        if (wl) {
-            draw_window_logo(vao_idx, w, wl, crd);
-            BLEND_ONTO_OPAQUE;
-        }
-        if (screen->grman->num_of_below_refs) draw_graphics(
-                GRAPHICS_PROGRAM, vao_idx, screen->grman->render_data.item, 0, screen->grman->num_of_below_refs, viewport_for_cells(crd));
-        bind_program(CELL_BG_PROGRAM);
-        // draw background for non-default bg cells
-        glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 2);
-        glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-    }
-
-    if (screen->grman->num_of_negative_refs) draw_graphics(GRAPHICS_PROGRAM, vao_idx, screen->grman->render_data.item, screen->grman->num_of_below_refs, screen->grman->num_of_negative_refs, viewport_for_cells(crd));
-
-    bind_program(CELL_SPECIAL_PROGRAM);
-    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-
-    bind_program(CELL_FG_PROGRAM);
-    BLEND_PREMULT;
-    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-    BLEND_ONTO_OPAQUE;
-
-    if (screen->grman->num_of_positive_refs) draw_graphics(GRAPHICS_PROGRAM, vao_idx, screen->grman->render_data.item, screen->grman->num_of_negative_refs + screen->grman->num_of_below_refs, screen->grman->num_of_positive_refs, viewport_for_cells(crd));
-
-    glDisable(GL_BLEND);
-}
-
-static void
-draw_cells_interleaved_premult(ssize_t vao_idx, Screen *screen, OSWindow *os_window, const CellRenderData *crd, const WindowLogoRenderData *wl) {
-    if (OPT(background_tint) > 0.f) {
-        glEnable(GL_BLEND);
-        draw_tint(true, screen, crd);
-        glDisable(GL_BLEND);
-    }
-    bind_program(CELL_BG_PROGRAM);
-    // draw background for all cells
-    glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 3);
-    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-    glEnable(GL_BLEND);
-    BLEND_PREMULT;
-
-    if (screen->grman->num_of_below_refs || wl) {
-        if (wl) {
-            draw_window_logo(vao_idx, os_window, wl, crd);
-            BLEND_PREMULT;
-        }
-        if (screen->grman->num_of_below_refs) draw_graphics(
-            GRAPHICS_PREMULT_PROGRAM, vao_idx, screen->grman->render_data.item, 0, screen->grman->num_of_below_refs, viewport_for_cells(crd));
-        bind_program(CELL_BG_PROGRAM);
-        // Draw background for non-default bg cells
-        glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 2);
-        glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-    } else {
-        // Apply background_opacity
-        glUniform1ui(cell_program_layouts[CELL_BG_PROGRAM].uniforms.draw_bg_bitfield, 0);
-        glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-    }
-
-    if (screen->grman->num_of_negative_refs) {
-        draw_graphics(GRAPHICS_PREMULT_PROGRAM, vao_idx, screen->grman->render_data.item, screen->grman->num_of_below_refs, screen->grman->num_of_negative_refs, viewport_for_cells(crd));
-    }
-
-    bind_program(CELL_SPECIAL_PROGRAM);
-    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-
-    bind_program(CELL_FG_PROGRAM);
-    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, screen->lines * screen->columns);
-
-    if (screen->grman->num_of_positive_refs) draw_graphics(GRAPHICS_PREMULT_PROGRAM, vao_idx, screen->grman->render_data.item, screen->grman->num_of_negative_refs + screen->grman->num_of_below_refs, screen->grman->num_of_positive_refs, viewport_for_cells(crd));
-
     glDisable(GL_BLEND);
 }
 

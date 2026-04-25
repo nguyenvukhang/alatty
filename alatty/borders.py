@@ -104,10 +104,9 @@ class Borders:
                 else:
                     color = BorderColor.bell if wg.needs_attention else BorderColor.inactive
                 draw_edges(self.os_window_id, self.tab_id, (color, color, color, color), wg, borders=True)
-            if not has_background_image:
-                # Draw the background rectangles over the padding region
-                colors = window_bg, window_bg, window_bg, window_bg
-                draw_edges(self.os_window_id, self.tab_id, colors, wg)
+            # Draw the background rectangles over the padding region
+            colors = window_bg, window_bg, window_bg, window_bg
+            draw_edges(self.os_window_id, self.tab_id, colors, wg)
 
         if draw_minimal_borders:
             for border_line in current_layout.get_minimal_borders(all_windows):
