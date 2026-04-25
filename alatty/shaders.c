@@ -613,25 +613,6 @@ draw_hyperlink_target(OSWindow *os_window, Screen *screen, const CellRenderData 
 }
 
 static void
-draw_window_logo(ssize_t vao_idx, OSWindow *os_window, const WindowLogoRenderData *wl, const CellRenderData *crd) {
-    if (os_window->live_resize.in_progress) return;
-    BLEND_PREMULT;
-    GLfloat logo_width_gl = gl_size(wl->instance->width, os_window->viewport_width);
-    GLfloat logo_height_gl = gl_size(wl->instance->height, os_window->viewport_height);
-    GLfloat logo_left_gl = clamp_position_to_nearest_pixel(
-            crd->gl.xstart + crd->gl.width * wl->position.canvas_x - logo_width_gl * wl->position.image_x, os_window->viewport_width);
-    GLfloat logo_top_gl = clamp_position_to_nearest_pixel(
-            crd->gl.ystart - crd->gl.height * wl->position.canvas_y + logo_height_gl * wl->position.image_y, os_window->viewport_height);
-    static ImageRenderData ird = {.group_count=1};
-    ird.texture_id = wl->instance->texture_id;
-    gpu_data_for_image(&ird, logo_left_gl, logo_top_gl, logo_left_gl + logo_width_gl, logo_top_gl - logo_height_gl);
-    bind_program(GRAPHICS_PREMULT_PROGRAM);
-    glUniform1f(graphics_program_layouts[GRAPHICS_PREMULT_PROGRAM].uniforms.inactive_text_alpha, prev_inactive_text_alpha * wl->alpha);
-    draw_graphics(GRAPHICS_PREMULT_PROGRAM, vao_idx, &ird, 0, 1, viewport_for_cells(crd));
-    glUniform1f(graphics_program_layouts[GRAPHICS_PREMULT_PROGRAM].uniforms.inactive_text_alpha, prev_inactive_text_alpha);
-}
-
-static void
 draw_window_number(OSWindow *os_window, Screen *screen, const CellRenderData *crd, Window *window) {
     GLfloat left = os_window->viewport_width * (crd->gl.xstart + 1.f) / 2.f;
     GLfloat right = left + os_window->viewport_width * crd->gl.width / 2.f;
