@@ -13,7 +13,7 @@ clean_kittens:
 tar:
 	tar -czvf alatty.tar.gz -C linux-package .
 
-install-tar:
+install:
 	tar -xvf alatty.tar.gz --strip-components=1 -C $(INSTALL_LOC)
 
 build:

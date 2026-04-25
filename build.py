@@ -15,7 +15,7 @@ if IS_MACOS:
     PYTHON3 = path.join(HOMEBREW_PREFIX, "opt/python/libexec/bin/python")
     cellar = lambda x: path.join(HOMEBREW_PREFIX, "Cellar", x)
 else:
-    PYTHON3 = "python3"
+    PYTHON3 = "/usr/bin/python3"
 
 BUILD_ARGS = [PYTHON3, "setup.py"]
 
